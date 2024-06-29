@@ -8,6 +8,10 @@ import { LayoutsComponent } from './layouts/layouts.component';
 import { PopupExComponent } from './popup-ex/popup-ex.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SharedModule } from './shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { CommonDialogComponent } from './common-dialog/common-dialog.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -16,13 +20,18 @@ import { ProfileComponent } from './profile/profile.component';
     PopupExComponent,
     HomeComponent,
     ProfileComponent,
+    CommonDialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule,
+    FormsModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CommonDialogComponent]
 })
 export class AppModule { }

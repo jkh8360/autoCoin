@@ -858,3 +858,37 @@ section{
         color: #D9D9D9;
     }
 }
+.login{
+    margin-left: 20px;
+    text-decoration: none;
+    color: #6572E6;
+    font-weight: bold;
+}
+.signup{
+    margin-left: 20px;
+    text-decoration: none;
+    color: #999;
+    font-weight: bold;
+}
+.policy{
+    color: #6572E6;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.policy:hover {
+    text-decoration: none;
+    color: rgb(29, 83, 192);
+}
+
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+body.dark-mode {
+    background-color: #000000;
+    color: #ffffff;
+}
+.disabled {
+    background-color: #4D4D4D;
+    color: #8B8B8B;
+}

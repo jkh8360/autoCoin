@@ -24,11 +24,15 @@
 
             <div class="section_header">
                 <div class="left">
-                    <div class="bot_state_box stop">
-                        <p>현재 봇 상태 : <span class="stop">정지</span></p>
-                        <button class="bot_state_btn"><img src="../../assets/common/images/start.png"></button>
+                    <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay}">
+                        <p>현재 봇 상태 : <span *ngIf="!botPlay" class="stop">정지</span><span *ngIf="botPlay" class="play">작동중</span></p>
+                        <button class="bot_state_btn" (click)="operateBot()">
+                            <img *ngIf="!botPlay" src="../../assets/common/images/start.png">
+                            <img *ngIf="botPlay" src="../../assets/common/images/stop.png">
+                        </button>
                     </div>
-                    <button class="esc_btn"><img src="../../assets/common/images/emergency.png" width="20">비상구</button>
+                    <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/emergency_off.png" width="20">비상구</button>
+                    <button *ngIf="botPlay" class="esc_btn" style="color: #1BCE88;"><img src="../../assets/common/images/emergency_on.png" width="20">비상구</button>
                 </div>
 
                 <div class="right">
@@ -74,6 +78,7 @@
                                     <div class="setting_box">
                                         <p class="name">지표2 선택</p>
                                         <select>
+                                            <option>None</option>
                                             <option>Bolliger Bands</option>
                                             <option>EMA</option>
                                             <option>Fibonacci Retracement</option>
@@ -176,7 +181,7 @@
                                         </select>
                                     </div>
                 
-                                    <button><i class="far fa-plus"></i> 숏 설정 추가</button>
+                                    <button (click)="addShortSetting()"><i class="far fa-plus"></i> 숏 설정 추가</button>
                                 </div>
                             </li>
 
@@ -227,7 +232,7 @@
                                     <input type="text" value="0.1" (input)="onInput($event)">
                                 </div>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">API 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
                                     <p>설정된 거래소 : Bitget</p>
@@ -235,14 +240,20 @@
                                     <p>API 패스워드 : kl234523klefglh2435ij</p>
                                     <p>API passphase : 12341234</p>
                                 </div>
-                            </li>
+                            </li> -->
                 
                             <li>
-                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 2)">텔레그램 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 2].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 2].isOpen}"></i></button>
+                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">텔레그램 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
-                                    <p>텔레그램 Key : 22k243l3:dAKkek1225</p>
-                                    <p>연동 상태 : <span class="no_color">연동 안 됨</span></p>
-                                    <p>봇 제어 여부 : <span class="yes_color">켜짐</span></p>
+                                    <p>텔레그램 Key : {{ teleId }}</p>
+                                    <p>연동 상태 : 
+                                        <span class="no_color">연동 안 됨</span>
+                                        <span class="yes_color">연동됨</span>
+                                    </p>
+                                    <p>봇 제어 여부 : 
+                                        <span class="no_color" *ngIf="!teleBotYn">꺼짐</span>
+                                        <span class="yes_color" *ngIf="teleBotYn">켜짐</span>
+                                    </p>
                                 </div>
                             </li>
                         </ul>
@@ -253,7 +264,7 @@
                 <div class="part_box spon_part_box">
                     <div>
                         <div class="guide_btn_box">
-                            <button class="default_btn" (click)="signUp()">사용 방법</button>
+                            <button class="default_btn" >사용 방법</button>
                             <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">니트봇 공식 텔레그램</button>
                             <button class="default_btn" (click)="openNotice()">공지사항 바로가기</button>
                         </div>
@@ -320,93 +331,85 @@
 </body>
 </html>
 
-<!-- 회원가입 팝업 -->
-<div #join_popup class="popup_box login_popup" id="join_popup" *ngIf="signIn">
-    <div class="popup_header">
-        <h2 class="left ">회원가입</h2>
-        <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
-    </div>
-    <div class="popup_content">
-        <ul class="popup_setting_ul">
-            <li>
-                <h3>이메일</h3>
-                <input class="
-                id" type="text">
-                <button class="text_email">인증하기</button>
-            </li>
-            <li>
-                <h3>비밀번호</h3>
-                <input class="password" type="password">
-            </li>
-            <li>
-                <h3>비밀번호 입력</h3>
-                <input  class="password"  type="password">
-            </li>
-            <li>
-                <label for="agree" class="chk_box">
-                    <input type="checkbox" id="agree">
-                    <span></span>
-                    <p>이용약관에 동의합니다</p>
-                </label>
-            </li>
-        </ul>
-        <button class="login_btn">회원가입 완료</button>
-        <button class="join_btn">로그인</button>
-    </div>            
-</div>
+<!-- 사용 방법 -->
+
 
 <!-- 공지 팝업 -->
 <div #notice_popup class="popup_box" id="notice_popup" *ngIf="noticeIn">
     <div class="popup_header">
-        <a href="#none" class="telegram"><img src="../../assets/common/images/telegram.png" width="28" ></a>
+        <a href="https://telegram.org/" target="_blank" class="telegram"><img src="../../assets/common/images/telegram.png" width="28" ></a>
         <button class="right bb" (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <table>
             <tbody>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
-                </tr>
-                <tr>
-                    <td><a href="#none">알림기능 사용 일시정지 안내</a></td>
-                    <td class="day">04. 18.</td>
+                <tr *ngFor="let notification of notifications" (click)="showNotificationDetails(notification)">
+                    <td><a href="#none">{{ notification.message }}</a></td>
+                    <td class="day">{{ notification.date }}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="page_nav">
-            <button><i class="far fa-chevron-left"></i></button>
-            <button class="now">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>5</button>
-            <button><i class="far fa-chevron-right"></i></button>
+            <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"><i class="far fa-chevron-left"></i></button>
+            <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)" [class.now]="currentPage === i + 1">{{ i + 1 }}</button>
+            <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"><i class="far fa-chevron-right"></i></button>
         </div>
+    </div>
+</div>
+
+<!-- 공지 상세 팝업 -->
+<div *ngIf="showDetail" class="popup_box" id="notice_view_popup">
+    <div class="popup_header">
+        <button class="left" (click)="closeDetailPopup()"><i class="far fa-chevron-left back"></i></button>
+        <a href="https://telegram.org/" target="_blank" class="telegram"><img src="../../assets/common/images/telegram.png" width="28" ></a>
+        <button class="right" (click)="closePopup()"><i class="far fa-times close"></i></button>
+    </div>
+    <div class="popup_content">
+        <div class="notice_view_header">
+           <p>{{ selectedNotification?.message }}</p>
+           <span>{{ selectedNotification?.date }}</span>
+        </div>
+        <p class="notice_view_text">
+            {{ selectedNotification?.details }}
+        </p>
+        <div class="notice_view_footer">
+            <button (click)="showPreviousNotification()">이전 글</button>
+            <button (click)="showNextNotification()">다음 글</button>
+        </div>
+    </div>
+</div>
+
+<!-- API 설정 팝업 -->
+<div *ngIf="showApiSet" class="popup_box" id="api_setting_popup">
+    <div class="popup_header">
+        <h2 class="left ">API 설정</h2>
+        <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
+    </div>
+    <div class="popup_content">
+        <ul class="popup_setting_ul">
+            <li>
+                <h3>거래소 선택</h3>
+                <select>
+                    <option value="Bitget">Bitget</option>
+                </select>
+            </li>
+            <li>
+                <h3>API 키 (Key)</h3>
+                <input type="text" required [(ngModel)]="ApiKey" #inputApiKey="ngModel" placeholder="API 키를 입력해주세요.">
+            </li>
+            <li>
+                <h3>API 비밀번호 (Password)</h3>
+                <input type="text" required [(ngModel)]="ApiPassword" #inputApiPassword="ngModel" placeholder="API 비밀번호를 입력해주세요.">
+            </li>
+            <li>
+                <h3>API 패스페이즈 (Passphase)</h3>
+                <input type="text" required [(ngModel)]="ApiPassphase" #inputApiPassphase="ngModel" placeholder="API 패스페이즈를 입력해주세요.">
+            </li>
+        </ul>
+        <p>API 주소와 비밀번호를 잊어버리지 않도록 주의해주세요.</p>
+        <button class="save_setting" (click)="saveAPI()" 
+        [class.disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphase.invalid"
+        [disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphase.invalid">저장</button>
     </div>
 </div>
