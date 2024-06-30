@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UtilService } from '../shared/util.service';
-import { Login2Service } from '../shared/login2.service';
 import { SharedService } from '../shared/shared.service';
+import { LayoutsComponent } from '../layouts/layouts.component';
 
 interface AppNotification {
   message: string;
@@ -14,8 +14,12 @@ interface AppNotification {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements AfterViewInit {
   @ViewChildren('slideBox') slideBox?: QueryList<ElementRef>;
+  @ViewChild(LayoutsComponent) layoutsComponent!: LayoutsComponent;
+
+  selectedTab: string = 'auto';
+  isMobileView: boolean = false;
 
   open: { isOpen: boolean }[] = [
     {isOpen: true},
@@ -56,11 +60,27 @@ export class HomeComponent implements OnInit {
   ) {
     this.addLongSetting();
     this.addShortSetting();
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
   }
 
   async ngOnInit() {
     this.loadNotifications(); // 공지사항 로딩
     this.setTelegramData();   // 텔레그램 세팅
+    this.checkScreenSize();
+  }
+
+  ngAfterViewInit(): void {
+    this.layoutsComponent.tabSelected.subscribe(tab => {
+      this.selectedTab = tab;
+    });
+    this.layoutsComponent.noticeYn.subscribe(open => {
+      this.noticeIn = open;
+    });
   }
 
   ngOnDestroy(): void {
@@ -232,6 +252,19 @@ export class HomeComponent implements OnInit {
     if(data) {
       this.teleId = data.teleid;
       this.teleBotYn = data.isRemote === 1 ? true : false;
+    }
+  }
+
+  // 스크린 사이즈
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth <= 768; // 모바일 기준 너비 설정
+  }
+
+  checkTabStyle() {
+    if(this.isMobileView) {
+      return { 'margin-top': '10px' };
+    } else {
+      return { 'margin-top': '' };
     }
   }
 }

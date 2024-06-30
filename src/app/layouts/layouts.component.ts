@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-layouts',
@@ -6,10 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./layouts.component.css']
 })
 export class LayoutsComponent implements OnInit {
+  @Output() tabSelected = new EventEmitter<string>();
+  @Output() noticeYn = new EventEmitter<boolean>();
+  selectedTab :string = 'auto';
 
-  constructor() { }
+  constructor(
+    private sharedService: SharedService,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  onTabSelect(tab: string) {
+    this.selectedTab = tab;
+    this.tabSelected.emit(tab)
+  }
+
+  openNotice() {
+    this.noticeYn.emit(true);
   }
 
 }
