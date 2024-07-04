@@ -42,7 +42,7 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>텔레그램 키 (Key)</h3>
-                <input type="text" [(ngModel)]="teleId"
+                <input type="text" [(ngModel)]="teleId" #inputTeleId="ngModel"
                 placeholder="텔레그램 키 (key)를 입력하세요">
             </li>
             <li>
@@ -77,11 +77,11 @@
             </li>
             <li>
                 <div>
-                    <p class="no_login_t" *ngIf="errSaveTele">텔레그램 저장에 실패했습니다. (invalid Data)</p>
+                    <p class="no_login_t" *ngIf="errSaveTele">텔레그램 저장에 실패했습니다. id 를 다시 확인해주세요.</p>
                 </div>
             </li>
         </ul>
-        <button class="save_setting" (click)="saveTelegram()">저장</button>
+        <button class="save_setting" [class.disabled]="inputTeleId.invalid" [disabled]="inputTeleId.invalid" (click)="saveTelegram()">저장</button>
     </div>
 </div>
 
@@ -99,7 +99,7 @@
         
         </ul>
         <button class="login_btn" (click)="openPassword(); showMypage = false;">비밀번호 변경</button>
-        <button class="join_btn" (click)="unRegister()">회원탈퇴</button>
+        <button class="join_btn" (click)="unRegister(); showMypage = false;">회원탈퇴</button>
     </div>
 </div>
 

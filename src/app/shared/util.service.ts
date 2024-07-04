@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
   private baseUrl = '/api'; // 실제 API 서버 URL로 변경해주세요
-  private intanceId = '';
+  private loggedOutSubject = new BehaviorSubject<boolean>(false);
 
   constructor(
     private dialog: MatDialog
   ) {}
+
+  loggedOut$ = this.loggedOutSubject.asObservable();
 
   private handleError(response: Response, showPopup: boolean): never {
     const error = {
@@ -78,7 +81,9 @@ export class UtilService {
         }
   
         // Check if the token is invalid
-        if (responseData.desc === 'invalid token' && responseData.code === 2 && !retry) {
+        if ((responseData.desc === 'invalid token' && responseData.code === 2 && !retry)
+          // || (responseData.desc === 'invalid data' && responseData.code === 6 && url.includes('users/logout') && !retry)
+          || (response.status === 500 && !retry)) {
           try {
             await this.refreshAccessToken();
             token = this.getAccessToken();
@@ -100,7 +105,7 @@ export class UtilService {
         if (!response.ok) {
           this.handleError(response, showPopup);
         }
-        if (responseData.desc !== 'success' && showPopup) {
+        if ((responseData.desc !== 'success' && responseData.desc !== 'logout') && showPopup) {
           this.dialog.open(CommonDialogComponent, {
             data: {
               title: 'Error',
@@ -176,15 +181,21 @@ export class UtilService {
       this.logout();
       throw new Error('No refresh token available');
     }
+
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${refreshToken}`
+    });
   
-    const body = { refreshToken: refreshToken };
-  
-    const data: any = await this.request('POST', 'users/extend', body, false, false);
+    const data: any = await this.fetchWithToken<any>(`${this.baseUrl}/users/extend`, {
+      method: 'GET',
+      headers: headers
+    }, false, false);
   
     if (data.desc === 'success') {
-      localStorage.setItem('accessToken', data.data.access);
+      localStorage.setItem('accessToken', JSON.stringify(data.data.access));
     } else {
-      this.logout();
+      this.logoutWithoutServer();
       throw new Error('Refresh token expired');
     }
   }
@@ -217,13 +228,34 @@ export class UtilService {
       operation: 'logout'
     }
 
-    const data:any = await this.request('POST', 'users/logout', body, true, true);
+    let data: any = await this.fetchWithToken<any>(`${this.baseUrl}/users/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    }, true, false);
 
-    if(data.desc === 'success') {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-
+    if(data.desc === 'logout') {
+      this.clearTokens();
       return true;
+    } else if (data.desc === 'invalid data' && data.code === 6) {
+      // Refresh the access token and retry logout
+      await this.refreshAccessToken();
+        data = await this.fetchWithToken<any>(`${this.baseUrl}/users/logout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        }, true, false);
+
+      if (data.desc === 'logout') {
+        this.clearTokens();
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -245,6 +277,19 @@ export class UtilService {
     const data:any = await this.get('users/me', true, true);
   }
 
+   // 서버로 로그아웃 요청 없이 로컬에서 로그아웃 처리
+   private logoutWithoutServer() {
+    this.clearTokens();
+    this.loggedOutSubject.next(false); // 로그아웃 상태로 설정
+  }
+
+  // 로컬 스토리지에서 토큰을 삭제
+  clearTokens() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('instanceId');
+  }
+
   getAccessToken(): string | null {
     const token = localStorage.getItem('accessToken');
     return token ? JSON.parse(token) : null;
@@ -260,51 +305,107 @@ export class UtilService {
   }
 
   // BOT instance
+  async instanceCreate() {
+    const body = {
+      operation: 'create',
+      target: 'instance',
+      instance_id: ''
+    }
+
+    const data: any = await this.request('POST', 'instances/create', body, true, false);
+
+    if(data.data.instance_id) {
+      localStorage.setItem('instanceId', data.instance_id);
+    } 
+  }
+
   async instanceList() {
     const body = {
       operation: 'list',
       target: 'instance',
-      intance_id: ''
+      instance_id: ''
     }
 
     const data:any = await this.request('POST', 'instances/list', body, true, false);
 
-    if(data.desc === 'success') {
-      
+    if(data.data.length === 0) {
+      this.instanceCreate();
+    } else {
+      if(data.data.contexts[0].instance_id !== '') {
+        localStorage.setItem('instanceId', data.data.contexts[0].instance_id);
+      }
     }
+
+    this.instanceRead();
+    this.instancePost();
   }
 
   async instanceRead() {
+    const instance = localStorage.getItem('instanceId');
+
     const body = {
       operation: 'read',
       target: 'instance',
-      intance_id: ''
+      instance_id: instance
     }
 
     const data:any = await this.request('POST', 'instances/read', body, true, false);
   }
 
   async instancePost() {
+    const instance = localStorage.getItem('instanceId');
+
     const body = {
       operation: 'post',
       target: 'instance',
-      intance_id: '',
+      instance_id: instance,
       payload: {},
       name: '',
       data: ''
     }
 
     const data:any = await this.request('POST', 'instances/post', body, true, false);
+
+
   }
 
-  async instanceOperation(operation:string) {
-    const body = {
-      operation: operation,
-      target: 'instance',
-      intance_id: '',
-      payload: {}
+  async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphase?: string, ApiProvider?: string) {
+    const instance = localStorage.getItem('instanceId');
+
+    let body = {};
+
+    if(apiKey && apiPassword && apiPassphase && ApiProvider) {
+      body = {
+        operation: type,
+        target: 'instance',
+        instance_id: instance,
+        payload: {
+          credentials: {
+            key: apiKey,
+            passphase: apiPassphase,
+            secret: apiPassword,
+            symbol: '',
+            provider: ApiProvider
+          },
+          parameter: {}
+        }
+      }
+    } else {
+      body = {
+        operation: type,
+        target: 'instance',
+        instance_id: instance,
+        payload: {}
+      }
     }
 
+
     const data:any = await this.request('POST', 'instances/operation', body, true, false);
+
+    if(data.desc === 'success') {
+      return data;
+    } else {
+      return '';
+    }
   }
 }

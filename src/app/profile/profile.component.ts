@@ -3,6 +3,7 @@ import { ThemeService } from '../shared/theme.service';
 import { UtilService } from '../shared/util.service';
 import { SharedService } from '../shared/shared.service';
 import { Login2Service } from '../shared/login2.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
     private utilService: UtilService,
     private sharedService: SharedService
   ) {}
-
+  private logoutSubscription!: Subscription;
+  isLoggedOut: boolean = false;
 
   // 팝업 관련
   showTelegramSet: boolean = false;
@@ -64,6 +66,16 @@ export class ProfileComponent implements OnInit {
   errSaveTele: boolean = false;
 
   ngOnInit(): void {
+    this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
+      this.isLoggedOut = loggedOut;
+      if (this.isLoggedOut) {
+        // 로그아웃 상태일 때의 추가 처리
+        console.log('User is logged out');
+
+        this.loginYn = loggedOut;
+      }
+    });
+
     this.currentTheme = this.themeService.getTheme();
     this.themeService.applyTheme(this.currentTheme);
 
@@ -219,7 +231,11 @@ export class ProfileComponent implements OnInit {
       this.loginYn = true;
       this.showLogin = false;
 
-      this.sharedService.loadTelegramSetting();
+      const teleData = await this.sharedService.loadTelegramSetting();
+
+      this.teleId = teleData.teleid;
+      this.chatId = teleData.chatid;
+      this.teleBotYn = teleData.isRemote === 1 ? true : false;
     } else {
       this.loginFailed = true;
     }
@@ -271,7 +287,11 @@ export class ProfileComponent implements OnInit {
     const data:any = await this.utilService.request('DELETE', 'users/unregister', body, true, false);
 
     if(data.desc === 'success') {
-      this.logout();
+      this.utilService.clearTokens();
+
+      this.showLogout = true;
+      this.loginYn = false;
+      this.loginFailed = false;
     }
   }
 

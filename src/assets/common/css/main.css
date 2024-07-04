@@ -164,7 +164,7 @@ section .wrap {
     border-radius: 4px;
     background: #222222;
     font-size: 12px;
-    color: #4D4D4D;
+    color: #4B55AA;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,7 +173,10 @@ section .wrap {
 .esc_btn img {
     margin-right: 12px;
 }
-
+.esc_btn.hovered {
+    background-color: #3C3C3C;
+    color: #4B55AA;
+}
 
 .main_content {
     display: flex;

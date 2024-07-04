@@ -25,14 +25,20 @@
             <div class="section_header">
                 <div class="left" [ngStyle]="checkTabStyle()">
                     <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay}">
-                        <p>현재 봇 상태 : <span *ngIf="!botPlay" class="stop">정지</span><span *ngIf="botPlay" class="play">작동중</span></p>
+                        <p>현재 봇 상태 : 
+                            <span *ngIf="!botPlay" class="stop">정지</span>
+                            <span *ngIf="botPlay" class="play">작동중</span>
+                        </p>
                         <button class="bot_state_btn" (click)="operateBot()">
                             <img *ngIf="!botPlay" src="../../assets/common/images/start.png">
                             <img *ngIf="botPlay" src="../../assets/common/images/stop.png">
                         </button>
                     </div>
-                    <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/emergency_off.png" width="20">비상구</button>
-                    <button *ngIf="botPlay" class="esc_btn" style="color: #1BCE88;"><img src="../../assets/common/images/emergency_on.png" width="20">비상구</button>
+                    <!-- <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/save_off.png" width="20">SAVE</button>
+                    <button *ngIf="botPlay" class="esc_btn" style="background-color: #6572E6; color: #2B2B2B;"><img src="../../assets/common/images/save_on.png" width="20">SAVE</button> -->
+                    <button class="esc_btn" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+                        <img [src]="'../../assets/common/images/save.png'" width="20">SAVE
+                    </button>
                 </div>
 
                 <div class="right">
@@ -46,7 +52,7 @@
 
             <div class="main_content" *ngIf="!isMobileView">
                 <div class="part_box auto_play_box">
-                    <div class="auto_play_setting">
+                    <div class="" [ngClass]="!autoHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="autoHoverd = true" (mouseleave)="autoHoverd = false">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
                             <li>
@@ -198,8 +204,11 @@
                 
 
                 <div class="part_box default_play_box">
-                    <div class="default_play_setting">
-                        <h2>기본 설정</h2>
+                    <div class="" [ngClass]="!defaultHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="defaultHoverd = true" (mouseleave)="defaultHoverd = false">
+                        <h2>
+                            기본 설정
+                            <button style="position: absolute; left: 0;">초기화</button>
+                        </h2>
                         <ul class="setting_ul">
                             <li>
                                 <div class="setting_box">
@@ -327,7 +336,7 @@
             <!-- 모바일 뷰 -->
             <div class="main_content" *ngIf="isMobileView">
                 <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'">
-                    <div class="auto_play_setting">
+                    <div class="default_play_setting">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
                             <li>
@@ -669,7 +678,7 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>거래소 선택</h3>
-                <select>
+                <select [(ngModel)]="ApiProvider">
                     <option value="Bitget">Bitget</option>
                 </select>
             </li>

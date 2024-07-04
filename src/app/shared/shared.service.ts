@@ -14,6 +14,7 @@ export class SharedService {
     const data: any = await this.utilService.get('users/getuserinfo', true, false);
 
     if(data.desc === 'success') {
+
       return data;
     }
   }

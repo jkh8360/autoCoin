@@ -20,6 +20,9 @@ export class HomeComponent implements AfterViewInit {
 
   selectedTab: string = 'auto';
   isMobileView: boolean = false;
+  isHovered: boolean = false;
+  autoHoverd: boolean = false;
+  defaultHoverd: boolean = false;
 
   open: { isOpen: boolean }[] = [
     {isOpen: true},
@@ -41,6 +44,7 @@ export class HomeComponent implements AfterViewInit {
   ApiKey: string = '';
   ApiPassword: string = '';
   ApiPassphase: string = '';
+  ApiProvider: string = 'Bitget';
 
   // 공지사항
   notifications: AppNotification[] = [];
@@ -53,6 +57,9 @@ export class HomeComponent implements AfterViewInit {
   // 텔레그램
   teleId: string = '';
   teleBotYn: boolean = false;
+
+  // 인스턴스
+  instanceId: string = '';
 
   constructor(
     private utilService: UtilService,
@@ -71,7 +78,7 @@ export class HomeComponent implements AfterViewInit {
   async ngOnInit() {
     this.loadNotifications(); // 공지사항 로딩
     this.setTelegramData();   // 텔레그램 세팅
-    this.checkScreenSize();
+    this.checkScreenSize();   // 스크린 사이즈 체크
   }
 
   ngAfterViewInit(): void {
@@ -177,12 +184,14 @@ export class HomeComponent implements AfterViewInit {
   }
 
   //API 설정 저장
-  saveAPI() {
+  async saveAPI() {
     this.showApiSet = false;
-    this.botPlay = true;
-
-    const body = {
-
+    
+    const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphase, this.ApiProvider);
+    
+    if(data) {
+      this.botPlay = true;
+      
     }
   }
 
@@ -257,7 +266,7 @@ export class HomeComponent implements AfterViewInit {
 
   // 스크린 사이즈
   checkScreenSize() {
-    this.isMobileView = window.innerWidth <= 768; // 모바일 기준 너비 설정
+    this.isMobileView = window.innerWidth <= 1100; // 모바일 기준 너비 설정
   }
 
   checkTabStyle() {
