@@ -36,7 +36,7 @@
                     </div>
                     <!-- <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/save_off.png" width="20">SAVE</button>
                     <button *ngIf="botPlay" class="esc_btn" style="background-color: #6572E6; color: #2B2B2B;"><img src="../../assets/common/images/save_on.png" width="20">SAVE</button> -->
-                    <button class="esc_btn" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+                    <button class="esc_btn" (click)="saveInstance()" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
                         <img [src]="'../../assets/common/images/save.png'" width="20">SAVE
                     </button>
                 </div>
@@ -61,21 +61,25 @@
                                     <div class="setting_box">
                                         <p class="name">지표1 선택</p>
                                         <select>
-                                            <option>Bolliger Bands</option>
-                                            <option>EMA</option>
-                                            <option>Fibonacci Retracement</option>
-                                            <option>Keltner Channels</option>
-                                            <option>MA</option>
-                                            <option>MACD</option>
-                                            <option>MFI</option>
-                                            <option>Parabolic SAR</option>
-                                            <option>RSI</option>
-                                            <option>SMA</option>
-                                            <option>SMMA</option>
-                                            <option>Stochastic</option>
-                                            <option>Stochastic RSI</option>
-                                            <option>Supertrend</option>
+                                            <option value="Bolliger Bands">Bolliger Bands</option>
+                                            <option value="EMA">EMA</option>
+                                            <option value="Fibonacci Retracement">Fibonacci Retracement</option>
+                                            <option value="Keltner Channels">Keltner Channels</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MACD">MACD</option>
+                                            <option value="MFI">MFI</option>
+                                            <option value="Parabolic SAR">Parabolic SAR</option>
+                                            <option value="RSI">RSI</option>
+                                            <option value="SMA">SMA</option>
+                                            <option value="SMMA">SMMA</option>
+                                            <option value="Stochastic">Stochastic</option>
+                                            <option value="Stochastic RSI">Stochastic RSI</option>
+                                            <option value="Supertrend">Supertrend</option>
                                         </select>
+                                    </div>
+                                    <div class="setting_box">
+                                        <p class="name">기간</p>
+                                        <input type="text" value="20" (input)="onInput($event)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">기간</p>
@@ -85,21 +89,25 @@
                                         <p class="name">지표2 선택</p>
                                         <select>
                                             <option>None</option>
-                                            <option>Bolliger Bands</option>
-                                            <option>EMA</option>
-                                            <option>Fibonacci Retracement</option>
-                                            <option>Keltner Channels</option>
-                                            <option>MA</option>
-                                            <option>MACD</option>
-                                            <option>MFI</option>
-                                            <option>Parabolic SAR</option>
-                                            <option>RSI</option>
-                                            <option>SMA</option>
-                                            <option>SMMA</option>
-                                            <option>Stochastic</option>
-                                            <option>Stochastic RSI</option>
-                                            <option>Supertrend</option>
+                                            <option value="Bolliger Bands">Bolliger Bands</option>
+                                            <option value="EMA">EMA</option>
+                                            <option value="Fibonacci Retracement">Fibonacci Retracement</option>
+                                            <option value="Keltner Channels">Keltner Channels</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MACD">MACD</option>
+                                            <option value="MFI">MFI</option>
+                                            <option value="Parabolic SAR">Parabolic SAR</option>
+                                            <option value="RSI">RSI</option>
+                                            <option value="SMA">SMA</option>
+                                            <option value="SMMA">SMMA</option>
+                                            <option value="Stochastic">Stochastic</option>
+                                            <option value="Stochastic RSI">Stochastic RSI</option>
+                                            <option value="Supertrend">Supertrend</option>
                                         </select>
+                                    </div>
+                                    <div class="setting_box">
+                                        <p class="name">기간</p>
+                                        <input type="text" value="20" (input)="onInput($event)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">기간</p>

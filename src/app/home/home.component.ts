@@ -276,4 +276,9 @@ export class HomeComponent implements AfterViewInit {
       return { 'margin-top': '' };
     }
   }
+
+  // 저장하기
+  saveInstance() {
+    this.utilService.instancePost();
+  }
 }
