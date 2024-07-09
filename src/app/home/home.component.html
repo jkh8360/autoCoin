@@ -60,58 +60,23 @@
                                 <div #slideBox class="tab_slide_box" style="display: block;">
                                     <div class="setting_box">
                                         <p class="name">지표1 선택</p>
-                                        <select>
-                                            <option value="Bolliger Bands">Bolliger Bands</option>
-                                            <option value="EMA">EMA</option>
-                                            <option value="Fibonacci Retracement">Fibonacci Retracement</option>
-                                            <option value="Keltner Channels">Keltner Channels</option>
-                                            <option value="MA">MA</option>
-                                            <option value="MACD">MACD</option>
-                                            <option value="MFI">MFI</option>
-                                            <option value="Parabolic SAR">Parabolic SAR</option>
-                                            <option value="RSI">RSI</option>
-                                            <option value="SMA">SMA</option>
-                                            <option value="SMMA">SMMA</option>
-                                            <option value="Stochastic">Stochastic</option>
-                                            <option value="Stochastic RSI">Stochastic RSI</option>
-                                            <option value="Supertrend">Supertrend</option>
+                                        <select (change)="onIndicatorChange(1, $event)">
+                                            <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
-                                    <div class="setting_box">
-                                        <p class="name">기간</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
-                                    </div>
-                                    <div class="setting_box">
-                                        <p class="name">기간</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                    <div class="setting_box" *ngFor="let input of selectedIndicator1?.inputs; let i = index">
+                                        <p class="name">{{ input.name }}</p>
+                                        <input type="text" [value]="input.defaultValue" (input)="onInput($event, 1, i)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표2 선택</p>
-                                        <select>
-                                            <option>None</option>
-                                            <option value="Bolliger Bands">Bolliger Bands</option>
-                                            <option value="EMA">EMA</option>
-                                            <option value="Fibonacci Retracement">Fibonacci Retracement</option>
-                                            <option value="Keltner Channels">Keltner Channels</option>
-                                            <option value="MA">MA</option>
-                                            <option value="MACD">MACD</option>
-                                            <option value="MFI">MFI</option>
-                                            <option value="Parabolic SAR">Parabolic SAR</option>
-                                            <option value="RSI">RSI</option>
-                                            <option value="SMA">SMA</option>
-                                            <option value="SMMA">SMMA</option>
-                                            <option value="Stochastic">Stochastic</option>
-                                            <option value="Stochastic RSI">Stochastic RSI</option>
-                                            <option value="Supertrend">Supertrend</option>
+                                        <select (change)="onIndicatorChange(2, $event)">
+                                            <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
-                                    <div class="setting_box">
-                                        <p class="name">기간</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
-                                    </div>
-                                    <div class="setting_box">
-                                        <p class="name">기간</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                    <div class="setting_box" *ngFor="let input of selectedIndicator2?.inputs; let i = index">
+                                        <p class="name">{{ input.name }}</p>
+                                        <input type="text" [value]="input.defaultValue" (input)="onInput($event, 2, i)">
                                     </div>
                                 </div>
                                
@@ -133,18 +98,24 @@
                                     <div class="setting_box">
                                         <p class="name">지표 1 에 대하여 (than indicator 1)</p>
                                         <select>
-                                            <option>캔들값이 작을 때 (under)</option>
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
+                                            <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
+                                    </div>
+                                    <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
+                                        <p class="name">상수</p>
+                                        <input type="text" value="20" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
                                         <select>
-                                            <option>상수보다 작을 때 (under)</option>
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
+                                            <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
-                                    <div class="setting_box">
+                                    <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" value="20" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
@@ -174,18 +145,22 @@
                                     <div class="setting_box">
                                         <p class="name">지표 1 에 대하여 (than indicator 1)</p>
                                         <select>
-                                            <option>캔들값이 클 때 (over)</option>
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
                                         </select>
+                                    </div>
+                                    <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
+                                        <p class="name">상수</p>
+                                        <input type="text" value="20" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
                                         <select>
-                                            <option>상수보다 클 때 (over)</option>
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
                                         </select>
                                     </div>
-                                    <div class="setting_box">
+                                    <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" value="20" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
@@ -249,15 +224,6 @@
                                     <input type="text" value="0.1" (input)="onInput($event)">
                                 </div>
                             </li>
-                            <!-- <li>
-                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">API 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
-                                <div #slideBox class="default_setting_info tab_slide_box">
-                                    <p>설정된 거래소 : Bitget</p>
-                                    <p>API Key : bitget_hkj23h4l231LSDF14d</p>
-                                    <p>API 패스워드 : kl234523klefglh2435ij</p>
-                                    <p>API passphase : 12341234</p>
-                                </div>
-                            </li> -->
                 
                             <li>
                                 <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">텔레그램 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>

@@ -2,7 +2,6 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { ThemeService } from '../shared/theme.service';
 import { UtilService } from '../shared/util.service';
 import { SharedService } from '../shared/shared.service';
-import { Login2Service } from '../shared/login2.service';
 import { Subscription } from 'rxjs';
 
 @Component({
