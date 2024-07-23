@@ -192,7 +192,9 @@ export class ProfileComponent implements OnInit {
     const body = {
       teleid: this.teleId,
       chatid: this.chatId,
-      isRemote: this.teleBotYn ? 1 : 0
+      isRemote: this.teleBotYn ? 1 : 0,
+      profile_id: 0,
+      nickname: ''
     }
 
     const data: any = await this.utilService.request('POST', 'users/updateinfo', body, false, false);
@@ -314,7 +316,8 @@ export class ProfileComponent implements OnInit {
   async changePassword() {
     const body = {
       email: this.changePwEmail,
-      password: this.changePwCheck
+      password: this.changePwCheck,
+      profile: ''
     }
 
     const data:any = await this.utilService.request('POST', 'users/reset_post', body, false, false);
@@ -326,5 +329,15 @@ export class ProfileComponent implements OnInit {
       this.changePw = '';
       this.changePwCheck = '';
     } 
+  }
+
+  isChangePassword(): boolean {
+    return Boolean(this.certifyYn) && 
+          Boolean(this.changePwEmail) && 
+          Boolean(this.changePw) && 
+          Boolean(this.changePwCheck) && 
+          Boolean(this.passwordValidChange) && 
+          Boolean(this.passwordCheckValidChange) && 
+          Boolean(this.agreeTerms);
   }
 }

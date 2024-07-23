@@ -247,11 +247,14 @@ export class HomeComponent implements AfterViewInit {
     this.showApiSet = false;
   }
 
-  // 봇 실행
+  // 봇 동작
   operateBot() {  
     if(this.botPlay) {
       this.botPlay = false;
+      // 봇 정지
+      this.utilService.instanceOperation('halt');
     } else {
+      // 봇 실행
       this.showApiSet = true;
     }
   }
@@ -330,10 +333,14 @@ export class HomeComponent implements AfterViewInit {
   // 텔레그램 정보
   async setTelegramData() {
     const data = await this.sharedService.loadTelegramSetting();
+    const botConn = await this.utilService.instanceOperation('report');
 
     if(data) {
       this.teleId = data.teleid;
       this.teleBotYn = data.isRemote === 1 ? true : false;
+      if(botConn) {
+        this.teleBotYn;
+      }
     }
   }
 
@@ -352,7 +359,7 @@ export class HomeComponent implements AfterViewInit {
 
   // 저장하기
   saveInstance() {
-    this.utilService.instancePost();
+    this.utilService.instancePost('');
   }
 
   onIndicatorChange(indicatorNumber: number, event: any) {

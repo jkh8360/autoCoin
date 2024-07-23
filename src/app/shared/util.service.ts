@@ -82,7 +82,6 @@ export class UtilService {
   
         // Check if the token is invalid
         if ((responseData.desc === 'invalid token' && responseData.code === 2 && !retry)
-          // || (responseData.desc === 'invalid data' && responseData.code === 6 && url.includes('users/logout') && !retry)
           || (response.status === 500 && !retry)) {
           try {
             await this.refreshAccessToken();
@@ -187,16 +186,24 @@ export class UtilService {
       'Authorization': `Bearer ${refreshToken}`
     });
   
-    const data: any = await this.fetchWithToken<any>(`${this.baseUrl}/users/extend`, {
-      method: 'GET',
-      headers: headers
-    }, false, false);
+    try {
+      const data: any = await this.fetchWithToken<any>(`${this.baseUrl}/users/extend`, {
+        method: 'GET',
+        headers: headers
+      }, false, false);
   
-    if (data.desc === 'success') {
-      localStorage.setItem('accessToken', JSON.stringify(data.data.access));
-    } else {
+      if (data && data.desc === 'success') {
+        localStorage.setItem('accessToken', JSON.stringify(data.data.access));
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (error) {
       this.logoutWithoutServer();
-      throw new Error('Refresh token expired');
+      if (error instanceof Error) {
+        throw new Error(`Failed to refresh token: ${error.message}`);
+      } else {
+        throw new Error('Failed to refresh token: Unknown error');
+      }
     }
   }
   
@@ -337,7 +344,6 @@ export class UtilService {
     }
 
     this.instanceRead();
-    this.instancePost();
   }
 
   async instanceRead() {
@@ -352,16 +358,18 @@ export class UtilService {
     const data:any = await this.request('POST', 'instances/read', body, true, false);
   }
 
-  async instancePost() {
+  async instancePost(payload: any) {
     const instance = localStorage.getItem('instanceId');
+    const postData = this.postSetData(payload);
 
     const body = {
       operation: 'post',
       target: 'instance',
       instance_id: instance,
-      payload: {},
-      name: '',
-      data: ''
+      payload: {
+        name: 'v1',
+        data: postData
+      },
     }
 
     const data:any = await this.request('POST', 'instances/post', body, true, false);
@@ -384,7 +392,7 @@ export class UtilService {
             key: apiKey,
             passphase: apiPassphase,
             secret: apiPassword,
-            symbol: '',
+            symbol: 'usdt',           // 임시
             provider: ApiProvider
           },
           parameter: {}
@@ -407,5 +415,18 @@ export class UtilService {
     } else {
       return '';
     }
+  }
+
+  postSetData(data: {}) {
+    // JSON을 문자열로 변환
+    const jsonString = JSON.stringify(data);
+
+    // UTF-8로 인코딩 및 Base64로 인코딩
+    const base64Encoded = btoa(unescape(encodeURIComponent(jsonString)));
+
+    // 결과 출력
+    console.log(base64Encoded);
+
+    return base64Encoded;
   }
 }
