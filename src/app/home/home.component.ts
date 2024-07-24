@@ -81,6 +81,12 @@ export class HomeComponent implements AfterViewInit {
   selectedIndicator1: IndicatorOption | undefined;
   selectedIndicator2: IndicatorOption | undefined;
 
+  isPosition: boolean = false;
+  candleConst: number = 0.1;
+  candleType = ['last', 'start', 'high', 'low'];
+  longCandleType = 'last';
+  shortCandleType = 'last';
+
   // 팝업 ON/OFF
   noticeIn: boolean = false;
   showApiSet: boolean = false;
@@ -128,6 +134,8 @@ export class HomeComponent implements AfterViewInit {
 
     this.selectedIndicator1 = this.indicatorOptions[0];
     this.selectedIndicator2 = this.indicatorOptions[0];
+
+    console.log(JSON.stringify(this.selectedIndicator1));
   }
 
   ngAfterViewInit(): void {
@@ -347,6 +355,7 @@ export class HomeComponent implements AfterViewInit {
   // 스크린 사이즈
   checkScreenSize() {
     this.isMobileView = window.innerWidth <= 1100; // 모바일 기준 너비 설정
+    
   }
 
   checkTabStyle() {
@@ -359,7 +368,43 @@ export class HomeComponent implements AfterViewInit {
 
   // 저장하기
   saveInstance() {
-    this.utilService.instancePost('');
+    const settings: any = [];
+
+    const createSetting = (setting: any, position: 'long' | 'short') => {
+      const indicator1 = this.selectedIndicator1 || this.indicatorOptions[0];
+      const indicator2 = this.selectedIndicator2 || this.indicatorOptions[0];
+    
+      return {
+        position: position,
+        const1: setting.constant1 || " ",
+        argName1: indicator1.value,
+        argName2: indicator2.value,
+        args1: indicator1.inputs.map(input => input.defaultValue),
+        args2: indicator2.inputs.map(input => input.defaultValue),
+        longCandle: this.longCandleType,
+        shortCandle: this.shortCandleType,
+        additionalArgs: [
+          setting.indicator1Comparison || "",
+          setting.indicator2Comparison || "",
+          setting.action || ""
+        ]
+      };
+    };
+  
+    // 롱 설정 추가
+    this.longSettings.forEach(longSetting => {
+      settings.push(createSetting(longSetting, 'long'));
+    });
+  
+    // 숏 설정 추가
+    this.shortSettings.forEach(shortSetting => {
+      settings.push(createSetting(shortSetting, 'short'));
+    });
+
+    console.log('settings >> ' + JSON.stringify(settings));
+
+    const postData = this.utilService.createEncodedData(this.isPosition, this.candleConst, settings);
+    this.utilService.instancePost(postData);
   }
 
   onIndicatorChange(indicatorNumber: number, event: any) {
