@@ -337,7 +337,6 @@ export class ProfileComponent implements OnInit {
           Boolean(this.changePw) && 
           Boolean(this.changePwCheck) && 
           Boolean(this.passwordValidChange) && 
-          Boolean(this.passwordCheckValidChange) && 
-          Boolean(this.agreeTerms);
+          Boolean(this.passwordCheckValidChange);
   }
 }
