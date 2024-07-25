@@ -1,7 +1,7 @@
 <ul class="mobile_tab">
     <button (click)="onTabSelect('auto')"><li class="auto_play_setting_btn" [class.cho]="selectedTab === 'auto'">자동매매</li></button>
     <button (click)="onTabSelect('default')"><li class="default_play_box_btn" [class.cho]="selectedTab === 'default'">기본 설정</li></button>
-    <button><li>사용 방법</li></button>
+    <button (click)="openToUse()"><li>사용 방법</li></button>
     <a href="https://telegram.org" target="_blank"><li>공식 텔레그램</li></a>
     <button (click)="openNotice()"><li>공지 사항</li></button>
 </ul>

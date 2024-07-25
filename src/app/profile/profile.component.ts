@@ -35,6 +35,9 @@ export class ProfileComponent implements OnInit {
   showTerms: boolean = false;
   showPassword: boolean = false;
 
+  changeProfile: boolean = false;
+  unregistUser: boolean = false;
+
   // 로그인 관련
   loginEmail: string = '';
   loginPassword: string = '';
@@ -135,9 +138,13 @@ export class ProfileComponent implements OnInit {
 
   // 언어 변경
   changeLng() {
-    this.showLangSet = true;
+    if(this.showLangSet) {
+      this.showLangSet = false;
+    } else {
+      this.showLangSet = true;
+    }
 
-    this.closeDropdown();
+    // this.closeDropdown();
   }
 
   // 라이트/다크 모드 전환

@@ -81,15 +81,20 @@ export class HomeComponent implements AfterViewInit {
   selectedIndicator1: IndicatorOption | undefined;
   selectedIndicator2: IndicatorOption | undefined;
 
+  // 기본 설정
   isPosition: boolean = false;
   candleConst: number = 0.1;
   candleType = ['last', 'start', 'high', 'low'];
-  longCandleType = 'last';
-  shortCandleType = 'last';
+  longCandleType: string = 'last';
+  shortCandleType: string = 'last';
+  tradeSymbol: string = 'usdt';
+  candleTime: string = '1m';
+  candleTimeType = ['1m', '3m', '5m', '15m', '30m', '1h', '4h', '1d'];
 
   // 팝업 ON/OFF
   noticeIn: boolean = false;
   showApiSet: boolean = false;
+  toUsePopup: boolean = false;
   
   // 봇 실행 (+ API 설정값)
   botPlay: boolean = false;
@@ -145,6 +150,9 @@ export class HomeComponent implements AfterViewInit {
     this.layoutsComponent.noticeYn.subscribe(open => {
       this.noticeIn = open;
     });
+    this.layoutsComponent.toUsePopup.subscribe(open => {
+      this.toUsePopup = open;
+    })
   }
 
   ngOnDestroy(): void {
@@ -242,17 +250,13 @@ export class HomeComponent implements AfterViewInit {
     window.open('https://telegram.org/', '_blank');
   }
 
-  // 공지사항
-  openNotice() {
-    this.noticeIn = true;
-  }
-
   // 팝업 닫기
   closePopup() {
     this.noticeIn = false;
     this.showDetail = false;
 
     this.showApiSet = false;
+    this.toUsePopup = false;
   }
 
   // 봇 동작
@@ -420,5 +424,12 @@ export class HomeComponent implements AfterViewInit {
 
   isIndicatorOption(indicator: IndicatorOption | undefined): indicator is IndicatorOption {
     return indicator !== undefined;
+  }
+
+  // 초기화 버튼
+  defaultSettingClear() {
+    this.tradeSymbol = 'usdt';
+    this.candleTime = '1m';
+    this.candleConst = 0.1;
   }
 }

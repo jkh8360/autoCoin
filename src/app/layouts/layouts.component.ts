@@ -9,6 +9,7 @@ import { SharedService } from '../shared/shared.service';
 export class LayoutsComponent implements OnInit {
   @Output() tabSelected = new EventEmitter<string>();
   @Output() noticeYn = new EventEmitter<boolean>();
+  @Output() toUsePopup = new EventEmitter<boolean>();
   selectedTab :string = 'auto';
 
   constructor(
@@ -27,4 +28,7 @@ export class LayoutsComponent implements OnInit {
     this.noticeYn.emit(true);
   }
 
+  openToUse() {
+    this.toUsePopup.emit(true);
+  }
 }

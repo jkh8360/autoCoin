@@ -3,7 +3,7 @@
         <h1 class="logo"><img src="../../assets/common/images/logo.png" width="24px">knitbot.ai</h1>
 
         <div class="user_div" [ngStyle]="{'display': loginYn ? '' : 'none'}">
-            <button class="user" (click)="toggleDropdown($event)" [disabled]="showLangSet || showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user.png" width="40px"></span></button>
+            <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user.png" width="40px"></span></button>
 
             <ul #dropMenu class="drop_menu">
                 <li>
@@ -15,6 +15,14 @@
                 </li>
                 <li>
                     <button (click)="changeLng()">언어 변경</button>
+                    <div class="lang_popup" *ngIf="showLangSet">
+                        <ul>
+                            <li [ngClass]="{'cho': true}">English</li>
+                            <li [ngClass]="{'cho': false}">中文 (简体)</li>
+                            <li [ngClass]="{'cho': false}">한국어</li>
+                            <li [ngClass]="{'cho': false}">日本語</li>
+                        </ul>
+                    </div>
                     <!-- <button (click)="toggleTheme()">{{ currentTheme === 'light' ? '라이트' : '다크' }}모드 전환</button> -->
                 </li>
                 <li>
@@ -92,14 +100,59 @@
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
-        <ul class="popup_setting_ul">
-            <li>
-                <span><img src="../../assets/common/images/user.png" width="40px">{{ loginEmail }}</span>
-            </li>
-        
-        </ul>
+        <div class="popup_setting_box">
+            <div class="user"><span><img src="../../assets/common/images/user.png" width="40px"></span></div>
+            <dl>
+                <dt>{{ loginEmail }}</dt>
+                <button (click)="changeProfile=true"><dd>프로필 이미지 변경</dd></button>
+            </dl>
+        </div>
         <button class="login_btn" (click)="openPassword(); showMypage = false;">비밀번호 변경</button>
-        <button class="join_btn" (click)="unRegister(); showMypage = false;">회원탈퇴</button>
+        <button class="join_btn" (click)="unregistUser=true">회원탈퇴</button>
+    </div>
+</div>
+
+<!-- 프로필 사진 변경 -->
+<div *ngIf="changeProfile" class="popup_box img_popup" id="mypage_popup">
+    <div class="popup_header">
+        <h2 class="left ">이미지 변경</h2>
+        <button class="right " (click)="changeProfile=false"><i class="far fa-times close"></i></button>
+    </div>
+    <div class="popup_content">
+        <ul class="img_list_ul">
+            <li [ngClass]="{'cho': true}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+        </ul>
+    </div>
+    <button class="login_btn">변경하기</button>
+</div>
+
+<!-- 회원 탈퇴 확인 -->
+<div *ngIf="unregistUser" class="popup_box login_popup" id="mypage_popup">
+    <div class="popup_content">
+        <div class="delete_box">
+            <img src="../../assets/common/images/StopDelete.png" width="60px">
+            <dl class="delete_dl">
+                <dt>Delete account?</dt>
+                <dd>
+                    Once you delete your account, your profile is permanently removed from KnitBot. <span>Learn More</span>
+                </dd>
+            </dl>
+            <button class="yes_btn" (click)="unRegister(); showMypage = false;">Yes, Delete</button>
+            <button class="no_btn" (click)="unregistUser=false;">No, Just Kidding</button>
+        </div>
     </div>
 </div>
 
