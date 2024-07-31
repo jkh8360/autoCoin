@@ -23,20 +23,20 @@
             <app-layouts></app-layouts>
 
             <div class="section_header">
-                <div class="left" [ngStyle]="checkTabStyle()">
+                <div class="left" [ngStyle]="checkTabStyle()" (click)="checkLogin($event)">
                     <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay}">
                         <p>현재 봇 상태 : 
                             <span *ngIf="!botPlay" class="stop">정지</span>
                             <span *ngIf="botPlay" class="play">작동중</span>
                         </p>
-                        <button class="bot_state_btn" (click)="operateBot()">
+                        <button class="bot_state_btn" (click)="operateBot()" [disabled]="!loginYn">
                             <img *ngIf="!botPlay" src="../../assets/common/images/start.png">
                             <img *ngIf="botPlay" src="../../assets/common/images/stop.png">
                         </button>
                     </div>
                     <!-- <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/save_off.png" width="20">SAVE</button>
                     <button *ngIf="botPlay" class="esc_btn" style="background-color: #6572E6; color: #2B2B2B;"><img src="../../assets/common/images/save_on.png" width="20">SAVE</button> -->
-                    <button class="esc_btn" (click)="saveInstance()" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+                    <button class="esc_btn" (click)="saveInstance()" [disabled]="!loginYn" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
                         <img [src]="'../../assets/common/images/save.png'" width="20">SAVE
                     </button>
                 </div>
@@ -51,7 +51,7 @@
             </div>
 
             <div class="main_content" *ngIf="!isMobileView">
-                <div class="part_box auto_play_box">
+                <div class="part_box auto_play_box" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
                     <div class="" [ngClass]="!autoHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="autoHoverd = true" (mouseleave)="autoHoverd = false">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
@@ -103,7 +103,7 @@
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
@@ -114,17 +114,17 @@
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
-                                        <select>
-                                            <option>진입</option>
-                                            <option>종료</option>
+                                        <select [(ngModel)]="botOperation">
+                                            <option value="open">진입</option>
+                                            <option value="close">종료</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()"><i class="far fa-plus"></i> 롱 설정 추가</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> 롱 설정 추가</button>
                                 </div>
                             </li>
                 
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
@@ -159,7 +159,7 @@
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
@@ -169,7 +169,7 @@
                                         </select>
                                     </div>
                 
-                                    <button (click)="addShortSetting()"><i class="far fa-plus"></i> 숏 설정 추가</button>
+                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> 숏 설정 추가</button>
                                 </div>
                             </li>
 
@@ -185,7 +185,7 @@
                 </div>
                 
 
-                <div class="part_box default_play_box">
+                <div class="part_box default_play_box" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
                     <div class="" [ngClass]="!defaultHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="defaultHoverd = true" (mouseleave)="defaultHoverd = false">
                         <h2>기본 설정 <button (click)="defaultSettingClear()">초기화</button></h2>
                         <ul class="setting_ul">
@@ -204,7 +204,7 @@
                                 </div>
                                 <div class="setting_box">
                                     <p class="name">캔들 설정</p>
-                                    <select [(ngModel)]="candleTime">
+                                    <select [(ngModel)]="candleInterval">
                                         <option [value]="candleTimeType[0]">1분 봉</option>
                                         <option [value]="candleTimeType[1]">3분 봉</option>
                                         <option [value]="candleTimeType[2]">5분 봉</option>
@@ -305,7 +305,7 @@
 
             <!-- 모바일 뷰 -->
             <div class="main_content" *ngIf="isMobileView">
-                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'">
+                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
                     <div class="default_play_setting">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
@@ -357,7 +357,7 @@
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
@@ -368,7 +368,7 @@
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
@@ -378,7 +378,7 @@
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()"><i class="far fa-plus"></i> 롱 설정 추가</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> 롱 설정 추가</button>
                                 </div>
                             </li>
                 
@@ -404,7 +404,7 @@
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">지표 2 에 대하여 (than indicator 2)</p>
@@ -415,7 +415,7 @@
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">상수</p>
-                                        <input type="text" value="20" (input)="onInput($event)">
+                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">봇의 행동</p>
@@ -441,7 +441,7 @@
                 </div>
                 
 
-                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" [ngStyle]="{'display': 'block'}">
+                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)" [ngStyle]="{'display': 'block'}">
                     <div class="default_play_setting">
                         <h2>기본 설정 <button>초기화</button></h2>
                         <ul class="setting_ul">
@@ -460,7 +460,7 @@
                                 </div>
                                 <div class="setting_box">
                                     <p class="name">캔들 설정</p>
-                                    <select [(ngModel)]="candleTime">
+                                    <select [(ngModel)]="candleInterval">
                                         <option [value]="candleTimeType[0]">1분 봉</option>
                                         <option [value]="candleTimeType[1]">3분 봉</option>
                                         <option [value]="candleTimeType[2]">5분 봉</option>

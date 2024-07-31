@@ -17,9 +17,9 @@
                     <button (click)="changeLng()">언어 변경</button>
                     <div class="lang_popup" *ngIf="showLangSet">
                         <ul>
-                            <li [ngClass]="{'cho': true}">English</li>
+                            <li [ngClass]="{'cho': false}">English</li>
                             <li [ngClass]="{'cho': false}">中文 (简体)</li>
-                            <li [ngClass]="{'cho': false}">한국어</li>
+                            <li [ngClass]="{'cho': true}">한국어</li>
                             <li [ngClass]="{'cho': false}">日本語</li>
                         </ul>
                     </div>
@@ -120,7 +120,10 @@
     </div>
     <div class="popup_content">
         <ul class="img_list_ul">
-            <li [ngClass]="{'cho': true}"><img src="../../assets/common/images/user.png"></li>
+            <li *ngFor="let img of profileImages; let i = index" 
+            [ngClass]="{'cho': selectedProfileIndex === i}" (click)="selectImage(i)">
+            <img src="../../assets/common/images/user.png"></li>
+            <!-- <li [ngClass]="{'cho': true}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
@@ -133,10 +136,10 @@
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
-            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
+            <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li> -->
         </ul>
     </div>
-    <button class="login_btn">변경하기</button>
+    <button class="login_btn" (click)="saveProfile()">변경하기</button>
 </div>
 
 <!-- 회원 탈퇴 확인 -->

@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth/auth.service';
+import { ToastService } from '../toast/toast.service';
 
 interface BrickParams {
   position: 'long' | 'short';
@@ -24,13 +26,23 @@ interface BrickData {
 })
 export class UtilService {
   private baseUrl = '/api'; // 실제 API 서버 URL로 변경해주세요
+  private authService: AuthService | null = null;
   private loggedOutSubject = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastService: ToastService,
+    private injector: Injector
   ) {}
 
   loggedOut$ = this.loggedOutSubject.asObservable();
+
+  private getAuthService(): AuthService {
+    if (!this.authService) {
+      this.authService = this.injector.get(AuthService);
+    }
+    return this.authService;
+  }
 
   private handleError(response: Response, showPopup: boolean): never {
     const error = {
@@ -239,6 +251,10 @@ export class UtilService {
 
       this.instanceList();
 
+      // 로그인 상태 업데이트
+      this.getAuthService().setLoginStatus(true);
+      this.toastService.showInfo('로그인 되었습니다.');
+
       return data;
     } else {
       return '';
@@ -260,7 +276,9 @@ export class UtilService {
     }, true, false);
 
     if(data.desc === 'logout') {
-      this.clearTokens();
+      this.getAuthService().logout();
+      this.toastService.showInfo('로그아웃 되었습니다.');
+
       return true;
     } else if (data.desc === 'invalid data' && data.code === 6) {
       // Refresh the access token and retry logout
@@ -274,12 +292,14 @@ export class UtilService {
         }, true, false);
 
       if (data.desc === 'logout') {
-        this.clearTokens();
+        this.getAuthService().logout();
         return true;
       } else {
+        this.getAuthService().logout();
         return false;
       }
     } else {
+      this.getAuthService().logout();
       return false;
     }
   }
@@ -293,7 +313,16 @@ export class UtilService {
 
     const data:any = await this.request('POST', 'users/register', body, false);
 
-    return data;
+    if(data) {
+      this.toastService.showInfo('회원가입 되었습니다.');
+
+      return data;
+    } else {
+      this.toastService.showError('회원가입에 실패했습니다.');
+
+      return '';
+    }
+
   }
 
   async checkMe() {
@@ -389,7 +418,11 @@ export class UtilService {
 
     const data:any = await this.request('POST', 'instances/post', body, true, false);
 
-
+    if(data) {
+      this.toastService.showInfo('인스턴스 저장되었습니다.');
+    } else {
+      this.toastService.showError('인스턴스 저장에 실패했습니다.');
+    }
   }
 
   async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphase?: string, ApiProvider?: string) {
@@ -426,94 +459,13 @@ export class UtilService {
     const data:any = await this.request('POST', 'instances/operation', body, true, false);
 
     if(data.desc === 'success') {
+      this.toastService.showInfo('인스턴스 실행에 성공했습니다.');
+
       return data;
     } else {
+      this.toastService.showError('인스턴스 실행에 실패했습니다.');
+
       return '';
     }
-  }
-
-  postSetData(data: {}) {
-    // JSON을 문자열로 변환
-    const jsonString = JSON.stringify(data);
-
-    // UTF-8로 인코딩 및 Base64로 인코딩
-    const base64Encoded = btoa(unescape(encodeURIComponent(jsonString)));
-
-    // 결과 출력
-    console.log(base64Encoded);
-
-    return base64Encoded;
-  }
-
-  createEncodedData(crossClose: boolean, quantity: number, brickParams: any[]): string {
-    const data: BrickData[] = [];
-  
-    // Add the first brick (id: 0)
-    data.push({
-      id: 0,
-      content: [
-        `cross_close=${crossClose}`,
-        `quantity=${quantity}`,
-        `quantity_type="ratio"`,
-        `candle_interval=15`,
-        `candle_transform="default"`,
-      ],
-      output: [{ id: 1 }]
-    });
-  
-    // Add dynamic bricks based on brickParams
-    brickParams.forEach((params, index) => {
-      const brickId = index + 1;
-      const nextBrickId = brickId + 1;
-  
-      const createIndicatorString = (argName: string, candle: string, args: string[]) => {
-        return `@${argName}(candle=candles, candle_type="${candle}", ${args.map((arg, i) => `arg${i+1}=${arg}`).join(', ')})`;
-      };
-  
-      const content = [
-        `@position: ${params.position}`,
-        `const1 = ${params.const1}`,
-        `a = ${createIndicatorString(params.argName1, params.longCandle, params.args1)} ${params.position === 'long' ? '>' : '<'} current`,
-        `b = ${createIndicatorString(params.argName2, params.shortCandle, params.args2)} ${params.position === 'long' ? '<' : '>'} const1`,
-        "if(a && b)",
-        "{",
-        "@place_order",
-        "@glob notify=True",
-        "}"
-      ];
-  
-      // Add additional arguments if provided
-      if (params.additionalArgs && params.additionalArgs.length > 0) {
-        const insertIndex = 2; // Insert after const1
-        params.additionalArgs.filter((arg: any) => arg !== "").forEach((arg: string, argIndex: number) => {
-          content.splice(insertIndex + argIndex + 1, 0, arg);
-        });
-      }
-  
-      data.push({
-        id: brickId,
-        content: content.filter(item => item !== ""), // Remove empty strings
-        output: [{ id: nextBrickId }]
-      });
-    });
-  
-    // Add the last brick (notification)
-    const lastBrickId = brickParams.length + 1;
-    data.push({
-      id: lastBrickId,
-      content: [
-        "if(@glob notify == True)",
-        "{",
-        "@send_telegram",
-        "@glob notify=False",
-        "}"
-      ],
-      output: [{ id: 0 }]
-    });
-
-    console.log(JSON.stringify(data));
-  
-    // Encode the data
-    return btoa(JSON.stringify(data));
   }
 }

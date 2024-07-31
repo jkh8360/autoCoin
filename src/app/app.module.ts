@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { CommonDialogComponent } from './common-dialog/common-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/d
     HomeComponent,
     ProfileComponent,
     CommonDialogComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

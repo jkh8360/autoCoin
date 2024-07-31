@@ -3,6 +3,7 @@ import { ThemeService } from '../shared/theme.service';
 import { UtilService } from '../shared/util.service';
 import { SharedService } from '../shared/shared.service';
 import { Subscription } from 'rxjs';
+import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private themeService: ThemeService,
     private utilService: UtilService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private toastService: ToastService
   ) {}
   private logoutSubscription!: Subscription;
   isLoggedOut: boolean = false;
@@ -43,6 +45,8 @@ export class ProfileComponent implements OnInit {
   loginPassword: string = '';
   loginFailed: boolean = false;
   saveIdCheck: boolean = false;
+  selectedProfileIndex: number = 0;
+  profileImages = Array(14).fill(0).map((_, i) => i + 1);
 
   // 회원가입 관련
   signEmail: string = '';
@@ -71,15 +75,12 @@ export class ProfileComponent implements OnInit {
     this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
       this.isLoggedOut = loggedOut;
       if (this.isLoggedOut) {
-        // 로그아웃 상태일 때의 추가 처리
-        console.log('User is logged out');
-
         this.loginYn = loggedOut;
       }
     });
 
-    this.currentTheme = this.themeService.getTheme();
-    this.themeService.applyTheme(this.currentTheme);
+    // this.currentTheme = this.themeService.getTheme();
+    // this.themeService.applyTheme(this.currentTheme);
 
     let save = localStorage.getItem('saveID');
 
@@ -95,6 +96,10 @@ export class ProfileComponent implements OnInit {
 
     this.loginEmail = '';
     this.loginPassword = '';
+
+    if(this.logoutSubscription) {
+      this.logoutSubscription.unsubscribe();
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -112,6 +117,7 @@ export class ProfileComponent implements OnInit {
 
   closeDropdown() {
     this.isDropdownOpen = false;
+    this.showLangSet = false;
     this.updateDropdownVisibility();
   }
 
@@ -200,7 +206,7 @@ export class ProfileComponent implements OnInit {
       teleid: this.teleId,
       chatid: this.chatId,
       isRemote: this.teleBotYn ? 1 : 0,
-      profile_id: 0,
+      profile_id: '',
       nickname: ''
     }
 
@@ -210,9 +216,37 @@ export class ProfileComponent implements OnInit {
       this.showTelegramSet = false;
 
       this.errSaveTele = false;
+
+      this.toastService.showInfo('텔레그램 정보가 저장되었습니다.');
     } else {
       this.errSaveTele = true;
+
+      this.toastService.showError('저장에 실패했습니다.');
     }
+  }
+
+  // 프로필 저장
+  async saveProfile() {
+    const body = {
+      profile_id: this.selectedProfileIndex,
+      nickname: '',
+      teleid: '',
+      chatid: ''
+    }
+
+    const data: any = await this.utilService.request('POST', 'users/updateinfo', body, false, false);
+
+    if(data.desc === 'success') {
+      this.changeProfile = false;
+
+      this.toastService.showInfo('저장되었습니다.');
+    } else {
+      this.toastService.showError('저장에 실패했습니다.');
+    }
+  }
+
+  selectImage(index: number) {
+    this.selectedProfileIndex = index;
   }
 
   openLogin() {
@@ -244,6 +278,7 @@ export class ProfileComponent implements OnInit {
       this.teleId = teleData.teleid;
       this.chatId = teleData.chatid;
       this.teleBotYn = teleData.isRemote === 1 ? true : false;
+      this.selectedProfileIndex = teleData.profile_id;
     } else {
       this.loginFailed = true;
     }
@@ -300,6 +335,8 @@ export class ProfileComponent implements OnInit {
       this.showLogout = true;
       this.loginYn = false;
       this.loginFailed = false;
+
+      this.toastService.showInfo('탈퇴되었습니다.');
     }
   }
 
@@ -335,7 +372,11 @@ export class ProfileComponent implements OnInit {
       this.changePwEmail = '';
       this.changePw = '';
       this.changePwCheck = '';
-    } 
+
+      this.toastService.showError('비밀번호 변경에 성공했습니다.');
+    } else {
+      this.toastService.showError('비밀번호 변경에 실패했습니다.');
+    }
   }
 
   isChangePassword(): boolean {
