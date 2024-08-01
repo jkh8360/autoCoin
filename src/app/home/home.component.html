@@ -24,19 +24,21 @@
 
             <div class="section_header">
                 <div class="left" [ngStyle]="checkTabStyle()" (click)="checkLogin($event)">
-                    <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay}">
+                    <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay || operateHoverd}" [ngStyle]="checkLoginStyle()"
+                    (mouseenter)="operateHoverd = true" (mouseleave)="operateHoverd = false">
                         <p>현재 봇 상태 : 
                             <span *ngIf="!botPlay" class="stop">정지</span>
                             <span *ngIf="botPlay" class="play">작동중</span>
                         </p>
-                        <button class="bot_state_btn" (click)="operateBot()" [disabled]="!loginYn">
+                        <button class="bot_state_btn" (click)="operateBot()" [ngStyle]="checkLoginStyle()">
                             <img *ngIf="!botPlay" src="../../assets/common/images/start.png">
                             <img *ngIf="botPlay" src="../../assets/common/images/stop.png">
                         </button>
                     </div>
                     <!-- <button *ngIf="!botPlay" class="esc_btn"><img src="../../assets/common/images/save_off.png" width="20">SAVE</button>
                     <button *ngIf="botPlay" class="esc_btn" style="background-color: #6572E6; color: #2B2B2B;"><img src="../../assets/common/images/save_on.png" width="20">SAVE</button> -->
-                    <button class="esc_btn" (click)="saveInstance()" [disabled]="!loginYn" [ngClass]="{'hovered' : isHovered}" (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
+                    <button class="esc_btn" (click)="saveInstance()" [ngClass]="{'hovered' : isHovered}" [ngStyle]="checkLoginStyle()"
+                    (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
                         <img [src]="'../../assets/common/images/save.png'" width="20">SAVE
                     </button>
                 </div>
@@ -51,7 +53,7 @@
             </div>
 
             <div class="main_content" *ngIf="!isMobileView">
-                <div class="part_box auto_play_box" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
+                <div class="part_box auto_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!autoHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="autoHoverd = true" (mouseleave)="autoHoverd = false">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
@@ -185,7 +187,7 @@
                 </div>
                 
 
-                <div class="part_box default_play_box" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
+                <div class="part_box default_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!defaultHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="defaultHoverd = true" (mouseleave)="defaultHoverd = false">
                         <h2>기본 설정 <button (click)="defaultSettingClear()">초기화</button></h2>
                         <ul class="setting_ul">
@@ -262,11 +264,13 @@
                                 <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) 주소</p>
                             </div>
                             <div class="copy_box">
-                                <input #textInput1 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt" disabled>
+                                <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
+                                <!-- <input #textInput1 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt1" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput1)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                             <div class="copy_box">
-                                <input #textInput2 type="text" value="301555555" id="copyTxt" disabled>
+                                <span #textInput2 class="fake-input">301555555</span>
+                                <!-- <input #textInput2 type="text" value="301555555" id="copyTxt2" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput2)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                         </div>
@@ -278,7 +282,8 @@
                                 <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) 주소</p>
                             </div>
                             <div class="copy_box">
-                                <input #textInput3 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt" disabled>
+                                <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
+                                <!-- <input #textInput3 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt3" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput3)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                         </div>
@@ -305,8 +310,8 @@
 
             <!-- 모바일 뷰 -->
             <div class="main_content" *ngIf="isMobileView">
-                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)">
-                    <div class="default_play_setting">
+                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
+                    <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
                         <h2>자동매매 설정</h2>
                         <ul class="setting_ul">
                             <li>
@@ -441,8 +446,8 @@
                 </div>
                 
 
-                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" [class.disabled-div]="!loginYn" (click)="onDisabledAreaClick($event)" [ngStyle]="{'display': 'block'}">
-                    <div class="default_play_setting">
+                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'display': 'block', 'pointer-events': !loginYn ? 'none' : ''}">
+                    <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
                         <h2>기본 설정 <button>초기화</button></h2>
                         <ul class="setting_ul">
                             <li>
@@ -527,11 +532,13 @@
                                 <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) 주소</p>
                             </div>
                             <div class="copy_box">
-                                <input #textInput1 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt" disabled>
+                                <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
+                                <!-- <input #textInput1 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt1" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput1)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                             <div class="copy_box">
-                                <input #textInput2 type="text" value="301555555" id="copyTxt" disabled>
+                                <span #textInput2 class="fake-input">301555555</span>
+                                <!-- <input #textInput2 type="text" value="301555555" id="copyTxt2" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput2)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                         </div>
@@ -543,7 +550,8 @@
                                 <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) 주소</p>
                             </div>
                             <div class="copy_box">
-                                <input #textInput3 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt" disabled>
+                                <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
+                                <!-- <input #textInput3 type="text" value="knITBoT2SYbUiLDyOurowNauTotRade90d" id="copyTxt3" disabled readonly draggable="false"> -->
                                 <button (click)="copyText(textInput3)"><img src="../../assets/common/images/copy_btn.png" width="16"></button>
                             </div>
                         </div>

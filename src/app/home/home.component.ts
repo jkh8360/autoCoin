@@ -54,12 +54,14 @@ function mapComparisonOption(option: string): string {
 export class HomeComponent implements AfterViewInit {
   @ViewChildren('slideBox') slideBox?: QueryList<ElementRef>;
   @ViewChild(LayoutsComponent) layoutsComponent!: LayoutsComponent;
+  @ViewChildren('textInput1, textInput2, textInput3') inputs!: QueryList<ElementRef>;
 
   selectedTab: string = 'auto';
   isMobileView: boolean = false;
   isHovered: boolean = false;
   autoHoverd: boolean = false;
   defaultHoverd: boolean = false;
+  operateHoverd: boolean = false;
 
   // 각 설정의 슬라이드 상태를 저장할 배열
   open: { isOpen: boolean }[] = [
@@ -206,7 +208,9 @@ export class HomeComponent implements AfterViewInit {
     });
     this.layoutsComponent.toUsePopup.subscribe(open => {
       this.toUsePopup = open;
-    })
+    });
+
+    this.preventCopyAndDrag();
   }
 
   ngOnDestroy(): void {
@@ -250,14 +254,14 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
-  copyText(value: HTMLInputElement) {
-    value.select();
-    navigator.clipboard.writeText(value.value).then(() => {
-      value.setSelectionRange(0,0);
-    })
-    .catch((error) => {
-
-    });
+  copyText(element: HTMLSpanElement) {
+    const text = element.textContent;
+    if (text) {
+      navigator.clipboard.writeText(text).then(() => {
+      }).catch(err => {
+        console.error('복사 중 오류가 발생했습니다:', err);
+      });
+    }
   }
 
   onInput(event: Event, indicatorNumber?: number, inputIndex?: number) {
@@ -443,6 +447,12 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
+  checkLoginStyle() {
+    return {
+      'pointer-events': this.loginYn ? '' : 'none'
+    };
+  }
+
   // 저장하기
   saveInstance() {
     // 1. 데이터 형식 구성
@@ -565,5 +575,25 @@ export class HomeComponent implements AfterViewInit {
       event.stopPropagation();
       this.toastService.showInfo('로그인이 필요한 서비스입니다.');
     }
+  }
+
+  preventCopyAndDrag() {
+    this.inputs.forEach(input => {
+      const inputElement = input.nativeElement as HTMLInputElement;
+      const events = ['copy', 'cut', 'paste', 'select', 'selectstart', 'mousedown', 'mouseup', 'mousemove', 'touchstart', 'touchend', 'touchmove', 'contextmenu'];
+      
+      events.forEach(eventName => {
+        inputElement.addEventListener(eventName, (e: Event) => {
+          e.preventDefault();
+          return false;
+        });
+      });
+
+      // 더블 클릭 방지
+      inputElement.addEventListener('dblclick', (e: Event) => {
+        e.preventDefault();
+        return false;
+      });
+    });
   }
 }
