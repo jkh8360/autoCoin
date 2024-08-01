@@ -4,6 +4,7 @@ import { UtilService } from '../shared/util.service';
 import { SharedService } from '../shared/shared.service';
 import { Subscription } from 'rxjs';
 import { ToastService } from '../toast/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
@@ -19,14 +20,14 @@ export class ProfileComponent implements OnInit {
     private themeService: ThemeService,
     private utilService: UtilService,
     private sharedService: SharedService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translate: TranslateService,
   ) {}
   private logoutSubscription!: Subscription;
   isLoggedOut: boolean = false;
 
   // 팝업 관련
   showTelegramSet: boolean = false;
-  showLangSet: boolean = false;
   displayMode: boolean = false;
   showLogout: boolean = false;
   showMypage: boolean = false;
@@ -71,6 +72,16 @@ export class ProfileComponent implements OnInit {
   teleBotYn: boolean = false;
   errSaveTele: boolean = false;
 
+  // 언어 설정
+  showLangSet = false;
+  currentLang: string = '';
+  supportedLanguages = [
+    { code: 'en', name: 'English' },
+    { code: 'zh', name: '中文 (简体)' },
+    { code: 'ko', name: '한국어' },
+    { code: 'ja', name: '日本語' }
+  ];
+
   ngOnInit(): void {
     this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
       this.isLoggedOut = loggedOut;
@@ -88,6 +99,8 @@ export class ProfileComponent implements OnInit {
     this.saveIdCheck = !save ? false : true;
 
     this.loginYn = this.utilService.isAuthenticated();
+
+    this.detectBrowserLanguage();
   }
 
   ngOnDestroy(): void {
@@ -142,15 +155,31 @@ export class ProfileComponent implements OnInit {
     this.closeDropdown();
   }
 
-  // 언어 변경
-  changeLng() {
-    if(this.showLangSet) {
-      this.showLangSet = false;
-    } else {
-      this.showLangSet = true;
-    }
+  // 언어 변경 로직
+  detectBrowserLanguage() {
+    let browserLang = navigator.language || (navigator as any).browserLanguage;
+    browserLang = browserLang.split('-')[0]; // 'en-US'와 같은 형식에서 'en'만 추출
 
-    // this.closeDropdown();
+    const supportedLang = this.supportedLanguages.find(lang => lang.code === browserLang);
+    if (supportedLang) {
+      this.setLanguage(supportedLang.code);
+    } else {
+      this.setLanguage('en'); // 기본 언어 설정
+    }
+  }
+
+  setLanguage(langCode: string) {
+    this.currentLang = langCode;
+    this.translate.use(langCode);
+    // 기타 언어 변경 관련 로직...
+
+    this.closeDropdown();
+
+    this.toastService.showInfo('언어가 변경 되었습니다.');
+  }
+
+  changeLng() {
+    this.showLangSet = !this.showLangSet;
   }
 
   // 라이트/다크 모드 전환

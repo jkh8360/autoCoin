@@ -1,6 +1,7 @@
 <header>
     <div class="wrap">
         <h1 class="logo"><img src="../../assets/common/images/logo.png" width="24px">knitbot.ai</h1>
+        <h1 style="color: white">{{ 'HELLO' | translate }}</h1>
 
         <div class="user_div" [ngStyle]="{'display': loginYn ? '' : 'none'}">
             <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user.png" width="40px"></span></button>
@@ -17,10 +18,11 @@
                     <button (click)="changeLng()">언어 변경</button>
                     <div class="lang_popup" *ngIf="showLangSet">
                         <ul>
-                            <li [ngClass]="{'cho': false}">English</li>
-                            <li [ngClass]="{'cho': false}">中文 (简体)</li>
-                            <li [ngClass]="{'cho': true}">한국어</li>
-                            <li [ngClass]="{'cho': false}">日本語</li>
+                            <li *ngFor="let lang of supportedLanguages" 
+                                [ngClass]="{'cho': currentLang === lang.code}"
+                                (click)="setLanguage(lang.code)">
+                                {{lang.name}}
+                            </li>
                         </ul>
                     </div>
                     <!-- <button (click)="toggleTheme()">{{ currentTheme === 'light' ? '라이트' : '다크' }}모드 전환</button> -->

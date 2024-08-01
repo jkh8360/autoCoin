@@ -13,6 +13,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonDialogComponent } from './common-dialog/common-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 import { ToastComponent } from './toast/toast.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -30,7 +37,15 @@ import { ToastComponent } from './toast/toast.component';
     BrowserAnimationsModule,
     SharedModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
