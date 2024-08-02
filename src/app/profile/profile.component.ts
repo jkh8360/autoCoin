@@ -402,7 +402,7 @@ export class ProfileComponent implements OnInit {
       this.changePw = '';
       this.changePwCheck = '';
 
-      this.toastService.showError('비밀번호 변경에 성공했습니다.');
+      this.toastService.showInfo('비밀번호 변경에 성공했습니다.');
     } else {
       this.toastService.showError('비밀번호 변경에 실패했습니다.');
     }
