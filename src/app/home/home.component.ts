@@ -5,6 +5,7 @@ import { LayoutsComponent } from '../layouts/layouts.component';
 import { ToastService } from '../toast/toast.service';
 import { AuthService } from '../shared/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 interface AppNotification {
   message: string;
@@ -77,38 +78,7 @@ export class HomeComponent implements AfterViewInit {
   shortSettings: any[] = [];
 
   // 지표 1, 2
-  indicatorOptions: IndicatorOption[] = [
-    { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: ['상단 상향 돌파', '상단 하향 돌파', '하단 상향 돌파', '하단 하향 돌파'], 
-      inputs: [{name: '기간', defaultValue: '20'}, {name: '표준편차', defaultValue: '2'}], showConstant: false  },
-    { value: 'EMA',                  label: 'EMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '기간', defaultValue: '30'}], showConstant: false },
-    { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: ['해당 비율 상향 돌파', '해당 비율 하향 돌파'], 
-      inputs: [{name: '기간', defaultValue: '50'}, {name: '되돌림 비율', defaultValue: '0.618'}], showConstant: false  },
-    { value: 'HMA',                  label: 'HMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '기간', defaultValue: '50'}], showConstant: false  },
-    { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: ['상단 상향 돌파', '상단 하향 돌파', '하단 상향 돌파', '하단 하향 돌파'], 
-      inputs: [{name: '기간', defaultValue: '20'}, {name: '표준편차', defaultValue: '2'}, {name: 'ATR 길이', defaultValue: '10'}], showConstant: false },
-    { value: 'MA',                   label: 'MA',                    comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '기간', defaultValue: '30'}], showConstant: false  },
-    { value: 'MACD',                 label: 'MACD',                  comparisonOptions: ['시그널 상향 돌파', '시그널 하향 돌파'], 
-      inputs: [{name: '단기 이평', defaultValue: '12'}, {name: '장기 이평', defaultValue: '26'}, {name: '시그널', defaultValue: '9'}], showConstant: false },
-    { value: 'MFI',                  label: 'MFI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
-      inputs: [{name: '기간', defaultValue: '14'}], showConstant: true },
-    { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '초기 가속요소', defaultValue: '0.02'}, {name: '가속 증가량', defaultValue: '0.02'}, {name: '최대 가속요소', defaultValue: '0.2'}], showConstant: false },
-    { value: 'RSI',                  label: 'RSI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
-      inputs: [{name: '기간', defaultValue: '14'}], showConstant: true  },
-    { value: 'SMA',                  label: 'SMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '기간', defaultValue: '30'}], showConstant: false },
-    { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
-      inputs: [{name: '기간', defaultValue: '7'}], showConstant: false },
-    { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: ['%K가 상수보다 클 때', '%K가 상수보다 작을 때', '%K 하향 교차', '%K 상향 교차'], 
-      inputs: [{name: '기간(%K)', defaultValue: '5'}, {name: '기간(%D)', defaultValue: '3'}, {name: '스무딩(%K)', defaultValue: '3'}], showConstant: true  },
-    { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [''], 
-      inputs: [{name: '기간(%K)', defaultValue: '5'}, {name: '기간(%D)', defaultValue: '3'}, {name: 'RSI 기간', defaultValue: '14'}, {name: '스토캐스틱 기간', defaultValue: '14'}], showConstant: false },
-    { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: ['롱 시그널', '숏 시그널'], 
-      inputs: [{name: '기간', defaultValue: '7'}, {name: '표준편차', defaultValue: '3'}], showConstant: false  }
-  ];
+  indicatorOptions: IndicatorOption[] = [];
 
   selectedIndicator1: IndicatorOption | undefined;
   selectedIndicator2: IndicatorOption | undefined;
@@ -160,6 +130,16 @@ export class HomeComponent implements AfterViewInit {
   loginYn: boolean = false;
   isLoggedOut: boolean = false;
 
+  // 번역
+  COM: any;
+  AUTO: any;
+  DEFAULT: any;
+  USE: any;
+  API: any;
+  TELEGRAM: any;
+  MEMBER: any;
+  TOAST: any;
+
   private loginSubscription?: Subscription;
   private logoutSubscription!: Subscription;
 
@@ -167,7 +147,8 @@ export class HomeComponent implements AfterViewInit {
     private utilService: UtilService,
     private sharedService: SharedService,
     private toastService: ToastService,
-    private authService: AuthService
+    private authService: AuthService,
+    private translate: TranslateService
   ) {
     this.addLongSetting();
     this.addShortSetting();
@@ -183,9 +164,7 @@ export class HomeComponent implements AfterViewInit {
     this.loadNotifications(); // 공지사항 로딩
     this.setTelegramData();   // 텔레그램 세팅
     this.checkScreenSize();   // 스크린 사이즈 체크
-
-    this.selectedIndicator1 = this.indicatorOptions[0];
-    this.selectedIndicator2 = this.indicatorOptions[0];
+    this.transLanguage();     // 번역
 
     console.log(JSON.stringify(this.selectedIndicator1));
 
@@ -197,6 +176,77 @@ export class HomeComponent implements AfterViewInit {
     );
 
     this.loginYn = this.utilService.isAuthenticated();
+  }
+
+  // 번역
+  transLanguage() {
+    this.translate.get('COM').subscribe(res => {
+      this.COM = res;
+    });
+    this.translate.get('AUTO').subscribe(res => {
+      this.AUTO = res;
+    });
+    this.translate.get('DEFAULT').subscribe(res => {
+      this.DEFAULT = res;
+    });
+    this.translate.get('USE').subscribe(res => {
+      this.USE = res;
+    });
+    this.translate.get('API').subscribe(res => {
+      this.API = res;
+    });
+    this.translate.get('TELEGRAM').subscribe(res => {
+      this.TELEGRAM = res;
+    });
+    this.translate.get('MEMBER').subscribe(res => {
+      this.MEMBER = res;
+    });
+    this.translate.get('TOAST').subscribe(res => {
+      this.TOAST = res;
+    });
+
+    setTimeout(() => {
+      this.initializeIndicatorOptions();
+    }, 300);
+  }
+
+  private initializeIndicatorOptions() {
+    // 지표 1, 2
+    this.indicatorOptions = [
+      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, '하단 상향 돌파', '하단 하향 돌파'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}], showConstant: false  },
+      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
+      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: ['해당 비율 상향 돌파', '해당 비율 하향 돌파'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}, {name: this.AUTO.RETRACEMENT, defaultValue: '0.618'}], showConstant: false  },
+      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}], showConstant: false  },
+      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, '하단 상향 돌파', '하단 하향 돌파'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}, {name: this.AUTO.ATR_LENGTH, defaultValue: '10'}], showConstant: false },
+      { value: 'MA',                   label: 'MA',                    comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false  },
+      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: ['시그널 상향 돌파', '시그널 하향 돌파'], 
+        inputs: [{name: '단기 이평', defaultValue: '12'}, {name: '장기 이평', defaultValue: '26'}, {name: '시그널', defaultValue: '9'}], showConstant: false },
+      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true },
+      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: '최대 가속요소', defaultValue: '0.2'}], showConstant: false },
+      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true  },
+      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
+      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}], showConstant: false },
+      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: ['%K가 상수보다 클 때', '%K가 상수보다 작을 때', '%K 하향 교차', '%K 상향 교차'], 
+        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: '스무딩(%K)', defaultValue: '3'}], showConstant: true  },
+      { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [''], 
+        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: 'RSI 기간', defaultValue: '14'}, {name: '스토캐스틱 기간', defaultValue: '14'}], showConstant: false },
+      { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
+        inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
+    ];
+    
+    this.selectedIndicator1 = this.indicatorOptions[0];
+    this.selectedIndicator2 = this.indicatorOptions[0];
   }
 
   ngAfterViewInit(): void {
@@ -343,9 +393,9 @@ export class HomeComponent implements AfterViewInit {
     if(data) {
       this.botPlay = true;
       
-      this.toastService.showInfo('봇이 실행됩니다.');
+      this.toastService.showInfo(this.TOAST.OK_OPERATE_BOT);
     } else {
-      this.toastService.showError('봇 실행에 실패했습니다.');
+      this.toastService.showError(this.TOAST.FAIL_OPERATE_BOT);
     }
   }
 
@@ -443,7 +493,7 @@ export class HomeComponent implements AfterViewInit {
       event.preventDefault();
       event.stopPropagation();
 
-      this.toastService.showInfo('로그인이 필요한 서비스입니다.');
+      this.toastService.showInfo(this.TOAST.NEED_LOGIN);
     }
   }
 
@@ -454,7 +504,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   // 저장하기
-  saveInstance() {
+  async saveInstance() {
     // 1. 데이터 형식 구성
     let data = [
       {
@@ -508,7 +558,13 @@ export class HomeComponent implements AfterViewInit {
     console.log(base64Encoded);
     // 여기서 base64Encoded 문자열을 저장하거나 필요한 곳에 사용할 수 있습니다.
     
-    this.utilService.instancePost(base64Encoded);
+    const postData = await this.utilService.instancePost(base64Encoded);
+
+    if(postData) {
+      this.toastService.showInfo(this.TOAST.OK_SAVE_INSTANCE);
+    } else {
+      this.toastService.showError(this.TOAST.FAIL_SAVE_INSTANCE);
+    }
   }
 
   // cond_1, cond_2 를 생성
@@ -566,14 +622,14 @@ export class HomeComponent implements AfterViewInit {
     this.candleInterval = '1m';
     this.candleConst = 0.1;
 
-    this.toastService.showInfo('초기화 되었습니다.');
+    this.toastService.showInfo(this.TOAST.OK_RESET);
   }
 
   onDisabledAreaClick(event: Event) {
     if (!this.loginYn) {
       event.preventDefault();
       event.stopPropagation();
-      this.toastService.showInfo('로그인이 필요한 서비스입니다.');
+      this.toastService.showInfo(this.TOAST.NEED_LOGIN);
     }
   }
 

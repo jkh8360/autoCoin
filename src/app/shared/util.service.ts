@@ -4,22 +4,7 @@ import { CommonDialogComponent } from '../common-dialog/common-dialog.component'
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { ToastService } from '../toast/toast.service';
-
-interface BrickParams {
-  position: 'long' | 'short';
-  const1: number;
-  argName1: string;
-  argName2: string;
-  arg1: number;
-  arg2: number;
-  additionalArgs?: string[];
-}
-
-interface BrickData {
-  id: number;
-  content: string[];
-  output: { id: number }[];
-}
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -253,7 +238,6 @@ export class UtilService {
 
       // 로그인 상태 업데이트
       this.getAuthService().setLoginStatus(true);
-      this.toastService.showInfo('로그인 되었습니다.');
 
       return data;
     } else {
@@ -277,7 +261,6 @@ export class UtilService {
 
     if(data.desc === 'logout') {
       this.getAuthService().logout();
-      this.toastService.showInfo('로그아웃 되었습니다.');
 
       return true;
     } else if (data.desc === 'invalid data' && data.code === 6) {
@@ -314,12 +297,8 @@ export class UtilService {
     const data:any = await this.request('POST', 'users/register', body, false);
 
     if(data) {
-      this.toastService.showInfo('회원가입 되었습니다.');
-
       return data;
     } else {
-      this.toastService.showError('회원가입에 실패했습니다.');
-
       return '';
     }
 
@@ -418,10 +397,10 @@ export class UtilService {
 
     const data:any = await this.request('POST', 'instances/post', body, true, false);
 
-    if(data) {
-      this.toastService.showInfo('인스턴스 저장되었습니다.');
+    if(data.desc === 'success') {
+      return data;
     } else {
-      this.toastService.showError('인스턴스 저장에 실패했습니다.');
+      return '';
     }
   }
 
@@ -455,16 +434,11 @@ export class UtilService {
       }
     }
 
-
     const data:any = await this.request('POST', 'instances/operation', body, true, false);
 
     if(data.desc === 'success') {
-      this.toastService.showInfo('인스턴스 실행에 성공했습니다.');
-
       return data;
     } else {
-      this.toastService.showError('인스턴스 실행에 실패했습니다.');
-
       return '';
     }
   }

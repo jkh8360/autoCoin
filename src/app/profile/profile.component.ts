@@ -82,6 +82,16 @@ export class ProfileComponent implements OnInit {
     { code: 'ja', name: '日本語' }
   ];
 
+  // 번역
+  COM: any;
+  AUTO: any;
+  DEFAULT: any;
+  USE: any;
+  API: any;
+  TELEGRAM: any;
+  MEMBER: any;
+  TOAST: any;
+
   ngOnInit(): void {
     this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
       this.isLoggedOut = loggedOut;
@@ -101,6 +111,34 @@ export class ProfileComponent implements OnInit {
     this.loginYn = this.utilService.isAuthenticated();
 
     this.detectBrowserLanguage();
+  }
+
+  // 번역
+  transLanguage() {
+    this.translate.get('COM').subscribe(res => {
+      this.COM = res;
+    });
+    this.translate.get('AUTO').subscribe(res => {
+      this.AUTO = res;
+    });
+    this.translate.get('DEFAULT').subscribe(res => {
+      this.DEFAULT = res;
+    });
+    this.translate.get('USE').subscribe(res => {
+      this.USE = res;
+    });
+    this.translate.get('API').subscribe(res => {
+      this.API = res;
+    });
+    this.translate.get('TELEGRAM').subscribe(res => {
+      this.TELEGRAM = res;
+    });
+    this.translate.get('MEMBER').subscribe(res => {
+      this.MEMBER = res;
+    });
+    this.translate.get('TOAST').subscribe(res => {
+      this.TOAST = res;
+    });
   }
 
   ngOnDestroy(): void {
@@ -161,21 +199,26 @@ export class ProfileComponent implements OnInit {
     browserLang = browserLang.split('-')[0]; // 'en-US'와 같은 형식에서 'en'만 추출
 
     const supportedLang = this.supportedLanguages.find(lang => lang.code === browserLang);
+
     if (supportedLang) {
-      this.setLanguage(supportedLang.code);
+      this.setLanguage(supportedLang.code, true);
     } else {
-      this.setLanguage('en'); // 기본 언어 설정
+      this.setLanguage('en', true); // 기본 언어 설정
     }
   }
 
-  setLanguage(langCode: string) {
+  async setLanguage(langCode: string, startYn?: boolean) {
     this.currentLang = langCode;
     this.translate.use(langCode);
-    // 기타 언어 변경 관련 로직...
+    
+    if(!startYn) {
+      this.closeDropdown();
+      this.transLanguage();
 
-    this.closeDropdown();
-
-    this.toastService.showInfo('언어가 변경 되었습니다.');
+      setTimeout(() => {
+        this.toastService.showInfo(this.TOAST.OK_CHANGE_LANGUAGE);
+      }, 200);
+    }
   }
 
   changeLng() {
@@ -205,6 +248,8 @@ export class ProfileComponent implements OnInit {
       }
   
       this.loginPassword = '';
+
+      this.toastService.showInfo(this.TOAST.OK_LOGOUT);
     }
 
     this.closeDropdown();
@@ -246,11 +291,11 @@ export class ProfileComponent implements OnInit {
 
       this.errSaveTele = false;
 
-      this.toastService.showInfo('텔레그램 정보가 저장되었습니다.');
+      this.toastService.showInfo(this.TOAST.OK_SAVE_TELEGRAM);
     } else {
       this.errSaveTele = true;
 
-      this.toastService.showError('저장에 실패했습니다.');
+      this.toastService.showError(this.TOAST.FAIL_SAVE);
     }
   }
 
@@ -268,9 +313,9 @@ export class ProfileComponent implements OnInit {
     if(data.desc === 'success') {
       this.changeProfile = false;
 
-      this.toastService.showInfo('저장되었습니다.');
+      this.toastService.showInfo(this.TOAST.OK_SAVE);
     } else {
-      this.toastService.showError('저장에 실패했습니다.');
+      this.toastService.showError(this.TOAST.FAIL_SAVE);
     }
   }
 
@@ -296,11 +341,13 @@ export class ProfileComponent implements OnInit {
 
   // 로그인
   async authLogin() {
-    const data:any = await this.utilService.login(this.loginEmail, this.loginPassword);
+    const data: any = await this.utilService.login(this.loginEmail, this.loginPassword);
 
     if(data) {
       this.loginYn = true;
       this.showLogin = false;
+
+      this.toastService.showInfo(this.TOAST.OK_LOGIN);
 
       const teleData = await this.sharedService.loadTelegramSetting();
 
@@ -326,7 +373,9 @@ export class ProfileComponent implements OnInit {
     const data:any = await this.utilService.signIn(this.signEmail, this.signPassword);
 
     if(data.desc === 'success') {
-      
+      this.toastService.showInfo(this.TOAST.OK_SIGNIN);
+    } else {
+      this.toastService.showError(this.TOAST.FAIL_SIGNIN);
     }
   }
 
@@ -365,7 +414,7 @@ export class ProfileComponent implements OnInit {
       this.loginYn = false;
       this.loginFailed = false;
 
-      this.toastService.showInfo('탈퇴되었습니다.');
+      this.toastService.showInfo(this.TOAST.OK_UNREGISTE);
     }
   }
 
@@ -402,9 +451,9 @@ export class ProfileComponent implements OnInit {
       this.changePw = '';
       this.changePwCheck = '';
 
-      this.toastService.showInfo('비밀번호 변경에 성공했습니다.');
+      this.toastService.showInfo(this.TOAST.OK_PW_CHANGE);
     } else {
-      this.toastService.showError('비밀번호 변경에 실패했습니다.');
+      this.toastService.showError(this.TOAST.FAIL_PW_CHANGE);
     }
   }
 

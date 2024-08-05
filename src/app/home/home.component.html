@@ -26,9 +26,9 @@
                 <div class="left" [ngStyle]="checkTabStyle()" (click)="checkLogin($event)">
                     <div class="bot_state_box" [ngClass]="{'stop':!botPlay, 'play':botPlay || operateHoverd}" [ngStyle]="checkLoginStyle()"
                     (mouseenter)="operateHoverd = true" (mouseleave)="operateHoverd = false">
-                        <p>현재 봇 상태 : 
-                            <span *ngIf="!botPlay" class="stop">정지</span>
-                            <span *ngIf="botPlay" class="play">작동중</span>
+                        <p>{{ 'COM.BOT_STATUS' | translate }} : 
+                            <span *ngIf="!botPlay" class="stop">{{ 'COM.STOP' | translate }}</span>
+                            <span *ngIf="botPlay" class="play">{{ 'COM.OPERATING' | translate }}</span>
                         </p>
                         <button class="bot_state_btn" (click)="operateBot()" [ngStyle]="checkLoginStyle()">
                             <img *ngIf="!botPlay" src="../../assets/common/images/start.png">
@@ -44,10 +44,10 @@
                 </div>
 
                 <div class="right">
-                    <p>
-                        니트봇은 <span>무료로 제공</span>되며, 레퍼럴 가입이 <span>필요하지 않습니다.</span> <br>
+                    <p [innerHTML]="'COM.HOME_NOTICE' | translate">
+                        <!-- 니트봇은 <span>무료로 제공</span>되며, 레퍼럴 가입이 <span>필요하지 않습니다.</span> <br>
                         현재 서버비는 광고와 후원으로 유지되고 있습니다. 따뜻한 후원으로 제작자의 허기진 배를 채워주세요.<br>
-                        애드블록을 꺼주신다면 제작자에게 큰 힘이 됩니다.
+                        애드블록을 꺼주신다면 제작자에게 큰 힘이 됩니다. -->
                     </p>
                 </div>
             </div>
@@ -55,13 +55,13 @@
             <div class="main_content" *ngIf="!isMobileView">
                 <div class="part_box auto_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!autoHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="autoHoverd = true" (mouseleave)="autoHoverd = false">
-                        <h2>자동매매 설정</h2>
+                        <h2>{{ 'AUTO.SET_AUTO_SALE' | translate }}</h2>
                         <ul class="setting_ul">
                             <li>
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(0)">지표 설정<i class="far " [ngClass]="{'fa-chevron-up': open[0].isOpen, 'fa-chevron-down': !open[0].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box" style="display: block;">
                                     <div class="setting_box">
-                                        <p class="name">지표1 선택</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select (change)="onIndicatorChange(1, $event)">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
@@ -71,7 +71,7 @@
                                         <input type="text" [value]="input.defaultValue" (input)="onInput($event, 1, i)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표2 선택</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
                                         <select (change)="onIndicatorChange(2, $event)">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
@@ -87,7 +87,7 @@
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
-                                        <p class="name">캔들</p>
+                                        <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
                                         <select [(ngModel)]="longCandleType">
                                             <option [value]="candleType[0]">종가</option>
                                             <option [value]="candleType[1]">시가</option>
@@ -97,36 +97,36 @@
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">지표 1 에 대하여 (than indicator 1)</p>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
                                             <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표 2 에 대하여 (than indicator 2)</p>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
                                             <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">봇의 행동</p>
+                                        <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
                                         <select [(ngModel)]="botOperation">
-                                            <option value="open">진입</option>
-                                            <option value="close">종료</option>
+                                            <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
+                                            <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> 롱 설정 추가</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button>
                                 </div>
                             </li>
                 
@@ -134,7 +134,7 @@
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
-                                        <p class="name">캔들</p>
+                                        <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
                                         <select [(ngModel)]="shortCandleType">
                                             <option [value]="candleType[0]">종가</option>
                                             <option [value]="candleType[1]">시가</option>
@@ -144,34 +144,34 @@
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">지표 1 에 대하여 (than indicator 1)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표 2 에 대하여 (than indicator 2)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">봇의 행동</p>
+                                        <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
                                         <select>
-                                            <option>진입</option>
-                                            <option>종료</option>
+                                            <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
+                                            <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> 숏 설정 추가</button>
+                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button>
                                 </div>
                             </li>
 
@@ -179,7 +179,7 @@
                                 <label for="position_chk" class="chk_box">
                                     <input type="checkbox" id="position_chk" [(ngModel)]="isPosition">
                                     <span></span>
-                                    <p>반대 포지션 진입시, 이전 포지션 종료</p>
+                                    <p>{{ 'AUTO.REVERSE_POSITION_EXIT' | translate }}</p>
                                 </label>
                             </li>
                         </ul>
@@ -189,32 +189,32 @@
 
                 <div class="part_box default_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!defaultHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="defaultHoverd = true" (mouseleave)="defaultHoverd = false">
-                        <h2>기본 설정 <button (click)="defaultSettingClear()">초기화</button></h2>
+                        <h2>{{ 'DEFAULT.DEFAULT_SETTING' | translate }} <button (click)="defaultSettingClear()">{{ 'DEFAULT.RESET' | translate }}</button></h2>
                         <ul class="setting_ul">
                             <li>
                                 <div class="setting_box">
                                     <p class="name">거래유형</p>
                                     <select>
-                                        <option>선물 (Futures)</option>
+                                        <option>{{ 'DEFAULT.FUTURES' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">거래 심볼 선택</p>
+                                    <p class="name">{{ 'DEFAULT.SYMBOLS' | translate }}</p>
                                     <select [(ngModel)]="tradeSymbol">
                                         <option value="usdt">BTC / USDT</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">캔들 설정</p>
+                                    <p class="name">{{ 'DEFAULT.CANDLE_SETTING' | translate }}</p>
                                     <select [(ngModel)]="candleInterval">
-                                        <option [value]="candleTimeType[0]">1분 봉</option>
-                                        <option [value]="candleTimeType[1]">3분 봉</option>
-                                        <option [value]="candleTimeType[2]">5분 봉</option>
-                                        <option [value]="candleTimeType[3]">15분 봉</option>
-                                        <option [value]="candleTimeType[4]">30분 봉</option>
-                                        <option [value]="candleTimeType[5]">1시간 봉</option>
-                                        <option [value]="candleTimeType[6]">4시간 봉</option>
-                                        <option [value]="candleTimeType[7]">일봉</option>
+                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
+                                        <option [value]="candleTimeType[1]">{{ 'DEFAULT.3M' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option>
+                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.15M' | translate }}</option>
+                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.30M' | translate }}</option>
+                                        <option [value]="candleTimeType[5]">{{ 'DEFAULT.1H' | translate }}</option>
+                                        <option [value]="candleTimeType[6]">{{ 'DEFAULT.4H' | translate }}</option>
+                                        <option [value]="candleTimeType[7]">{{ 'DEFAULT.1D' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
@@ -224,16 +224,16 @@
                             </li>
                 
                             <li>
-                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">텔레그램 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
+                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">{{ 'DEFAULT.TELEGRAM_INFO' | translate }}<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
-                                    <p>텔레그램 Key : {{ teleId }}</p>
-                                    <p>연동 상태 : 
-                                        <span class="no_color">연동 안 됨</span>
-                                        <span class="yes_color">연동됨</span>
+                                    <p>{{ 'DEFAULT.TELEGRAM_KEY' | translate }} : {{ teleId }}</p>
+                                    <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 
+                                        <span class="no_color">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
+                                        <span class="yes_color">{{ 'DEFAULT.CONNECTED' | translate }}</span>
                                     </p>
-                                    <p>봇 제어 여부 : 
-                                        <span class="no_color" *ngIf="!teleBotYn">꺼짐</span>
-                                        <span class="yes_color" *ngIf="teleBotYn">켜짐</span>
+                                    <p>{{ 'DEFAULT.BOT_CONTROL_STATUS' | translate }} : 
+                                        <span class="no_color" *ngIf="!teleBotYn">{{ 'DEFAULT.OFF' | translate }}</span>
+                                        <span class="yes_color" *ngIf="teleBotYn">{{ 'DEFAULT.ON' | translate }}</span>
                                     </p>
                                 </div>
                             </li>
@@ -245,23 +245,23 @@
                 <div class="part_box spon_part_box">
                     <div>
                         <div class="guide_btn_box">
-                            <button class="default_btn" (click)="toUsePopup=true">사용 방법</button>
-                            <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">니트봇 공식 텔레그램</button>
-                            <button class="default_btn" (click)="noticeIn=true">공지사항 바로가기</button>
+                            <button class="default_btn" (click)="toUsePopup=true">{{ 'COM.HOW_TO_USE' | translate }}</button>
+                            <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">{{ 'COM.OFFICIAL_TELEGRAM' | translate }}</button>
+                            <button class="default_btn" (click)="noticeIn=true">{{ 'COM.NOTICE' | translate }}</button>
                         </div>
                      
                         <div class="banner_box mobile_show">
-                            <p>거래소 회원가입으로 응원하기</p>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
+                            <p>{{ 'COM.CHEER_TO_OFFICIAL' | translate }}</p>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
                         </div>
                         <div class="spon_box">
-                            <p>제작자에게 후원하기</p>
+                            <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) 주소</p>
+                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -276,10 +276,10 @@
                         </div>
                 
                         <div class="spon_box">
-                            <p>제작자에게 후원하기</p>
+                            <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) 주소</p>
+                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -296,11 +296,11 @@
                         <!-- <div>광고</div> -->
             
                         <div class="banner_box">
-                            <p>거래소 회원가입으로 응원하기</p>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
+                            <p>{{ 'COM.CHEER_TO_OFFICIAL' | translate }}</p>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
                         </div>
                     </div>
                     
@@ -312,13 +312,13 @@
             <div class="main_content" *ngIf="isMobileView">
                 <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
-                        <h2>자동매매 설정</h2>
+                        <h2>{{ 'AUTO.SET_AUTO_SALE' | translate }}</h2>
                         <ul class="setting_ul">
                             <li>
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(0)">지표 설정<i class="far " [ngClass]="{'fa-chevron-up': open[0].isOpen, 'fa-chevron-down': !open[0].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box" style="display: block;">
                                     <div class="setting_box">
-                                        <p class="name">지표1 선택</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select (change)="onIndicatorChange(1, $event)">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
@@ -328,7 +328,7 @@
                                         <input type="text" [value]="input.defaultValue" (input)="onInput($event, 1, i)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표2 선택</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
                                         <select (change)="onIndicatorChange(2, $event)">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
@@ -344,7 +344,7 @@
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
-                                        <p class="name">캔들</p>
+                                        <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
                                         <select [(ngModel)]="longCandleType">
                                             <option [value]="candleType[0]">종가</option>
                                             <option [value]="candleType[1]">시가</option>
@@ -354,36 +354,36 @@
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">지표 1 에 대하여 (than indicator 1)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
                                             <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표 2 에 대하여 (than indicator 2)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
                                             <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">봇의 행동</p>
+                                        <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
                                         <select>
-                                            <option>진입</option>
-                                            <option>종료</option>
+                                            <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
+                                            <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> 롱 설정 추가</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button>
                                 </div>
                             </li>
                 
@@ -391,7 +391,7 @@
                                 <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
-                                        <p class="name">캔들</p>
+                                        <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
                                         <select [(ngModel)]="shortCandleType">
                                             <option [value]="candleType[0]">종가</option>
                                             <option [value]="candleType[1]">시가</option>
@@ -401,36 +401,36 @@
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">지표 1 에 대하여 (than indicator 1)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
                                             <!-- <option>캔들값이 클 때 (over)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">지표 2 에 대하여 (than indicator 2)</p>
+                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
                                         <select>
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
                                             <!-- <option>상수보다 클 때 (over)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
-                                        <p class="name">상수</p>
+                                        <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
                                         <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">봇의 행동</p>
+                                        <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
                                         <select>
-                                            <option>진입</option>
-                                            <option>종료</option>
+                                            <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
+                                            <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addShortSetting()"><i class="far fa-plus"></i> 숏 설정 추가</button>
+                                    <button (click)="addShortSetting()"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button>
                                 </div>
                             </li>
 
@@ -438,7 +438,7 @@
                                 <label for="position_chk" class="chk_box">
                                     <input type="checkbox" id="position_chk" [(ngModel)]="isPosition">
                                     <span></span>
-                                    <p>반대 포지션 진입시, 이전 포지션 종료</p>
+                                    <p>{{ 'AUTO.REVERSE_POSITION_EXIT' | translate }}</p>
                                 </label>
                             </li>
                         </ul>
@@ -448,32 +448,32 @@
 
                 <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'display': 'block', 'pointer-events': !loginYn ? 'none' : ''}">
                     <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
-                        <h2>기본 설정 <button>초기화</button></h2>
+                        <h2>{{ 'DEFAULT.DEFAULT_SETTING' | translate }} <button>{{ 'DEFAULT.RESET' | translate }}</button></h2>
                         <ul class="setting_ul">
                             <li>
                                 <div class="setting_box">
                                     <p class="name">거래유형</p>
                                     <select>
-                                        <option>선물 (Futures)</option>
+                                        <option>{{ 'DEFAULT.FUTURES' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">거래 심볼 선택</p>
+                                    <p class="name">{{ 'DEFAULT.SYMBOLS' | translate }}</p>
                                     <select [(ngModel)]="tradeSymbol">
                                         <option value="usdt">BTC / USDT</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">캔들 설정</p>
+                                    <p class="name">{{ 'DEFAULT.CANDLE_SETTING' | translate }}</p>
                                     <select [(ngModel)]="candleInterval">
-                                        <option [value]="candleTimeType[0]">1분 봉</option>
-                                        <option [value]="candleTimeType[1]">3분 봉</option>
-                                        <option [value]="candleTimeType[2]">5분 봉</option>
-                                        <option [value]="candleTimeType[3]">15분 봉</option>
-                                        <option [value]="candleTimeType[4]">30분 봉</option>
-                                        <option [value]="candleTimeType[5]">1시간 봉</option>
-                                        <option [value]="candleTimeType[6]">4시간 봉</option>
-                                        <option [value]="candleTimeType[7]">일봉</option>
+                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
+                                        <option [value]="candleTimeType[1]">{{ 'DEFAULT.3M' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option>
+                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.15M' | translate }}</option>
+                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.30M' | translate }}</option>
+                                        <option [value]="candleTimeType[5]">{{ 'DEFAULT.1H' | translate }}</option>
+                                        <option [value]="candleTimeType[6]">{{ 'DEFAULT.4H' | translate }}</option>
+                                        <option [value]="candleTimeType[7]">{{ 'DEFAULT.1D' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
@@ -492,16 +492,16 @@
                             </li> -->
                 
                             <li>
-                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">텔레그램 정보<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
+                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">{{ 'DEFAULT.TELEGRAM_INFO' | translate }}<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
                                     <p>텔레그램 Key : {{ teleId }}</p>
-                                    <p>연동 상태 : 
-                                        <span class="no_color">연동 안 됨</span>
-                                        <span class="yes_color">연동됨</span>
+                                    <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 
+                                        <span class="no_color">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
+                                        <span class="yes_color">{{ 'DEFAULT.CONNECTED' | translate }}</span>
                                     </p>
-                                    <p>봇 제어 여부 : 
-                                        <span class="no_color" *ngIf="!teleBotYn">꺼짐</span>
-                                        <span class="yes_color" *ngIf="teleBotYn">켜짐</span>
+                                    <p>{{ 'DEFAULT.BOT_CONTROL_STATUS' | translate }} : 
+                                        <span class="no_color" *ngIf="!teleBotYn">{{ 'DEFAULT.OFF' | translate }}</span>
+                                        <span class="yes_color" *ngIf="teleBotYn">{{ 'DEFAULT.ON' | translate }}</span>
                                     </p>
                                 </div>
                             </li>
@@ -513,23 +513,23 @@
                 <div class="part_box spon_part_box">
                     <div>
                         <div class="guide_btn_box">
-                            <button class="default_btn" (click)="toUsePopup=true">사용 방법</button>
-                            <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">니트봇 공식 텔레그램</button>
-                            <button class="default_btn" (click)="noticeIn=true;">공지사항 바로가기</button>
+                            <button class="default_btn" (click)="toUsePopup=true">{{ 'USE.HOW_TO_USE' | translate }}</button>
+                            <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">{{ 'COM.OFFICIAL_TELEGRAM' | translate }}</button>
+                            <button class="default_btn" (click)="noticeIn=true;">{{ 'COM.NOTICE' | translate }}</button>
                         </div>
                      
                         <div class="banner_box mobile_show">
-                            <p>거래소 회원가입으로 응원하기</p>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
+                            <p>{{ 'COM.CHEER_TO_OFFICIAL' | translate }}</p>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
                         </div>
                         <div class="spon_box">
-                            <p>제작자에게 후원하기</p>
+                            <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) 주소</p>
+                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -544,10 +544,10 @@
                         </div>
                 
                         <div class="spon_box">
-                            <p>제작자에게 후원하기</p>
+                            <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) 주소</p>
+                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -564,11 +564,11 @@
                         <!-- <div>광고</div> -->
             
                         <div class="banner_box">
-                            <p>거래소 회원가입으로 응원하기</p>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
-                            <a href="#none" class="banner_a">배너</a>
+                            <p>{{ 'COM.CHEER_TO_OFFICIAL' | translate }}</p>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
+                            <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
                         </div>
                     </div>
                     
