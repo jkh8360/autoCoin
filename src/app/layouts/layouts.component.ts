@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { SharedService } from '../shared/shared.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layouts',
@@ -11,12 +11,16 @@ export class LayoutsComponent implements OnInit {
   @Output() noticeYn = new EventEmitter<boolean>();
   @Output() toUsePopup = new EventEmitter<boolean>();
   selectedTab :string = 'auto';
+  LAYOUT: any;
 
   constructor(
-    private sharedService: SharedService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.translate.get('LAYOUT').subscribe(res => {
+      this.LAYOUT = res;
+    });
   }
 
   onTabSelect(tab: string) {

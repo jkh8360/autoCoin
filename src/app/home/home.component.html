@@ -84,7 +84,7 @@
                             </li>
 
                             <li *ngFor="let setting of longSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
@@ -131,7 +131,7 @@
                             </li>
                 
                             <li *ngFor="let setting of shortSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
@@ -261,7 +261,7 @@
                             <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) {{ 'COM.ADDRESS' | translate }}</p>
+                                <p><img src="../../assets/common/images/xrp.png" width="14">Ripple (XRP) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -279,7 +279,7 @@
                             <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) {{ 'COM.ADDRESS' | translate }}</p>
+                                <p><img src="../../assets/common/images/TRX.png" width="14">Tron (TRX) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -341,7 +341,7 @@
                             </li>
 
                             <li *ngFor="let setting of longSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
@@ -388,7 +388,7 @@
                             </li>
                 
                             <li *ngFor="let setting of shortSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) # {{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
@@ -529,7 +529,7 @@
                             <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/xrp.png" width="14">리플(XRP) {{ 'COM.ADDRESS' | translate }}</p>
+                                <p><img src="../../assets/common/images/xrp.png" width="4">Ripple (XRP) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput1 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>
@@ -547,7 +547,7 @@
                             <p>{{ 'COM.DONATE_CREATOR' | translate }}</p>
                             <div class="qr_box">
                                 <img src="../../assets/common/images/qr.png">
-                                <p><img src="../../assets/common/images/TRX.png" width="14">트론 (TRX) {{ 'COM.ADDRESS' | translate }}</p>
+                                <p><img src="../../assets/common/images/TRX.png" width="14">Tron (TRX) {{ 'COM.ADDRESS' | translate }}</p>
                             </div>
                             <div class="copy_box">
                                 <span #textInput3 class="fake-input">knITBoT2SYbUiLDyOurowNauTotRade90d</span>

@@ -196,5 +196,12 @@
         "FAIL_SAVE_INSTANCE": "Failed to save instance.",
         "FAIL_OPERATE_INSTANCE": "Instance execution failed.",
         "FAIL_OPERATE_BOT": "Bot execution failed."
+    },
+    "LAYOUT": {
+        "AUTO": "자동매매",
+        "DEFAULT": "기본 설정",
+        "USE": "사용 방법",
+        "TELEGRAM": "공식 텔레그램",
+        "NOTICE": "공지 사항"
     }
 }

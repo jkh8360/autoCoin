@@ -198,5 +198,12 @@
         "FAIL_SAVE_INSTANCE": "인스턴스 저장에 실패했습니다.",
         "FAIL_OPERATE_INSTANCE": "인스턴스 실행에 실패했습니다.",
         "FAIL_OPERATE_BOT": "봇 실행에 실패했습니다."
+    },
+    "LAYOUT": {
+        "AUTO": "자동매매",
+        "DEFAULT": "기본 설정",
+        "USE": "사용 방법",
+        "TELEGRAM": "공식 텔레그램",
+        "NOTICE": "공지 사항"
     }
 }

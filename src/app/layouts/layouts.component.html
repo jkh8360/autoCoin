@@ -1,7 +1,7 @@
 <ul class="mobile_tab" style="z-index: 99;">
-    <button (click)="onTabSelect('auto')"><li class="auto_play_setting_btn" [class.cho]="selectedTab === 'auto'">자동매매</li></button>
-    <button (click)="onTabSelect('default')"><li class="default_play_box_btn" [class.cho]="selectedTab === 'default'">기본 설정</li></button>
-    <button (click)="openToUse()"><li>사용 방법</li></button>
-    <a href="https://telegram.org" target="_blank"><li>공식 텔레그램</li></a>
-    <button (click)="openNotice()"><li>공지 사항</li></button>
+    <button (click)="onTabSelect('auto')"><li class="auto_play_setting_btn" [class.cho]="selectedTab === 'auto'">{{ 'LAYOUT.AUTO' | translate }}</li></button>
+    <button (click)="onTabSelect('default')"><li class="default_play_box_btn" [class.cho]="selectedTab === 'default'">{{ 'LAYOUT.DEFAULT' | translate }}</li></button>
+    <button (click)="openToUse()"><li>{{ 'LAYOUT.USE' | translate }}</li></button>
+    <a href="https://telegram.org" target="_blank"><li>{{ 'LAYOUT.TELEGRAM' | translate }}</li></a>
+    <button (click)="openNotice()"><li>{{ 'LAYOUT.NOTICE' | translate }}</li></button>
 </ul>

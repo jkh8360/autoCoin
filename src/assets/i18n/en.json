@@ -196,5 +196,12 @@
         "FAIL_SAVE_INSTANCE": "Failed to save instance.",
         "FAIL_OPERATE_INSTANCE": "Instance execution failed.",
         "FAIL_OPERATE_BOT": "Bot execution failed."
+    },
+    "LAYOUT": {
+        "AUTO": "Automatic Sale",
+        "DEFAULT": "Preferences",
+        "USE": "How to use",
+        "TELEGRAM": "official Telegram",
+        "NOTICE": "Notice"
     }
 }
