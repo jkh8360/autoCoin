@@ -75,12 +75,7 @@ export class ProfileComponent implements OnInit {
   // 언어 설정
   showLangSet = false;
   currentLang: string = '';
-  supportedLanguages = [
-    { code: 'en', name: 'English' },
-    { code: 'zh', name: '中文 (简体)' },
-    { code: 'ko', name: '한국어' },
-    { code: 'ja', name: '日本語' }
-  ];
+  supportedLanguages = this.sharedService.getSupportedLanguages();
 
   // 번역
   COM: any;
@@ -110,7 +105,7 @@ export class ProfileComponent implements OnInit {
 
     this.loginYn = this.utilService.isAuthenticated();
 
-    this.detectBrowserLanguage();
+    this.currentLang = this.sharedService.getCurrentLang();
   }
 
   // 번역
@@ -193,32 +188,12 @@ export class ProfileComponent implements OnInit {
     this.closeDropdown();
   }
 
-  // 언어 변경 로직
-  detectBrowserLanguage() {
-    let browserLang = navigator.language || (navigator as any).browserLanguage;
-    browserLang = browserLang.split('-')[0]; // 'en-US'와 같은 형식에서 'en'만 추출
+  setLanguage(langCode: string) {
+    this.sharedService.setLanguage(langCode);
+    this.currentLang = this.sharedService.getCurrentLang();
 
-    const supportedLang = this.supportedLanguages.find(lang => lang.code === browserLang);
-
-    if (supportedLang) {
-      this.setLanguage(supportedLang.code, true);
-    } else {
-      this.setLanguage('en', true); // 기본 언어 설정
-    }
-  }
-
-  async setLanguage(langCode: string, startYn?: boolean) {
-    this.currentLang = langCode;
-    this.translate.use(langCode);
-    
-    if(!startYn) {
-      this.closeDropdown();
-      this.transLanguage();
-
-      setTimeout(() => {
-        this.toastService.showInfo(this.TOAST.OK_CHANGE_LANGUAGE);
-      }, 200);
-    }
+    this.closeDropdown();
+    this.transLanguage();
   }
 
   changeLng() {

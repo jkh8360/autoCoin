@@ -494,7 +494,7 @@
                             <li>
                                 <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">{{ 'DEFAULT.TELEGRAM_INFO' | translate }}<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
-                                    <p>텔레그램 Key : {{ teleId }}</p>
+                                    <p>{{ 'DEFAULT.TELEGRAM_KEY' | translate }} : {{ teleId }}</p>
                                     <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 
                                         <span class="no_color">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
                                         <span class="yes_color">{{ 'DEFAULT.CONNECTED' | translate }}</span>

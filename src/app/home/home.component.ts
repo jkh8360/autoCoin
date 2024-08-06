@@ -20,33 +20,6 @@ interface IndicatorOption {
   showConstant: boolean;
 }
 
-// 비교 옵션을 영어 키워드로 매핑하는 객체
-const comparisonOptionMapping: { [key: string]: string } = {
-  '상단 상향 돌파': 'surpassed_upper_line',
-  '상단 하향 돌파': 'surpassed_lower_line',
-  '하단 상향 돌파': 'dropped_upper_line',
-  '하단 하향 돌파': 'dropped_lower_line',
-  '시그널 상향 돌파': 'surpassed_signal',
-  '시그널 하향 돌파': 'dropped_signal',
-  '상수보다 클 때': 'constant_high',
-  '상수보다 작을 때': 'constant_low',
-  '현재가가 높을 때': 'current_high',
-  '현재가가 작을 때': 'current_low',
-  '%K가 상수보다 클 때': 'k_high',
-  '%K가 상수보다 작을 때': 'k_low',
-  '%K 하향 교차': 'cross_k_high',
-  '%K 상향 교차': 'cross_k_low',
-  '롱 시그널': 'long_signal',
-  '숏 시그널': 'short_signal',
-  '해당 비율 상향 돌파': 'surpassed_ratio',
-  '해당 비율 하향 돌파': 'dropped_ratio'
-};
-
-// 비교 옵션을 영어 키워드로 변환하는 함수
-function mapComparisonOption(option: string): string {
-  return comparisonOptionMapping[option] || option;
-}
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -140,8 +113,16 @@ export class HomeComponent implements AfterViewInit {
   MEMBER: any;
   TOAST: any;
 
+  // 비교 옵션을 영어 키워드로 매핑하는 객체
+  comparisonOptionMapping: { [key: string]: string } = {};
+
+  // 비교 옵션을 영어 키워드로 변환하는 함수
+  mapComparisonOption(option: string): string {
+    return this.comparisonOptionMapping[option] || option;
+  }
+
   private loginSubscription?: Subscription;
-  private logoutSubscription!: Subscription;
+  private langSubscription?: Subscription;
 
   constructor(
     private utilService: UtilService,
@@ -166,8 +147,6 @@ export class HomeComponent implements AfterViewInit {
     this.checkScreenSize();   // 스크린 사이즈 체크
     this.transLanguage();     // 번역
 
-    console.log(JSON.stringify(this.selectedIndicator1));
-
     // 로그인 구독 관리
     this.loginSubscription = this.authService.loginStatus$.subscribe(
       status => {
@@ -176,6 +155,11 @@ export class HomeComponent implements AfterViewInit {
     );
 
     this.loginYn = this.utilService.isAuthenticated();
+
+    this.langSubscription = this.sharedService.language$.subscribe(lang => {
+      console.log('HomeComponent >> ' + lang);
+      this.transLanguage();
+    });
   }
 
   // 번역
@@ -206,47 +190,72 @@ export class HomeComponent implements AfterViewInit {
     });
 
     setTimeout(() => {
-      this.initializeIndicatorOptions();
-    }, 300);
+      this.initializeIndicatorOptions(true);
+    }, 200);
   }
 
-  private initializeIndicatorOptions() {
+  private initializeIndicatorOptions(option?: boolean) {
     // 지표 1, 2
     this.indicatorOptions = [
-      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, '하단 상향 돌파', '하단 하향 돌파'], 
+      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}], showConstant: false  },
-      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: ['해당 비율 상향 돌파', '해당 비율 하향 돌파'], 
+      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: [this.AUTO.SURPASSED_RATIO, this.AUTO.DROPPED_BELOW_RATIO], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}, {name: this.AUTO.RETRACEMENT, defaultValue: '0.618'}], showConstant: false  },
-      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}], showConstant: false  },
-      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, '하단 상향 돌파', '하단 하향 돌파'], 
+      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}, {name: this.AUTO.ATR_LENGTH, defaultValue: '10'}], showConstant: false },
-      { value: 'MA',                   label: 'MA',                    comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'MA',                   label: 'MA',                    comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false  },
-      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: ['시그널 상향 돌파', '시그널 하향 돌파'], 
+      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: [this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
         inputs: [{name: '단기 이평', defaultValue: '12'}, {name: '장기 이평', defaultValue: '26'}, {name: '시그널', defaultValue: '9'}], showConstant: false },
-      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
+      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true },
-      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: '최대 가속요소', defaultValue: '0.2'}], showConstant: false },
-      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: ['상수보다 클 때', '상수보다 작을 때'], 
+      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true  },
-      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: ['현재가가 높을 때', '현재가가 낮을 때'], 
+      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}], showConstant: false },
-      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: ['%K가 상수보다 클 때', '%K가 상수보다 작을 때', '%K 하향 교차', '%K 상향 교차'], 
-        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: '스무딩(%K)', defaultValue: '3'}], showConstant: true  },
+      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: [this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
+        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.SMOOTHING+'(%K)', defaultValue: '3'}], showConstant: true  },
       { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [''], 
-        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: 'RSI 기간', defaultValue: '14'}, {name: '스토캐스틱 기간', defaultValue: '14'}], showConstant: false },
+        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: 'RSI 기간', defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
       { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
     ];
     
-    this.selectedIndicator1 = this.indicatorOptions[0];
-    this.selectedIndicator2 = this.indicatorOptions[0];
+    if(option) {
+      this.selectedIndicator1 = this.indicatorOptions[0];
+      this.selectedIndicator2 = this.indicatorOptions[0];
+    }
+
+    this.comparisonOptionMapping = {
+      [this.AUTO.SURPASSED_UPPER_LINE]: 'surpassed_upper_line',
+      [this.AUTO.DROPPED_BELOW_UPPER_LINE]: 'surpassed_lower_line',
+      [this.AUTO.SURPASSED_LOWER_LINE]: 'dropped_upper_line',
+      [this.AUTO.DROPPED_BELOW_LOWER_LINE]: 'dropped_lower_line',
+      [this.AUTO.SURPASSED_SIGNAL]: 'surpassed_signal',
+      [this.AUTO.DROPPED_BELOW_SIGNAL]: 'dropped_signal',
+      [this.AUTO.HIGH_CONSTANT]: 'constant_high',
+      [this.AUTO.LOW_CONSTANT]: 'constant_low',
+      [this.AUTO.HIGH_CURRENT_PRICE]: 'current_high',
+      [this.AUTO.LOW_CURRENT_PRICE]: 'current_low',
+      [this.AUTO.HIGHER_K]: 'k_high',
+      [this.AUTO.LOWER_K]: 'k_low',
+      [this.AUTO.CROSS_K_DOWN]: 'cross_k_high',
+      [this.AUTO.CROSS_K_UP]: 'cross_k_low',
+      [this.AUTO.LONG_SIGNAL]: 'long_signal',
+      [this.AUTO.SHORT_SIGNAL]: 'short_signal',
+      [this.AUTO.SURPASSED_RATIO]: 'surpassed_ratio',
+      [this.AUTO.DROPPED_BELOW_RATIO]: 'dropped_ratio'
+    }
+    
+    console.log(JSON.stringify(this.selectedIndicator1));
   }
 
   ngAfterViewInit(): void {
@@ -269,6 +278,9 @@ export class HomeComponent implements AfterViewInit {
 
     if (this.loginSubscription) {
       this.loginSubscription.unsubscribe();
+    }
+    if(this.langSubscription) {
+      this.langSubscription.unsubscribe();
     }
   }
   
@@ -573,7 +585,7 @@ export class HomeComponent implements AfterViewInit {
     
     const indicatorValue = indicator.value || '';
     const comparisonOption = indicator.comparisonOptions[0] || '';
-    const mappedComparisonOption = mapComparisonOption(comparisonOption);
+    const mappedComparisonOption = this.mapComparisonOption(comparisonOption);
     
     // 두 지표의 이름이 같은 경우에만 index를 사용하고, 그렇지 않으면 항상 0 사용
     const indexToUse = indicator.value === otherIndicator?.value ? index : 0;

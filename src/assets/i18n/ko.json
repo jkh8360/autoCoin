@@ -137,11 +137,12 @@
         "TELEGRAM_SETTING": "텔레그램 설정",
         "TELEGRAM_KEY": "텔레그램 키 (Key)",
         "TELEGRAM_KEY_TXT": "텔레그램 키 (Key)를 입력하세요",
-        "CHAT_ID": "Chat id (선택사항)",
+        "CHAT_ID": "chat id (선택)",
         "CHAT_ID_TXT": "Chat id 를 입력하세요 (선택사항)",
         "OTHER_SETTING": "기타 설정",
         "BOT_CONTROL_YN": "텔레그램으로 봇 제어 허용",
-        "TELEGRAM_SAVE": "저장"
+        "TELEGRAM_SAVE": "저장",
+        "FAIL_SAVE": "텔레그램 저장에 실패했습니다. id 를 다시 확인해주세요."
     },
     "MEMBER": {
         "MEMBER_INFO": "회원정보",
@@ -154,8 +155,9 @@
         "CERTIFY": "인증하기",
         "CONFIRM": "확인",
         "PASSWORD": "비밀번호",
+        "PASSWORD_CHECK": "비밀번호 확인",
         "PASSWORD_TXT": "8~32자, 영숫자 특수문자 포함",
-        "PASSWORD_RE": "비밀번호 재입력",
+        "INPUT_PASSWORD": "비밀번호 입력",
         "CHANGE": "변경하기",
         "LOGIN": "로그인",
         "SAVE_EMAIL": "이메일 저장",
@@ -163,7 +165,9 @@
         "LOGIN_ERROR": "아이디나 비밀번호가 일치하지 않습니다.",
         "PW_RULE": "8~32자의 영어 대소문자와 특수문자를 포함해주세요",
         "SIGNIN": "회원가입",
-        "SIGNIN_TXT": "계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의 이용약관에 동의하고 개인정보 처리방침을 이해했음을 인정하는 것입니다.",
+        "SIGNIN_TXT_1": "계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의",
+        "SIGNIN_TXT_2": "에 동의하고 ",
+        "SIGNIN_TXT_3": "을 이해했음을 인정하는 것입니다.",
         "CONFIRM_SIGNIN": "회원가입 완료",
         "TERMS": "이용약관",
         "PERSONAL_INFO": "개인정보 처리방침"

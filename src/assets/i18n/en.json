@@ -141,7 +141,8 @@
         "CHAT_ID_TXT": "Enter your Chat id (Optional)",
         "OTHER_SETTING": "More Settings",
         "BOT_CONTROL_YN": "Allow Bot control with Telegram",
-        "TELEGRAM_SAVE": "SAVE"
+        "TELEGRAM_SAVE": "SAVE",
+        "FAIL_SAVE": "텔레그램 저장에 실패했습니다. id 를 다시 확인해주세요."
     },
     "MEMBER": {
         "MEMBER_INFO": "Profile",
@@ -154,8 +155,9 @@
         "CERTIFY": "Verify",
         "CONFIRM": "CONFIRM",
         "PASSWORD": "Password",
+        "PASSWORD_CHECK": "비밀번호 확인",
         "PASSWORD_TXT": "8~32자, 영숫자 특수문자 포함",
-        "PASSWORD_RE": "Input Password",
+        "INPUT_PASSWORD": "비밀번호 입력",
         "CHANGE": "Change",
         "LOGIN": "LOG IN",
         "SAVE_EMAIL": "Remember Me",

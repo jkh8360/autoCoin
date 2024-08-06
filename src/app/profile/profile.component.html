@@ -12,10 +12,10 @@
                 </li>
                 <li>
                     <!-- <button (click)="openApiSet()">API 설정</button> -->
-                    <button (click)="openTelegramSet()">텔레그램 설정</button>
+                    <button (click)="openTelegramSet()">{{ 'COM.SET_TELE' | translate }}</button>
                 </li>
                 <li>
-                    <button (click)="changeLng()">언어 변경</button>
+                    <button (click)="changeLng()">{{ 'COM.CHG_LAN' | translate }}</button>
                     <div class="lang_popup" *ngIf="showLangSet">
                         <ul>
                             <li *ngFor="let lang of supportedLanguages" 
@@ -28,7 +28,7 @@
                     <!-- <button (click)="toggleTheme()">{{ currentTheme === 'light' ? '라이트' : '다크' }}모드 전환</button> -->
                 </li>
                 <li>
-                    <button (click)="logout()">로그아웃</button>
+                    <button (click)="logout()">{{ 'COM.LOGOUT' | translate }}</button>
                 </li>
             </ul>
         </div>
@@ -45,20 +45,20 @@
 <!-- 텔레그램 설정 팝업 -->
 <div *ngIf="showTelegramSet" class="popup_box" id="telegram_setting_popup">
     <div class="popup_header">
-        <h2 class="left ">텔레그램 설정</h2>
+        <h2 class="left ">{{ 'TELEGRAM.TELEGRAM_SETTING' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <ul class="popup_setting_ul">
             <li>
-                <h3>텔레그램 키 (Key)</h3>
+                <h3>{{ 'TELEGRAM.TELEGRAM_KEY' | translate }}</h3>
                 <input type="text" [(ngModel)]="teleId" #inputTeleId="ngModel"
-                placeholder="텔레그램 키 (key)를 입력하세요">
+                placeholder="{{ 'TELEGRAM.TELEGRAM_KEY_TXT' | translate }}">
             </li>
             <li>
-                <h3>chat id (선택)</h3>
+                <h3>{{ 'TELEGRAM.CHAT_ID' | translate }}</h3>
                 <input type="text" [(ngModel)]="chatId"
-                placeholder="chat id 를 입력하세요 (선택사항)">
+                placeholder="{{ 'TELEGRAM.CHAT_ID_TXT' | translate }}">
             </li>
             <!-- <li>
                 <h3>텔레그램 알림 설정</h3>
@@ -76,29 +76,29 @@
                 </div>
             </li> -->
             <li>
-                <h3>기타 설정</h3>
+                <h3>{{ 'TELEGRAM.OTHER_SETTING' | translate }}</h3>
                 <div>
                     <label for="type3" class="chk_box">
                         <input type="checkbox" id="type3" [(ngModel)]="teleBotYn">
                         <span></span>
-                        <p>텔레그램으로 봇 제어 허용</p>
+                        <p>{{ 'TELEGRAM.BOT_CONTROL_YN' | translate }}</p>
                     </label>
                 </div>
             </li>
             <li>
                 <div>
-                    <p class="no_login_t" *ngIf="errSaveTele">텔레그램 저장에 실패했습니다. id 를 다시 확인해주세요.</p>
+                    <p class="no_login_t" *ngIf="errSaveTele">{{ 'TELEGRAM.FAIL_SAVE' | translate }}</p>
                 </div>
             </li>
         </ul>
-        <button class="save_setting" [class.disabled]="inputTeleId.invalid" [disabled]="inputTeleId.invalid" (click)="saveTelegram()">저장</button>
+        <button class="save_setting" [class.disabled]="inputTeleId.invalid" [disabled]="inputTeleId.invalid" (click)="saveTelegram()">{{ 'TELEGRAM.TELEGRAM_SAVE' | translate }}</button>
     </div>
 </div>
 
 <!-- 마이페이지 팝업 -->
 <div *ngIf="showMypage" class="popup_box login_popup" id="mypage_popup">
     <div class="popup_header">
-        <h2 class="left ">회원정보</h2>
+        <h2 class="left ">{{ 'MEMBER.MEMBER_INFO' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
@@ -106,11 +106,11 @@
             <div class="user"><span><img src="../../assets/common/images/user.png" width="40px"></span></div>
             <dl>
                 <dt>{{ loginEmail }}</dt>
-                <button (click)="changeProfile=true"><dd>프로필 이미지 변경</dd></button>
+                <button (click)="changeProfile=true"><dd>{{ 'MEMBER.PROFILE_IMAGE_CHANGE' | translate }}</dd></button>
             </dl>
         </div>
-        <button class="login_btn" (click)="openPassword(); showMypage = false;">비밀번호 변경</button>
-        <button class="join_btn" (click)="unregistUser=true">회원탈퇴</button>
+        <button class="login_btn" (click)="openPassword(); showMypage = false;">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
+        <button class="join_btn" (click)="unregistUser=true">{{ 'MEMBER.MEMBER_WITHDRAWAL' | translate }}</button>
     </div>
 </div>
 
@@ -141,7 +141,7 @@
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li> -->
         </ul>
     </div>
-    <button class="login_btn" (click)="saveProfile()">변경하기</button>
+    <button class="login_btn" (click)="saveProfile()">{{ 'MEMBER.CHANGE' | translate }}</button>
 </div>
 
 <!-- 회원 탈퇴 확인 -->
@@ -166,39 +166,39 @@
 <!-- 로그인 팝업 -->
 <div *ngIf="showLogin" class="popup_box login_popup" id="login_popup">
     <div class="popup_header">
-        <h2 class="left ">로그인</h2>
+        <h2 class="left ">{{ 'MEMBER.LOGIN' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <ul class="popup_setting_ul">
             <li>
-                <h3>이메일</h3>
-                <input type="text" placeholder="이메일 입력" [(ngModel)]="loginEmail">
+                <h3>{{ 'MEMBER.EMAIL' | translate }}</h3>
+                <input type="text" placeholder="{{ 'MEMBER.INPUT_EMAIL' | translate }}" [(ngModel)]="loginEmail">
             </li>
             <li>
-                <h3>비밀번호</h3>
-                <input type="password" placeholder="비밀번호 입력" [(ngModel)]="loginPassword">
+                <h3>{{ 'MEMBER.PASSWORD' | translate }}</h3>
+                <input type="password" placeholder="{{ 'MEMBER.INPUT_PASSWORD' | translate }}" [(ngModel)]="loginPassword">
             </li>
             <li class="save_login">
                 <label for="save_id" class="chk_box">
                     <input type="checkbox" id="save_id" [(ngModel)]="saveIdCheck">
                     <span></span>
-                    <p>아이디 저장</p>
+                    <p>{{ 'MEMBER.SAVE_EMAIL' | translate }}</p>
                 </label>
 
-                <button (click)="openPassword()">비밀번호 찾기</button>
-                <p class="no_login_t" *ngIf="loginFailed">아이디나 비밀번호가 일치하지 않습니다</p>
+                <button (click)="openPassword()">{{ 'MEMBER.FIND_PW' | translate }}</button>
+                <p class="no_login_t" *ngIf="loginFailed">{{ 'MEMBER.LOGIN_ERROR' | translate }}</p>
             </li>
         </ul>
-        <button class="login_btn" (click)="authLogin()">로그인</button>
-        <button class="join_btn" (click)="openSignUp(); showLogin = false;">회원가입</button>
+        <button class="login_btn" (click)="authLogin()">{{ 'MEMBER.LOGIN' | translate }}</button>
+        <button class="join_btn" (click)="openSignUp(); showLogin = false;">{{ 'MEMBER.SIGNIN' | translate }}</button>
     </div>
 </div>
 
 <!-- 회원가입 팝업 -->
 <div *ngIf="showSignUp" #join_popup class="popup_box login_popup" id="join_popup">
     <div class="popup_header">
-        <h2 class="left ">회원가입</h2>
+        <h2 class="left ">{{ 'MEMBER.SIGNIN' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
@@ -206,22 +206,22 @@
             <li>
                 <h3>
                     계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의 
-                    <button (click)="openTerms()"><span class="policy">이용약관</span></button>에 동의하고 
-                    <button (click)="openTerms()"><span class="policy">개인정보 처리방침</span></button>
+                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>에 동의하고 
+                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.PERSONAL_INFO' | translate }}</span></button>
                     을 이해했음을 인정하는 것입니다.<br><br>
                 </h3>
             </li>
             <li>
-                <h3>이메일</h3>
-                <input type="text" [(ngModel)]="signEmail" #inputEmail="ngModel" required placeholder="이메일 입력">
+                <h3>{{ 'MEMBER.EMAIL' | translate }}</h3>
+                <input type="text" [(ngModel)]="signEmail" #inputEmail="ngModel" required placeholder="{{ 'MEMBER.INPUT_EMAIL' | translate }}">
             </li>
             <li>
-                <h3>비밀번호</h3>
-                <input type="password" [(ngModel)]="signPassword" #inputPassword="ngModel" required placeholder="8~32자, 영숫자 특수문자 포함">
+                <h3>{{ 'MEMBER.PASSWORD' | translate }}</h3>
+                <input type="password" [(ngModel)]="signPassword" #inputPassword="ngModel" required placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
             <li>
-                <h3>비밀번호 확인</h3>
-                <input type="password" [(ngModel)]="signPasswordCheck" #inputPasswordCheck="ngModel" required placeholder="8~32자, 영숫자 특수문자 포함">
+                <h3>{{ 'MEMBER.PASSWORD_CHECK' | translate }}</h3>
+                <input type="password" [(ngModel)]="signPasswordCheck" #inputPasswordCheck="ngModel" required placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
             <li>
                 <p class="no_login_t" *ngIf="!signEmail">이메일을 입력해주세요.</p>
@@ -232,8 +232,12 @@
                 <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && signPasswordCheck && !passwordCheckValid">비밀번호가 일치하지 않습니다.</p>
             </li>
         </ul>
-        <button class="login_btn" (click)="authSign()" [class.disabled]="inputEmail.invalid || inputPassword.invalid || inputPasswordCheck.invalid || !emailValid || !passwordValid || !passwordCheckValid" [disabled]="inputEmail.invalid || inputPassword.invalid || inputPasswordCheck.invalid || !emailValid || !passwordValid || !passwordCheckValid">회원가입 완료</button>
-        <button class="join_btn" (click)="openLogin(); showSignUp = false;">로그인</button>
+        <button class="login_btn" (click)="authSign()" 
+        [class.disabled]="inputEmail.invalid || inputPassword.invalid || inputPasswordCheck.invalid || !emailValid || !passwordValid || !passwordCheckValid" 
+        [disabled]="inputEmail.invalid || inputPassword.invalid || inputPasswordCheck.invalid || !emailValid || !passwordValid || !passwordCheckValid">
+            {{ 'MEMBER.CONFIRM_SIGNIN' | translate }}
+        </button>
+        <button class="join_btn" (click)="openLogin(); showSignUp = false;">{{ 'MEMBER.LOGIN' | translate }}</button>
     </div>            
 </div>
 
@@ -241,7 +245,7 @@
 <!-- 이용약관 안내 팝업 -->
 <div *ngIf="showTerms" #agree_popup class="popup_box login_popup" id="agree_popup">
     <div class="popup_header">
-        <h2 class="left ">이용약관</h2>
+        <h2 class="left ">{{ 'MEMBER.TERMS' | translate }}</h2>
         <button class="right " (click)="showTerms = false;"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
@@ -298,25 +302,25 @@
 <!-- 비밀번호 재설정 팝업 -->
 <div *ngIf="showPassword" #changePw_popup class="popup_box login_popup" id="join_popup">
     <div class="popup_header">
-        <h2 class="left ">비밀번호 재설정</h2>
+        <h2 class="left ">{{ 'MEMBER.PW_RESETTING' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <ul class="popup_setting_ul">
             <li>
-                <h3>이메일</h3>
-                <input type="text" [(ngModel)]="changePwEmail" placeholder="이메일 입력" [disabled]="certifyYn">
-                <button class="text_email" (click)="certifyEmail()">인증하기</button>
+                <h3>{{ 'MEMBER.EMAIL' | translate }}</h3>
+                <input type="text" [(ngModel)]="changePwEmail" placeholder="{{ 'MEMBER.INPUT_EMAIL' | translate }}" [disabled]="certifyYn">
+                <button class="text_email" (click)="certifyEmail()">{{ 'MEMBER.CERTIFY' | translate }}</button>
             </li>
             <li>
-                <h3>비밀번호</h3>
+                <h3>{{ 'MEMBER.PASSWORD' | translate }}</h3>
                 <input type="password" [(ngModel)]="changePw" #inputChangePw="ngModel" [disabled]="!certifyYn"
-                placeholder="8~32자, 영숫자 특수문자 포함">
+                placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
             <li>
-                <h3>비밀번호 재입력</h3>
+                <h3>{{ 'MEMBER.PASSWORD_CHECK' | translate }}</h3>
                 <input type="password" [(ngModel)]="changePwCheck" #inputChangePwCheck="ngModel" [disabled]="!certifyYn"
-                placeholder="8~32자, 영숫자 특수문자 포함">
+                placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
             <!-- <li>
                 <label for="agree" class="chk_box">
@@ -329,11 +333,11 @@
                 <p class="no_login_t" *ngIf="!certifyYn && !sendAfterEmail">이메일을 인증해주세요.</p>
                 <p class="no_login_t" *ngIf="certifyYn && !changePw">비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
                 <p class="no_login_t" *ngIf="certifyYn && changePw && !passwordValidChange">유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && !changePwCheck">비밀번호 재입력을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && !changePwCheck">비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
                 <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && !passwordCheckValidChange">비밀번호가 일치하지 않습니다.</p>
                 <p class="no_login_t" *ngIf="!certifyYn && sendAfterEmail">이메일 인증은 3분 후에 가능합니다.</p>
             </li> 
         </ul>
-        <button class="login_btn1" (click)="changePassword()" [class.disabled]="!isChangePassword()" [disabled]="!isChangePassword()">비밀번호 변경</button>
+        <button class="login_btn1" (click)="changePassword()" [class.disabled]="!isChangePassword()" [disabled]="!isChangePassword()">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
     </div>            
 </div>
