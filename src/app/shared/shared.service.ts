@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UtilService } from './util.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ToastService } from '../toast/toast.service';
 
 @Injectable({
@@ -17,6 +17,9 @@ export class SharedService {
     { code: 'ko', name: '한국어' },
     { code: 'ja', name: '日本語' }
   ];
+
+  private profileUpdatedSource = new BehaviorSubject<boolean>(false);
+  profileUpdated$ = this.profileUpdatedSource.asObservable();
 
   constructor(
     private utilService: UtilService,
@@ -67,5 +70,9 @@ export class SharedService {
 
   getSupportedLanguages() {
     return this.supportedLanguages;
+  }
+
+  updateProfile() {
+    this.profileUpdatedSource.next(true);
   }
 }

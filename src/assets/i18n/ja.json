@@ -1,5 +1,6 @@
 {
     "HELLO": "こんにちは",
+    "KNIT_BOT": "knitbot.ai",
 
     "COM": {
         "SET_API": "API Settings",
@@ -65,7 +66,11 @@
         "CLOSE": "Close",
         "ADD_LONG_SETTING": "Add Long Settings",
         "ADD_SHORT_SETTING": "Add Short Settings",
-        "REVERSE_POSITION_EXIT": "Reverse the close position"
+        "REMOVE_LONG_SETTING": "Remove Long Settings",
+        "REMOVE_SHORT_SETTING": "Remove Short Settings",
+        "REVERSE_POSITION_EXIT": "Reverse the close position",
+        "SHORT_SETTINGS": "Short Settings",
+        "LONG_SETTINGS": "Long Settings"
     },
     "DEFAULT" : {
         "DEFAULT_SETTING": "PREFERENCES",

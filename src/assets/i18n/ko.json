@@ -1,5 +1,6 @@
 {
     "HELLO": "안녕하세요",
+    "KNIT_BOT": "니트봇.ai",
 
     "COM": {
         "SET_API": "API 설정",
@@ -65,7 +66,11 @@
         "CLOSE": "종료",
         "ADD_LONG_SETTING": "롱 설정 추가",
         "ADD_SHORT_SETTING": "숏 설정 추가",
-        "REVERSE_POSITION_EXIT": "반대 포지션 진입시, 이전 포지션 종료"
+        "REMOVE_LONG_SETTING": "롱 설정 삭제",
+        "REMOVE_SHORT_SETTING": "숏 설정 삭제",
+        "REVERSE_POSITION_EXIT": "반대 포지션 진입시, 이전 포지션 종료",
+        "SHORT_SETTINGS": "숏 설정",
+        "LONG_SETTINGS": "롱 설정"
     },
     "DEFAULT" : {
         "DEFAULT_SETTING": "기본 설정",

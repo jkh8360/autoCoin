@@ -1,10 +1,9 @@
 <header>
     <div class="wrap">
-        <h1 class="logo"><img src="../../assets/common/images/logo.png" width="24px">knitbot.ai</h1>
-        <h1 style="color: white">{{ 'HELLO' | translate }}</h1>
+        <h1 class="logo" (click)="refreshPage()"><img src="../../assets/common/images/logo.png" width="24px">knitbot.ai</h1>
 
         <div class="user_div" [ngStyle]="{'display': loginYn ? '' : 'none'}">
-            <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user.png" width="40px"></span></button>
+            <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user{{selectedProfileIndex}}.png" width="40px"></span></button>
 
             <ul #dropMenu class="drop_menu">
                 <li>
@@ -52,12 +51,12 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>{{ 'TELEGRAM.TELEGRAM_KEY' | translate }}</h3>
-                <input type="text" [(ngModel)]="teleId" #inputTeleId="ngModel"
+                <input type="text" [(ngModel)]="teleId" #inputTeleId="ngModel" [value]="teleId"
                 placeholder="{{ 'TELEGRAM.TELEGRAM_KEY_TXT' | translate }}">
             </li>
             <li>
                 <h3>{{ 'TELEGRAM.CHAT_ID' | translate }}</h3>
-                <input type="text" [(ngModel)]="chatId"
+                <input type="text" [(ngModel)]="chatId" [value]="chatId"
                 placeholder="{{ 'TELEGRAM.CHAT_ID_TXT' | translate }}">
             </li>
             <!-- <li>
@@ -79,7 +78,7 @@
                 <h3>{{ 'TELEGRAM.OTHER_SETTING' | translate }}</h3>
                 <div>
                     <label for="type3" class="chk_box">
-                        <input type="checkbox" id="type3" [(ngModel)]="teleBotYn">
+                        <input type="checkbox" id="type3" [(ngModel)]="teleBotYn" [value]="teleBotYn">
                         <span></span>
                         <p>{{ 'TELEGRAM.BOT_CONTROL_YN' | translate }}</p>
                     </label>
@@ -103,7 +102,7 @@
     </div>
     <div class="popup_content">
         <div class="popup_setting_box">
-            <div class="user"><span><img src="../../assets/common/images/user.png" width="40px"></span></div>
+            <div class="user"><span><img src="../../assets/common/images/user{{selectedProfileIndex}}.png" width="40px"></span></div>
             <dl>
                 <dt>{{ loginEmail }}</dt>
                 <button (click)="changeProfile=true"><dd>{{ 'MEMBER.PROFILE_IMAGE_CHANGE' | translate }}</dd></button>
@@ -124,7 +123,7 @@
         <ul class="img_list_ul">
             <li *ngFor="let img of profileImages; let i = index" 
             [ngClass]="{'cho': selectedProfileIndex === i}" (click)="selectImage(i)">
-            <img src="../../assets/common/images/user.png"></li>
+            <img src="../../assets/common/images/user{{i}}.png"></li>
             <!-- <li [ngClass]="{'cho': true}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
             <li [ngClass]="{'cho': false}"><img src="../../assets/common/images/user.png"></li>
@@ -322,6 +321,11 @@
                 <input type="password" [(ngModel)]="changePwCheck" #inputChangePwCheck="ngModel" [disabled]="!certifyYn"
                 placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
+            <li>
+                <h3>CAPTCHA</h3>
+                <input type="text" [(ngModel)]="captcha" #inputCaptchaCheck="ngModel" [disabled]="!certifyYn"
+                placeholder="인증 메일을 확인하고 captcha를 입력해주세요.">
+            </li>
             <!-- <li>
                 <label for="agree" class="chk_box">
                     <input type="checkbox" id="agree" [(ngModel)]="agreeTerms">
@@ -335,9 +339,10 @@
                 <p class="no_login_t" *ngIf="certifyYn && changePw && !passwordValidChange">유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
                 <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && !changePwCheck">비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
                 <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && !passwordCheckValidChange">비밀번호가 일치하지 않습니다.</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && passwordCheckValidChange && !captcha">captcha를 입력해주세요.</p>
                 <p class="no_login_t" *ngIf="!certifyYn && sendAfterEmail">이메일 인증은 3분 후에 가능합니다.</p>
             </li> 
         </ul>
         <button class="login_btn1" (click)="changePassword()" [class.disabled]="!isChangePassword()" [disabled]="!isChangePassword()">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
-    </div>            
+    </div>
 </div>

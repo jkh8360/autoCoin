@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ThemeService } from '../shared/theme.service';
 import { UtilService } from '../shared/util.service';
 import { SharedService } from '../shared/shared.service';
@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedService,
     private toastService: ToastService,
     private translate: TranslateService,
+    private zone: NgZone
   ) {}
   private logoutSubscription!: Subscription;
   isLoggedOut: boolean = false;
@@ -63,6 +64,7 @@ export class ProfileComponent implements OnInit {
   agreeTerms: boolean = false;
   certifyYn: boolean = false;
   sendAfterEmail: boolean = false;
+  captcha: string = '';
 
   // 텔레그램 설정
   teleId: string = '';
@@ -87,7 +89,7 @@ export class ProfileComponent implements OnInit {
   MEMBER: any;
   TOAST: any;
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
       this.isLoggedOut = loggedOut;
       if (this.isLoggedOut) {
@@ -106,6 +108,16 @@ export class ProfileComponent implements OnInit {
     this.loginYn = this.utilService.isAuthenticated();
 
     this.currentLang = this.sharedService.getCurrentLang();
+
+    this.transLanguage();
+
+    if(this.loginYn) {
+      const data = await this.sharedService.loadTelegramSetting();
+      
+      if(data.desc === 'success') {
+        this.selectedProfileIndex = data.data.profile_id;
+      }
+    }
   }
 
   // 번역
@@ -182,8 +194,20 @@ export class ProfileComponent implements OnInit {
   }
 
   // 텔레그램 설정
-  openTelegramSet() {
-    this.showTelegramSet = true;
+  async openTelegramSet() {
+    const data = await this.sharedService.loadTelegramSetting();
+    
+    if(data.desc === 'success') {
+      this.zone.run(() => {
+        this.teleId = !data.data.teleid ? '' : data.data.teleid;
+        this.chatId = !data.data.chatid ? '' : data.data.chatid;
+        this.teleBotYn = data.data.is_remote === 1 ? true : false;
+
+        setTimeout(() => {
+          this.showTelegramSet = true;
+        }, 200);
+      });
+    }
 
     this.closeDropdown();
   }
@@ -254,19 +278,21 @@ export class ProfileComponent implements OnInit {
     const body = {
       teleid: this.teleId,
       chatid: this.chatId,
-      isRemote: this.teleBotYn ? 1 : 0,
+      is_remote: this.teleBotYn ? 1 : 0,
       profile_id: '',
       nickname: ''
     }
 
-    const data: any = await this.utilService.request('POST', 'users/updateinfo', body, false, false);
+    const data: any = await this.utilService.request('POST', 'users/updateinfo', body, true, false);
 
-    if(data.desc === 'success') {
+    if(data.desc === 'check') {
       this.showTelegramSet = false;
 
       this.errSaveTele = false;
 
       this.toastService.showInfo(this.TOAST.OK_SAVE_TELEGRAM);
+
+      this.sharedService.updateProfile();
     } else {
       this.errSaveTele = true;
 
@@ -279,13 +305,13 @@ export class ProfileComponent implements OnInit {
     const body = {
       profile_id: this.selectedProfileIndex,
       nickname: '',
-      teleid: '',
-      chatid: ''
+      teleid: this.teleId || '',
+      chatid: this.chatId || ''
     }
 
-    const data: any = await this.utilService.request('POST', 'users/updateinfo', body, false, false);
+    const data: any = await this.utilService.request('POST', 'users/updateinfo', body, true, false);
 
-    if(data.desc === 'success') {
+    if(data.desc === 'check') {
       this.changeProfile = false;
 
       this.toastService.showInfo(this.TOAST.OK_SAVE);
@@ -326,10 +352,12 @@ export class ProfileComponent implements OnInit {
 
       const teleData = await this.sharedService.loadTelegramSetting();
 
-      this.teleId = teleData.teleid;
-      this.chatId = teleData.chatid;
-      this.teleBotYn = teleData.isRemote === 1 ? true : false;
-      this.selectedProfileIndex = teleData.profile_id;
+      if(teleData.desc === 'success') {
+        this.teleId = teleData.data.teleid;
+        this.chatId = teleData.data.chatid;
+        this.teleBotYn = teleData.data.is_remote === 1 ? true : false;
+        this.selectedProfileIndex = teleData.data.profile_id;
+      }
     } else {
       this.loginFailed = true;
     }
@@ -414,7 +442,8 @@ export class ProfileComponent implements OnInit {
     const body = {
       email: this.changePwEmail,
       password: this.changePwCheck,
-      profile: ''
+      profile: '',
+      captcah: this.captcha
     }
 
     const data:any = await this.utilService.request('POST', 'users/reset_post', body, false, false);
@@ -438,6 +467,12 @@ export class ProfileComponent implements OnInit {
           Boolean(this.changePw) && 
           Boolean(this.changePwCheck) && 
           Boolean(this.passwordValidChange) && 
-          Boolean(this.passwordCheckValidChange);
+          Boolean(this.passwordCheckValidChange) &&
+          Boolean(this.captcha) && 
+          this.captcha.trim() !== '';
+  }
+
+  refreshPage() {
+    window.location.reload();
   }
 }

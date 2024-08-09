@@ -28,6 +28,7 @@ header .logo {
     align-items: center;
     color: #fff;
     font-size: 20px;
+    cursor: pointer;
 }
 header .logo img{
     margin-right: 8px;

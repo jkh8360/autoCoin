@@ -19,6 +19,14 @@ interface IndicatorOption {
   inputs: {name: string; defaultValue: string}[];
   showConstant: boolean;
 }
+interface TradeSettings {
+  candleType: string;
+  selectedOption1: string;
+  selectedOption2: string;
+  constant1: number;
+  constant2: number;
+  botOperation: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -47,8 +55,8 @@ export class HomeComponent implements AfterViewInit {
   ]; 
 
   // 롱, 숏 설정 추가
-  longSettings: any[] = [];
-  shortSettings: any[] = [];
+  longSettings: TradeSettings[] = [];
+  shortSettings: TradeSettings[] = [];
 
   // 지표 1, 2
   indicatorOptions: IndicatorOption[] = [];
@@ -59,15 +67,10 @@ export class HomeComponent implements AfterViewInit {
   // 기본 설정
   isPosition: boolean = false;
   candleConst: number = 0.1;
-  candleType = ['last', 'start', 'high', 'low'];
-  longCandleType: string = 'last';
-  shortCandleType: string = 'last';
+  candleType: any;
   candleTimeType = ['1m', '3m', '5m', '15m', '30m', '1h', '4h', '1d'];
   candleInterval: string = '1m';
   tradeSymbol: string = 'usdt';
-  botOperation: string = 'open';
-  onConstant1: number = 20;
-  onConstant2: number = 20;
 
   indicator1UserInputs: { [key: string]: string } = {};
   indicator2UserInputs: { [key: string]: string } = {};
@@ -93,8 +96,9 @@ export class HomeComponent implements AfterViewInit {
   selectedNotification:AppNotification | null = null;
 
   // 텔레그램
-  teleId: string = '';
-  teleBotYn: boolean = false;
+  teleId: string = '';          // id
+  teleBotYn: boolean = false;   // 연동 상태
+  controlYn: boolean = false;   // 봇 제어 여부
 
   // 인스턴스
   instanceId: string = '';
@@ -115,10 +119,11 @@ export class HomeComponent implements AfterViewInit {
 
   // 비교 옵션을 영어 키워드로 매핑하는 객체
   comparisonOptionMapping: { [key: string]: string } = {};
+  comparisonCandleMapping: { [key: string]: string } = {}; 
 
   // 비교 옵션을 영어 키워드로 변환하는 함수
-  mapComparisonOption(option: string): string {
-    return this.comparisonOptionMapping[option] || option;
+  mapComparisonOption(value: any, option: string): string {
+    return value[option] || option;
   }
 
   private loginSubscription?: Subscription;
@@ -131,8 +136,6 @@ export class HomeComponent implements AfterViewInit {
     private authService: AuthService,
     private translate: TranslateService
   ) {
-    this.addLongSetting();
-    this.addShortSetting();
     this.checkScreenSize();
   }
 
@@ -151,19 +154,38 @@ export class HomeComponent implements AfterViewInit {
     this.loginSubscription = this.authService.loginStatus$.subscribe(
       status => {
         this.loginYn = status;
+        if(this.loginYn) {
+          this.decodeFile();
+        } else {
+          this.afterLogout();
+        }
       }
     );
 
     this.loginYn = this.utilService.isAuthenticated();
 
+    if(this.loginYn) {
+      this.utilService.instanceList();
+    }
+
+    // 번역 구독 관리
     this.langSubscription = this.sharedService.language$.subscribe(lang => {
       console.log('HomeComponent >> ' + lang);
-      this.transLanguage();
+      this.transLanguage(lang);
+    });
+    // 프로필 업데이트 구독 관리
+    this.sharedService.profileUpdated$.subscribe(async (updated) => {
+      if (updated) {
+        const data = await this.sharedService.loadTelegramSetting();
+        if(data.desc === 'success') {
+          this.teleId = data.data.teleid;
+        }
+      }
     });
   }
 
   // 번역
-  transLanguage() {
+  transLanguage(lang?: string) {
     this.translate.get('COM').subscribe(res => {
       this.COM = res;
     });
@@ -190,7 +212,11 @@ export class HomeComponent implements AfterViewInit {
     });
 
     setTimeout(() => {
-      this.initializeIndicatorOptions(true);
+      if(lang) {
+        this.initializeIndicatorOptions(false);
+      } else {
+        this.initializeIndicatorOptions(true);
+      }
     }, 200);
   }
 
@@ -228,11 +254,6 @@ export class HomeComponent implements AfterViewInit {
       { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
     ];
-    
-    if(option) {
-      this.selectedIndicator1 = this.indicatorOptions[0];
-      this.selectedIndicator2 = this.indicatorOptions[0];
-    }
 
     this.comparisonOptionMapping = {
       [this.AUTO.SURPASSED_UPPER_LINE]: 'surpassed_upper_line',
@@ -254,8 +275,25 @@ export class HomeComponent implements AfterViewInit {
       [this.AUTO.SURPASSED_RATIO]: 'surpassed_ratio',
       [this.AUTO.DROPPED_BELOW_RATIO]: 'dropped_ratio'
     }
+
+    this.candleType = ['종가', '시가', '고가', '저가'];
+
+    this.comparisonCandleMapping = {
+      '종가': 'last',
+      '시가': 'open',
+      '고가': 'high',
+      '저가': 'low'
+    }
+
+    this.selectedIndicator1 = this.indicatorOptions[0];
+    this.selectedIndicator2 = this.indicatorOptions[0];
     
-    console.log(JSON.stringify(this.selectedIndicator1));
+    if(this.loginYn) {
+      this.decodeFile();
+    } else {
+      this.addLongSetting();
+      this.addShortSetting();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -360,14 +398,44 @@ export class HomeComponent implements AfterViewInit {
 
   addLongSetting() {
     // 새로운 롱 설정 객체를 생성하여 배열에 추가
-    this.longSettings.push({});
+    this.longSettings.push({
+      candleType: this.candleType[0],
+      selectedOption1: this.selectedIndicator1?.comparisonOptions[0] || '',
+      selectedOption2: this.selectedIndicator2?.comparisonOptions[0] || '',
+      constant1: 20,
+      constant2: 20,
+      botOperation: 'open'
+    });
     this.open.push({ isOpen: false });
   }
 
   addShortSetting() {
     // 새로운 숏 설정 객체를 생성하여 배열에 추가
-    this.shortSettings.push({});
+    this.shortSettings.push({
+      candleType: this.candleType[0],
+      selectedOption1: this.selectedIndicator1?.comparisonOptions[0] || '',
+      selectedOption2: this.selectedIndicator2?.comparisonOptions[0] || '',
+      constant1: 20,
+      constant2: 20,
+      botOperation: 'open'
+    });
     this.open.push({ isOpen: false });
+  }
+
+  removeLongSetting(index: number) {
+    if (index >= 0 && index < this.longSettings.length) {
+      this.longSettings.splice(index, 1);
+      // open 배열에서 해당 항목 제거 (지표 설정을 위한 첫 번째 항목 고려)
+      this.open.splice(index + 1, 1);
+    }
+  }
+
+  removeShortSetting(index: number) {
+    if (index >= 0 && index < this.shortSettings.length) {
+      this.shortSettings.splice(index, 1);
+      // open 배열에서 해당 항목 제거 (지표 설정과 롱 설정들을 고려)
+      this.open.splice(index + 1 + this.longSettings.length, 1);
+    }
   }
 
   // 텔레그램 바로가기
@@ -400,7 +468,7 @@ export class HomeComponent implements AfterViewInit {
   async saveAPI() {
     this.showApiSet = false;
     
-    const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphase, this.ApiProvider);
+    const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphase, this.ApiProvider, this.tradeSymbol);
     
     if(data) {
       this.botPlay = true;
@@ -473,14 +541,17 @@ export class HomeComponent implements AfterViewInit {
   // 텔레그램 정보
   async setTelegramData() {
     const data = await this.sharedService.loadTelegramSetting();
-    const botConn = await this.utilService.instanceOperation('report');
+    
+    if(data.desc === 'success') {
+      this.teleId = data.data.teleid;
+      this.teleBotYn = data.data.is_remote === 1 ? true : false;
 
-    if(data) {
-      this.teleId = data.teleid;
-      this.teleBotYn = data.isRemote === 1 ? true : false;
-      if(botConn) {
-        this.teleBotYn;
-      }
+      // 봇 동작 - 리포트
+      const botConn = await this.utilService.instanceOperation('report');
+
+      // if(botConn.desc) {
+      //   this.controlYn -> 연동 상태 안내 예정
+      // }
     }
   }
 
@@ -515,6 +586,25 @@ export class HomeComponent implements AfterViewInit {
     };
   }
 
+  afterLogout() {
+    console.log(JSON.stringify(this.indicatorOptions[0]));
+    this.selectedIndicator1 = this.indicatorOptions[0];
+    this.selectedIndicator2 = this.indicatorOptions[0];
+
+    this.tradeSymbol = 'usdt';
+    this.candleInterval = '1m';
+    this.candleConst = 0.1;
+
+    if(this.longSettings.length > 0) {
+      const frist = this.longSettings[0];
+      this.longSettings = [frist];
+    }
+    if(this.shortSettings.length > 0) {
+      const frist = this.shortSettings[0];
+      this.shortSettings = [frist];
+    }
+  }
+
   // 저장하기
   async saveInstance() {
     // 1. 데이터 형식 구성
@@ -537,11 +627,11 @@ export class HomeComponent implements AfterViewInit {
         output: index + 2 <= this.longSettings.length ? index + 2 : this.longSettings.length + 1,
         contents: {
           position: "long",
-          candle_type: this.longCandleType,
+          candle_type: this.mapComparisonOption(this.comparisonCandleMapping, setting.candleType),
           num_of_conds: 2,
-          cond_1: this.getCondObject(this.selectedIndicator1, this.selectedIndicator2, 0),
-          cond_2: this.getCondObject(this.selectedIndicator2, this.selectedIndicator1, 1),
-          operation: this.botOperation
+          cond_1: this.getCondObject(this.selectedIndicator1, this.selectedIndicator2, 0, setting.selectedOption1, setting.constant1),
+          cond_2: this.getCondObject(this.selectedIndicator2, this.selectedIndicator1, 1, setting.selectedOption2, setting.constant2),
+          operation: setting.botOperation
         }
       })),
       ...this.shortSettings.map((setting, index) => ({
@@ -549,11 +639,11 @@ export class HomeComponent implements AfterViewInit {
         output: index + 1 < this.shortSettings.length ? this.longSettings.length + index + 2 : 0,
         contents: {
           position: "short",
-          candle_type: this.shortCandleType,
+          candle_type: this.mapComparisonOption(this.comparisonCandleMapping, setting.candleType),
           num_of_conds: 2,
-          cond_1: this.getCondObject(this.selectedIndicator1, this.selectedIndicator2, 0),
-          cond_2: this.getCondObject(this.selectedIndicator2, this.selectedIndicator1, 1),
-          operation: this.botOperation
+          cond_1: this.getCondObject(this.selectedIndicator1, this.selectedIndicator2, 0, setting.selectedOption1, setting.constant1),
+          cond_2: this.getCondObject(this.selectedIndicator2, this.selectedIndicator1, 1, setting.selectedOption2, setting.constant2),
+          operation: setting.botOperation
         }
       }))
     ];
@@ -580,12 +670,12 @@ export class HomeComponent implements AfterViewInit {
   }
 
   // cond_1, cond_2 를 생성
-  private getCondObject(indicator: IndicatorOption | undefined, otherIndicator: IndicatorOption | undefined, index: number): any {
+  private getCondObject(indicator: IndicatorOption | undefined, otherIndicator: IndicatorOption | undefined, index: number, selectedOption: string,constant: number): any {
     if (!indicator) return {};
     
     const indicatorValue = indicator.value || '';
-    const comparisonOption = indicator.comparisonOptions[0] || '';
-    const mappedComparisonOption = this.mapComparisonOption(comparisonOption);
+    const comparisonOption = selectedOption || '';
+    const mappedComparisonOption = this.mapComparisonOption(this.comparisonOptionMapping, comparisonOption);
     
     // 두 지표의 이름이 같은 경우에만 index를 사용하고, 그렇지 않으면 항상 0 사용
     const indexToUse = indicator.value === otherIndicator?.value ? index : 0;
@@ -595,7 +685,7 @@ export class HomeComponent implements AfterViewInit {
     };
   
     if (indicator.showConstant) {
-      condObject.const = index === 0 ? this.onConstant1 : this.onConstant2;
+        condObject.const = constant;
     }
   
     return condObject;
@@ -663,5 +753,109 @@ export class HomeComponent implements AfterViewInit {
         return false;
       });
     });
+  }
+
+  /**
+   * Instance - Read
+   * file downloaded 시에
+   * 데이터 디코딩
+   * 화면 UI 상 데이터 설정
+   */
+  decodeFile() {
+    const encodedData = localStorage.getItem('file') || '';
+
+    const jsonString = atob(encodedData);
+    const parsedData = JSON.parse(jsonString);
+
+    // 기존 설정 초기화
+    this.longSettings = [];
+    this.shortSettings = [];
+
+    // 기본 설정 업데이트
+    const basicSettings = parsedData[0].contents;
+    this.isPosition = basicSettings.cross_close;
+    this.candleInterval = basicSettings.interval;
+    this.candleConst = basicSettings.quantity;
+
+    // 지표 설정 업데이트
+    this.updateIndicatorInputs(basicSettings.index);
+
+    // 롱 설정 업데이트
+    const longSettings = parsedData.filter((item: any) => item.contents.position === 'long');
+    longSettings.forEach((setting: any, index: any) => {
+      if (index < 4) { // 최대 4개까지만 처리
+        this.updateTradeSetting(setting.contents, this.longSettings, index);
+        this.open.push({ isOpen: false });
+      }
+    });
+
+    // 숏 설정 업데이트
+    const shortSettings = parsedData.filter((item: any) => item.contents.position === 'short');
+    shortSettings.forEach((setting: any, index: any) => {
+      if (index < 4) { // 최대 4개까지만 처리
+        this.updateTradeSetting(setting.contents, this.shortSettings, index);
+        this.open.push({ isOpen: false });
+      }
+    });
+  }
+
+  updateTradeSetting(parsedSetting: any, settingsArray: TradeSettings[], index: number) {
+    const newSetting: TradeSettings = {
+      candleType: this.findKeyByValue(this.comparisonCandleMapping, parsedSetting.candle_type) || '',
+      selectedOption1: this.findKeyByValue(this.comparisonOptionMapping, parsedSetting.cond_1.operation.split('.')[2]) || '',
+      selectedOption2: this.findKeyByValue(this.comparisonOptionMapping, parsedSetting.cond_2.operation.split('.')[2]) || '',
+      constant1: parsedSetting.cond_1.const ? Number(parsedSetting.cond_1.const) : 20,
+      constant2: parsedSetting.cond_2.const ? Number(parsedSetting.cond_2.const) : 20,
+      botOperation: parsedSetting.operation
+    };
+  
+    settingsArray[index] = newSetting;
+  }
+
+  updateIndicatorInputs(indexData: any[]) {
+    indexData.forEach((item, index) => {
+      const indicatorName = Object.keys(item)[0];
+      const indicatorArgs = Object.values(item[indicatorName]);
+      
+      let selectedIndicator: IndicatorOption | undefined;
+      if (index === 0) {
+        selectedIndicator = this.selectedIndicator1;
+      } else if (index === 1) {
+        selectedIndicator = this.selectedIndicator2;
+      }
+  
+      if (selectedIndicator && selectedIndicator.value === indicatorName) {
+        selectedIndicator.inputs.forEach((input, inputIndex) => {
+          if (inputIndex < indicatorArgs.length) {
+            input.defaultValue = indicatorArgs[inputIndex] as string;
+          }
+        });
+      } else {
+        // 선택된 지표가 없거나 다른 경우, 새로운 지표를 설정합니다.
+        const newIndicator = this.indicatorOptions.find(opt => opt.value === indicatorName);
+        if (newIndicator) {
+          const updatedIndicator = JSON.parse(JSON.stringify(newIndicator));
+          updatedIndicator.inputs.forEach((input: any, inputIndex: any) => {
+            if (inputIndex < indicatorArgs.length) {
+              input.defaultValue = indicatorArgs[inputIndex] as string;
+            }
+          });
+          if (index === 0) {
+            this.selectedIndicator1 = updatedIndicator;
+          } else if (index === 1) {
+            this.selectedIndicator2 = updatedIndicator;
+          }
+        }
+      }
+    });
+  }
+
+  findKeyByValue(obj: any, value: any): string | undefined {
+    for (const [key, val] of Object.entries(obj)) {
+      if (val === value) {
+        return key;
+      }
+    }
+    return undefined;
   }
 }

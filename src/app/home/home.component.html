@@ -62,7 +62,7 @@
                                 <div #slideBox class="tab_slide_box" style="display: block;">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
-                                        <select (change)="onIndicatorChange(1, $event)">
+                                        <select (change)="onIndicatorChange(1, $event)" [ngModel]="selectedIndicator1?.value">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
-                                        <select (change)="onIndicatorChange(2, $event)">
+                                        <select (change)="onIndicatorChange(2, $event)" [ngModel]="selectedIndicator2?.value">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
@@ -84,94 +84,90 @@
                             </li>
 
                             <li *ngFor="let setting of longSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">{{ 'AUTO.LONG_SETTINGS' | translate }} (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
-                                        <select [(ngModel)]="longCandleType">
-                                            <option [value]="candleType[0]">종가</option>
-                                            <option [value]="candleType[1]">시가</option>
-                                            <option [value]="candleType[2]">고가</option>
-                                            <option [value]="candleType[3]">저가</option>
+                                        <select [(ngModel)]="setting.candleType">
+                                            <option *ngFor="let type of candleType" [value]="type">{{ type }}</option>
                                         </select>
                                     </div>
                 
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
+                                        <select [(ngModel)]="setting.selectedOption1">
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                             <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="setting.constant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
+                                        <select [(ngModel)]="setting.selectedOption2">
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                             <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="setting.constant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
-                                        <select [(ngModel)]="botOperation">
+                                        <select [(ngModel)]="setting.botOperation">
                                             <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
                                             <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button><br>
+                                    <button (click)="removeLongSetting(i)" [disabled]="longSettings.length == 1"><i class="far fa-minus"></i> {{ 'AUTO.REMOVE_LONG_SETTING' | translate }}</button>
                                 </div>
                             </li>
                 
                             <li *ngFor="let setting of shortSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">{{ 'AUTO.SHORT_SETTINGS' | translate }} (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
-                                        <select [(ngModel)]="shortCandleType">
-                                            <option [value]="candleType[0]">종가</option>
-                                            <option [value]="candleType[1]">시가</option>
-                                            <option [value]="candleType[2]">고가</option>
-                                            <option [value]="candleType[3]">저가</option>
+                                        <select [(ngModel)]="setting.candleType">
+                                            <option *ngFor="let type of candleType" [value]="type">{{ type }}</option>
                                         </select>
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption1">
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="setting.constant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption2">
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="setting.constant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
-                                        <select>
+                                        <select [(ngModel)]="setting.botOperation">
                                             <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
                                             <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button>
+                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button><br>
+                                    <button (click)="removeShortSetting(i)" [disabled]="shortSettings.length == 1"><i class="far fa-minus"></i> {{ 'AUTO.REMOVE_SHORT_SETTING' | translate }}</button>
                                 </div>
                             </li>
 
@@ -228,8 +224,8 @@
                                 <div #slideBox class="default_setting_info tab_slide_box">
                                     <p>{{ 'DEFAULT.TELEGRAM_KEY' | translate }} : {{ teleId }}</p>
                                     <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 
-                                        <span class="no_color">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
-                                        <span class="yes_color">{{ 'DEFAULT.CONNECTED' | translate }}</span>
+                                        <span class="no_color" *ngIf="controlYn">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
+                                        <span class="yes_color" *ngIf="!controlYn">{{ 'DEFAULT.CONNECTED' | translate }}</span>
                                     </p>
                                     <p>{{ 'DEFAULT.BOT_CONTROL_STATUS' | translate }} : 
                                         <span class="no_color" *ngIf="!teleBotYn">{{ 'DEFAULT.OFF' | translate }}</span>
@@ -319,7 +315,7 @@
                                 <div #slideBox class="tab_slide_box" style="display: block;">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
-                                        <select (change)="onIndicatorChange(1, $event)">
+                                        <select (change)="onIndicatorChange(1, $event)" [ngModel]="selectedIndicator1?.value">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
@@ -329,7 +325,7 @@
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
-                                        <select (change)="onIndicatorChange(2, $event)">
+                                        <select (change)="onIndicatorChange(2, $event)" [ngModel]="selectedIndicator2?.value">
                                             <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
@@ -341,96 +337,90 @@
                             </li>
 
                             <li *ngFor="let setting of longSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">롱 설정 (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(i + 1)">{{ 'AUTO.LONG_SETTINGS' | translate }} (Long) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[i + 1].isOpen, 'fa-chevron-down': !open[i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
-                                        <select [(ngModel)]="longCandleType">
-                                            <option [value]="candleType[0]">종가</option>
-                                            <option [value]="candleType[1]">시가</option>
-                                            <option [value]="candleType[2]">고가</option>
-                                            <option [value]="candleType[3]">저가</option>
+                                        <select [(ngModel)]="setting.candleType">
+                                            <option *ngFor="let type of candleType" [value]="type">{{ type }}</option>
                                         </select>
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption1">
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                             <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="setting.constant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption2">
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                             <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
-                                    <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
+                                    <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="setting.constant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
-                                        <select>
+                                        <select [(ngModel)]="setting.botOperation">
                                             <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
                                             <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button>
+                                    <button (click)="addLongSetting()" [disabled]="longSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_LONG_SETTING' | translate }}</button><br>
+                                    <button (click)="removeLongSetting(i)" [disabled]="longSettings.length == 1"><i class="far fa-minus"></i> {{ 'AUTO.REMOVE_LONG_SETTING' | translate }}</button>
                                 </div>
                             </li>
                 
                             <li *ngFor="let setting of shortSettings; let i = index">
-                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">숏 설정 (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
+                                <h3 class="tab_slide_btn" (click)="toggleSlide(longSettings.length + i + 1)">{{ 'AUTO.SHORT_SETTINGS' | translate }} (Short) #{{ i + 1 }}<i class="far " [ngClass]="{'fa-chevron-up': open[longSettings.length + i + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + i + 1].isOpen}"></i></h3>
                                 <div #slideBox class="tab_slide_box">
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.CANDLE' | translate }}</p>
-                                        <select [(ngModel)]="shortCandleType">
-                                            <option [value]="candleType[0]">종가</option>
-                                            <option [value]="candleType[1]">시가</option>
-                                            <option [value]="candleType[2]">고가</option>
-                                            <option [value]="candleType[3]">저가</option>
+                                        <select [(ngModel)]="setting.candleType">
+                                            <option *ngFor="let type of candleType" [value]="type">{{ type }}</option>
                                         </select>
                                     </div>
                 
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions">{{option}}</option>
-                                            <!-- <option>캔들값이 클 때 (over)</option> -->
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption1">
+                                            <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                         </select>
                                     </div>
-                                    <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
+                                    <div class="setting_box"  *ngIf="selectedIndicator1?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant1" (input)="onConstantInput($event, 1)">
+                                        <input type="text" [(ngModel)]="setting.constant1" (input)="onConstantInput($event, 1)">
                                     </div>
                                     <div class="setting_box">
-                                        <p class="name">{{ 'AUTO.SELECT_INDICATOR2' | translate }}</p>
-                                        <select>
-                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions">{{option}}</option>
-                                            <!-- <option>상수보다 클 때 (over)</option> -->
+                                        <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
+                                        <select [(ngModel)]="setting.selectedOption2">
+                                            <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
                                         </select>
                                     </div>
-                                    <div class="setting_box" *ngIf="selectedIndicator2?.showConstant">
+                                    <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
                                         <p class="name">{{ 'AUTO.CONSTANT' | translate }}</p>
-                                        <input type="text" [(ngModel)]="onConstant2" (input)="onConstantInput($event, 2)">
+                                        <input type="text" [(ngModel)]="setting.constant2" (input)="onConstantInput($event, 2)">
                                     </div>
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.BOT_ACTION' | translate }}</p>
-                                        <select>
+                                        <select [(ngModel)]="setting.botOperation">
                                             <option value="open">{{ 'AUTO.OPEN' | translate }}</option>
                                             <option value="close">{{ 'AUTO.CLOSE' | translate }}</option>
                                         </select>
                                     </div>
                 
-                                    <button (click)="addShortSetting()"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button>
+                                    <button (click)="addShortSetting()" [disabled]="shortSettings.length >= 4"><i class="far fa-plus"></i> {{ 'AUTO.ADD_SHORT_SETTING' | translate }}</button><br>
+                                    <button (click)="removeShortSetting(i)" [disabled]="shortSettings.length == 1"><i class="far fa-minus"></i> {{ 'AUTO.REMOVE_SHORT_SETTING' | translate }}</button>
                                 </div>
                             </li>
 
@@ -496,8 +486,8 @@
                                 <div #slideBox class="default_setting_info tab_slide_box">
                                     <p>{{ 'DEFAULT.TELEGRAM_KEY' | translate }} : {{ teleId }}</p>
                                     <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 
-                                        <span class="no_color">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
-                                        <span class="yes_color">{{ 'DEFAULT.CONNECTED' | translate }}</span>
+                                        <span class="no_color" *ngIf="controlYn">{{ 'DEFAULT.DISCONNECTED' | translate }}</span>
+                                        <span class="yes_color" *ngIf="!controlYn">{{ 'DEFAULT.CONNECTED' | translate }}</span>
                                     </p>
                                     <p>{{ 'DEFAULT.BOT_CONTROL_STATUS' | translate }} : 
                                         <span class="no_color" *ngIf="!teleBotYn">{{ 'DEFAULT.OFF' | translate }}</span>

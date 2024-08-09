@@ -380,6 +380,10 @@ export class UtilService {
     }
 
     const data:any = await this.request('POST', 'instances/read', body, true, false);
+
+    if(data.desc === 'file downloaded') {
+      localStorage.setItem('file', data.data.data);
+    }
   }
 
   async instancePost(dir: any) {
@@ -397,14 +401,14 @@ export class UtilService {
 
     const data:any = await this.request('POST', 'instances/post', body, true, false);
 
-    if(data.desc === 'success') {
+    if(data.desc === 'file uploaded') {
       return data;
     } else {
       return '';
     }
   }
 
-  async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphase?: string, ApiProvider?: string) {
+  async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphase?: string, ApiProvider?: string, symbol?: string) {
     const instance = localStorage.getItem('instanceId');
 
     let body = {};
@@ -419,7 +423,7 @@ export class UtilService {
             key: apiKey,
             passphase: apiPassphase,
             secret: apiPassword,
-            symbol: 'usdt',           // 임시
+            symbol: symbol,           // 임시
             provider: ApiProvider
           },
           parameter: {}
