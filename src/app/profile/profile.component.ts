@@ -443,10 +443,10 @@ export class ProfileComponent implements OnInit {
       email: this.changePwEmail,
       password: this.changePwCheck,
       profile: '',
-      captcah: this.captcha
+      captcha: this.captcha
     }
 
-    const data:any = await this.utilService.request('POST', 'users/reset_post', body, false, false);
+    const data:any = await this.utilService.request('POST', 'users/reset_post', body, true, false);
 
     if(data.desc === 'success') {
       this.showPassword = false;
