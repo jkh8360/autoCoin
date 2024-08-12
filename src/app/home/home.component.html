@@ -53,7 +53,7 @@
             </div>
 
             <div class="main_content" *ngIf="!isMobileView">
-                <div class="part_box auto_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
+                <div class="part_box auto_play_box" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!autoHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="autoHoverd = true" (mouseleave)="autoHoverd = false">
                         <h2>{{ 'AUTO.SET_AUTO_SALE' | translate }}</h2>
                         <ul class="setting_ul">
@@ -183,7 +183,7 @@
                 </div>
                 
 
-                <div class="part_box default_play_box" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
+                <div class="part_box default_play_box" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div class="" [ngClass]="!defaultHoverd ? 'auto_play_setting' : 'default_play_setting'" (mouseenter)="defaultHoverd = true" (mouseleave)="defaultHoverd = false">
                         <h2>{{ 'DEFAULT.DEFAULT_SETTING' | translate }} <button (click)="defaultSettingClear()">{{ 'DEFAULT.RESET' | translate }}</button></h2>
                         <ul class="setting_ul">
@@ -305,8 +305,8 @@
             </div>
 
             <!-- 모바일 뷰 -->
-            <div class="main_content" *ngIf="isMobileView">
-                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
+            <div class="main_content" *ngIf="isMobileView" (click)="onDisabledAreaClick($event)">
+                <div class="part_box auto_play_box" *ngIf="selectedTab === 'auto'" [ngStyle]="{'pointer-events': !loginYn ? 'none' : ''}">
                     <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
                         <h2>{{ 'AUTO.SET_AUTO_SALE' | translate }}</h2>
                         <ul class="setting_ul">
@@ -436,7 +436,7 @@
                 </div>
                 
 
-                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" (click)="onDisabledAreaClick($event)" [ngStyle]="{'display': 'block', 'pointer-events': !loginYn ? 'none' : ''}">
+                <div class="part_box default_play_box" *ngIf="selectedTab === 'default'" [ngStyle]="{'display': 'block', 'pointer-events': !loginYn ? 'none' : ''}">
                     <div [ngClass]="loginYn ? 'default_play_setting' : 'auto_play_setting'">
                         <h2>{{ 'DEFAULT.DEFAULT_SETTING' | translate }} <button>{{ 'DEFAULT.RESET' | translate }}</button></h2>
                         <ul class="setting_ul">
@@ -482,7 +482,7 @@
                             </li> -->
                 
                             <li>
-                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(longSettings.length + shortSettings.length + 1)">{{ 'DEFAULT.TELEGRAM_INFO' | translate }}<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
+                                <button class="default_setting_info_btn tab_slide_btn" (click)="toggleSlide(0, 200, 'default')">{{ 'DEFAULT.TELEGRAM_INFO' | translate }}<i class="far" [ngClass]="{'fa-chevron-up': open[longSettings.length + shortSettings.length + 1].isOpen, 'fa-chevron-down': !open[longSettings.length + shortSettings.length + 1].isOpen}"></i></button>
                                 <div #slideBox class="default_setting_info tab_slide_box">
                                     <p>{{ 'DEFAULT.TELEGRAM_KEY' | translate }} : {{ teleId }}</p>
                                     <p>{{ 'DEFAULT.CONNECT_STATUS' | translate }} : 

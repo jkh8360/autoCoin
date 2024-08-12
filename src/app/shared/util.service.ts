@@ -16,7 +16,6 @@ export class UtilService {
 
   constructor(
     private dialog: MatDialog,
-    private toastService: ToastService,
     private injector: Injector
   ) {}
 
@@ -438,7 +437,7 @@ export class UtilService {
       }
     }
 
-    const data:any = await this.request('POST', 'instances/operation', body, true, false);
+    const data:any = await this.request('POST', 'instances/operation', body, true, true);
 
     if(data.desc === 'success') {
       return data;

@@ -107,6 +107,12 @@ export class ProfileComponent implements OnInit {
 
     this.loginYn = this.utilService.isAuthenticated();
 
+    if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
+      this.loginYn = false;
+    } else {
+      this.loginYn = true;
+    }
+
     this.currentLang = this.sharedService.getCurrentLang();
 
     this.transLanguage();
@@ -456,6 +462,8 @@ export class ProfileComponent implements OnInit {
       this.changePwCheck = '';
 
       this.toastService.showInfo(this.TOAST.OK_PW_CHANGE);
+
+      this.logout();
     } else {
       this.toastService.showError(this.TOAST.FAIL_PW_CHANGE);
     }

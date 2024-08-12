@@ -164,6 +164,12 @@ export class HomeComponent implements AfterViewInit {
 
     this.loginYn = this.utilService.isAuthenticated();
 
+    if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
+      this.loginYn = false;
+    } else {
+      this.loginYn = true;
+    }
+
     if(this.loginYn) {
       this.utilService.instanceList();
     }
@@ -299,6 +305,7 @@ export class HomeComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.layoutsComponent.tabSelected.subscribe(tab => {
       this.selectedTab = tab;
+      this.toggleCheck();
     });
     this.layoutsComponent.noticeYn.subscribe(open => {
       this.noticeIn = open;
@@ -322,8 +329,9 @@ export class HomeComponent implements AfterViewInit {
     }
   }
   
-  toggleSlide(index: number, duration: number = 200) {
-    const open = this.open[index];
+  toggleSlide(index: number, duration: number = 200, exception?: string) {
+    let open = this.open[index];
+    if(exception === 'default') open = this.open[this.longSettings.length + this.shortSettings.length + 1];
     open.isOpen = !open.isOpen;
     const slideBoxElement = this.slideBox?.toArray()[index].nativeElement;
   
@@ -354,12 +362,19 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
+  toggleCheck() {
+    this.open.forEach((v, i) => {
+      if (i > 0) v.isOpen = false;
+      else if (i == 0) v.isOpen = true;
+    })
+  }
+
   copyText(element: HTMLSpanElement) {
     const text = element.textContent;
     if (text) {
       navigator.clipboard.writeText(text).then(() => {
       }).catch(err => {
-        console.error('복사 중 오류가 발생했습니다:', err);
+        this.toastService.showError('복사 중 오류가 발생했습니다.' + err);
       });
     }
   }
@@ -453,11 +468,17 @@ export class HomeComponent implements AfterViewInit {
   }
 
   // 봇 동작
-  operateBot() {  
+  async operateBot() {  
     if(this.botPlay) {
       this.botPlay = false;
       // 봇 정지
-      this.utilService.instanceOperation('halt');
+      const data = await this.utilService.instanceOperation('halt');
+
+      if(data) {
+        this.toastService.showInfo('봇 동작을 정지했습니다.');
+      } else {
+        this.toastService.showError('정지에 실패했습니다.');
+      }
     } else {
       // 봇 실행
       this.showApiSet = true;
