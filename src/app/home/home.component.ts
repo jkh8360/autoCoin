@@ -145,7 +145,6 @@ export class HomeComponent implements AfterViewInit {
   }
 
   async ngOnInit() {
-    this.loadNotifications(); // 공지사항 로딩
     this.setTelegramData();   // 텔레그램 세팅
     this.checkScreenSize();   // 스크린 사이즈 체크
     this.transLanguage();     // 번역
@@ -500,12 +499,28 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
+  openNotice() {
+    this.noticeIn=true; 
+    this.currentPage = 1;
+    this.loadNotifications();
+  }
+
   // 공지사항 받아오기
-  loadNotifications(): void {
-    // this.notificationService.getNotifications(this.currentPage).subscribe(data => {
-    //   this.notifications = data.notifications;
-    //   this.totalPages = data.totalPages;
-    // });
+  async loadNotifications() {
+    let data: any;
+
+    const body = {
+      category: '',
+      filter: '',   // writer, contents, contents+title
+      keyword: '',  // 검색 내용
+      before: '',   // 이전 포스트 날짜
+      size: 100
+    }
+
+    if(this.loginYn) data = await this.utilService.request('POST', 'board/search', body, true, false);
+    else data = await this.utilService.request('POST', 'board/search', body, false, false);
+    
+    console.log(JSON.stringify(data));
 
     const exampleData: AppNotification[] = [
       { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb1' },
@@ -615,6 +630,7 @@ export class HomeComponent implements AfterViewInit {
     this.tradeSymbol = 'usdt';
     this.candleInterval = '1m';
     this.candleConst = 0.1;
+    this.isPosition = false;
 
     if(this.longSettings.length > 0) {
       const frist = this.longSettings[0];
@@ -787,6 +803,8 @@ export class HomeComponent implements AfterViewInit {
 
     const jsonString = atob(encodedData);
     const parsedData = JSON.parse(jsonString);
+
+    console.log(JSON.stringify(parsedData));
 
     // 기존 설정 초기화
     this.longSettings = [];
