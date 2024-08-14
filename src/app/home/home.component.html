@@ -44,11 +44,7 @@
                 </div>
 
                 <div class="right">
-                    <p [innerHTML]="'COM.HOME_NOTICE' | translate">
-                        <!-- 니트봇은 <span>무료로 제공</span>되며, 레퍼럴 가입이 <span>필요하지 않습니다.</span> <br>
-                        현재 서버비는 광고와 후원으로 유지되고 있습니다. 따뜻한 후원으로 제작자의 허기진 배를 채워주세요.<br>
-                        애드블록을 꺼주신다면 제작자에게 큰 힘이 됩니다. -->
-                    </p>
+                    <p [innerHTML]="'COM.HOME_NOTICE' | translate"></p>
                 </div>
             </div>
 
@@ -97,7 +93,6 @@
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
                                         <select [(ngModel)]="setting.selectedOption1">
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
-                                            <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
@@ -108,7 +103,6 @@
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
                                         <select [(ngModel)]="setting.selectedOption2">
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
-                                            <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
@@ -290,7 +284,6 @@
                 <div class="part_box ad_part_box">
                     <div>
                         <!-- <div>광고</div> -->
-            
                         <div class="banner_box">
                             <p>{{ 'COM.CHEER_TO_OFFICIAL' | translate }}</p>
                             <a href="#none" class="banner_a">{{ 'COM.BANNER' | translate }}</a>
@@ -350,7 +343,6 @@
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_1' | translate }}</p>
                                         <select [(ngModel)]="setting.selectedOption1">
                                             <option *ngFor="let option of selectedIndicator1?.comparisonOptions" [ngValue]="option">{{option}}</option>
-                                            <!-- <option>캔들값이 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngIf="selectedIndicator1?.showConstant">
@@ -361,7 +353,6 @@
                                         <p class="name">{{ 'AUTO.THAN_INDICATOR_2' | translate }}</p>
                                         <select [(ngModel)]="setting.selectedOption2">
                                             <option *ngFor="let option of selectedIndicator2?.comparisonOptions" [ngValue]="option">{{option}}</option>
-                                            <!-- <option>상수보다 작을 때 (under)</option> -->
                                         </select>
                                     </div>
                                     <div class="setting_box"  *ngIf="selectedIndicator2?.showConstant">
@@ -583,7 +574,7 @@
     <div class="popup_content">
         <table>
             <tbody>
-                <tr *ngFor="let notification of notifications" (click)="showNotificationDetails(notification)">
+                <tr *ngFor="let notification of displayedNotifications" (click)="showNotificationDetails(notification)">
                     <td><a href="#none">{{ notification.message }}</a></td>
                     <td class="day">{{ notification.date }}</td>
                 </tr>
@@ -663,13 +654,7 @@
     <div class="popup_content">
         <div class="guide_p">
             <h2>0. {{ 'USE.DISCLAIMER' | translate }}</h2>
-            <p [innerHTML]="'USE.DISCLAIMER_TXT' | translate">
-                <!-- KnitBot 은 모든 기능을 무료로 제공하고 있습니다.<br>
-                자동매매를 설정하여 매매하는 것은 오로지 사용자 본인의 책임입니다.<br>
-                서버 통신 또는 시스템 오류 등 기술적인 문제가 발생할 수 있으며, KnitBot은 이에 대해 책임지지 않습니다.<br>
-                또한 해당 사용 방법이 실제와 다를 경우에도 책임지지 않습니다.<br>
-                본 사이트의 모든 기능과 관련하여 KnitBot은 일체의 책임을 지지 않으므로, 이 점을 반드시 숙지하시고 본인의 의사에 따라 사이트 이용 여부를 선택해주시기 바랍니다. -->
-            </p>
+            <p [innerHTML]="'USE.DISCLAIMER_TXT' | translate"></p>
             <h2>1. {{ 'USE.TELEGRAM_SETTING' | translate }}</h2>
             <img src="../../assets/common/images/guide1.png">
             <ul>

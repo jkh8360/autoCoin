@@ -181,7 +181,8 @@
         "SIGNIN_TXT_3": "을 이해했음을 인정하는 것입니다.",
         "CONFIRM_SIGNIN": "회원가입 완료",
         "TERMS": "이용약관",
-        "PERSONAL_INFO": "개인정보 처리방침"
+        "PERSONAL_INFO": "개인정보 처리방침",
+        "IMAGE_CHANGE": "이미지 변경"
     },
     "TOAST": {
         "NEED_LOGIN": "로그인이 필요한 서비스입니다.",
@@ -202,7 +203,10 @@
         "FAIL_SIGNIN": "회원가입에 실패했습니다.",
         "FAIL_SAVE_INSTANCE": "인스턴스 저장에 실패했습니다.",
         "FAIL_OPERATE_INSTANCE": "인스턴스 실행에 실패했습니다.",
-        "FAIL_OPERATE_BOT": "봇 실행에 실패했습니다."
+        "FAIL_OPERATE_BOT": "봇 실행에 실패했습니다.",
+        "FAIL_COPY_TEXT": "복사 중 오류가 발생했습니다.",
+        "OK_BOT_STOP": "봇 동작을 정지했습니다.",
+        "FAIL_BOT_STOP": "정지에 실패했습니다."
     },
     "LAYOUT": {
         "AUTO": "자동매매",

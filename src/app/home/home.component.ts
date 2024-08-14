@@ -89,8 +89,10 @@ export class HomeComponent implements AfterViewInit {
 
   // 공지사항
   notifications: AppNotification[] = [];
+  displayedNotifications: AppNotification[] = [];
   currentPage: number = 1;
   totalPages: number = 5;
+  itemsPerPage: number = 8;
   
   showDetail: boolean = false;
   selectedNotification:AppNotification | null = null;
@@ -510,37 +512,55 @@ export class HomeComponent implements AfterViewInit {
     let data: any;
 
     const body = {
-      category: '',
-      filter: '',   // writer, contents, contents+title
-      keyword: '',  // 검색 내용
-      before: '',   // 이전 포스트 날짜
       size: 100
     }
 
     if(this.loginYn) data = await this.utilService.request('POST', 'board/search', body, true, false);
     else data = await this.utilService.request('POST', 'board/search', body, false, false);
     
-    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data.data.context));
 
-    const exampleData: AppNotification[] = [
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb1' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb2' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb3' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb4' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb5' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb6' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb7' },
-      { message: '알림기능 사용 일시정지 안내', date: '04. 18.', details: 'abbbbbbbb8' }
-    ];
+    const exam = data.data.context.map((item: any) => ({
+      message: item.title,
+      date: item.modified.slice(5, 10),
+      details: item.postno
+    }));
 
-    this.notifications = exampleData;
-    this.totalPages = 5;
+    this.notifications = exam;
+
+    this.totalPages = Math.ceil(this.notifications.length / this.itemsPerPage);
+
+    this.updateDisplayedNotifications();
+  }
+
+  // 공지사항 상세 조회
+  async detailNotifications(notification: any) {
+    let data: any;
+    if(this.loginYn) data = await this.utilService.get(`board/post?postno=${notification.details}`, true, false);
+    else data = await this.utilService.get(`board/post?postno=${notification.details}`, false, false);
+
+    if(data) {
+      const notice = {
+          message: JSON.parse(data).title, date: notification.date, details: JSON.parse(data).contents
+        }
+  
+      return notice;
+    } else {
+      return '';
+    }
+  }
+
+  // 페이지별 공지사항 노출
+  updateDisplayedNotifications() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedNotifications = this.notifications.slice(startIndex, endIndex);
   }
 
   // 공지사항 페이지 변경
   changePage(page: number): void {
     this.currentPage = page;
-    this.loadNotifications();
+    this.updateDisplayedNotifications();
   }
 
   // 공지 상세 뒤로가기
@@ -549,8 +569,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   // 공지 상세 보기
-  showNotificationDetails(notification:any) {
-    this.selectedNotification = notification;
+  async showNotificationDetails(notification:any) {
+    const data: any = await this.detailNotifications(notification);
+
+    this.selectedNotification = data;
     this.showDetail = true;
   }
 

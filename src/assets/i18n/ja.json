@@ -179,7 +179,8 @@
         "SIGNIN_TXT": "By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.",
         "CONFIRM_SIGNIN": "DONE",
         "TERMS": "User Agreement",
-        "PERSONAL_INFO": "Privacy Policy"
+        "PERSONAL_INFO": "Privacy Policy",
+        "IMAGE_CHANGE": "Edit Image"
     },
     "TOAST": {
         "NEED_LOGIN": "This service requires login.",
@@ -200,7 +201,10 @@
         "FAIL_SIGNIN": "Membership registration failed.",
         "FAIL_SAVE_INSTANCE": "Failed to save instance.",
         "FAIL_OPERATE_INSTANCE": "Instance execution failed.",
-        "FAIL_OPERATE_BOT": "Bot execution failed."
+        "FAIL_OPERATE_BOT": "Bot execution failed.",
+        "FAIL_COPY_TEXT": "복사 중 오류가 발생했습니다.",
+        "OK_BOT_STOP": "봇 동작을 정지했습니다.",
+        "FAIL_BOT_STOP": "정지에 실패했습니다."
     },
     "LAYOUT": {
         "AUTO": "자동매매",

@@ -116,7 +116,7 @@
 <!-- 프로필 사진 변경 -->
 <div *ngIf="changeProfile" class="popup_box img_popup" id="mypage_popup">
     <div class="popup_header">
-        <h2 class="left ">이미지 변경</h2>
+        <h2 class="left ">{{ 'MEMBER.IMAGE_CHANGE' | translate }}</h2>
         <button class="right " (click)="changeProfile=false"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
