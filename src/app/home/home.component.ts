@@ -157,6 +157,7 @@ export class HomeComponent implements AfterViewInit {
         this.loginYn = status;
         if(this.loginYn) {
           this.decodeFile();
+          this.setTelegramData();
         } else {
           this.afterLogout();
         }
@@ -653,6 +654,10 @@ export class HomeComponent implements AfterViewInit {
     this.candleInterval = '1m';
     this.candleConst = 0.1;
     this.isPosition = false;
+
+    this.teleId = '';
+    this.teleBotYn = false;
+    this.controlYn = false;
 
     if(this.longSettings.length > 0) {
       const frist = this.longSettings[0];
