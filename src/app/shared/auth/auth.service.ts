@@ -21,6 +21,7 @@ export class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('instanceId');
+    localStorage.removeItem('file');
     
     // 로그인 상태를 false로 설정
     this.setLoginStatus(false);

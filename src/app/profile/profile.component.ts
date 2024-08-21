@@ -155,8 +155,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    this.utilService.clearTokens();
 
     this.loginEmail = '';
     this.loginPassword = '';
@@ -282,7 +281,7 @@ export class ProfileComponent implements OnInit {
   // 텔레그램 설정
   async saveTelegram() {
     const body = {
-      teleid: this.teleId,
+      teleid: await this.utilService.encryptRSA(this.teleId),
       chatid: this.chatId,
       is_remote: this.teleBotYn ? 1 : 0,
       profile_id: '',
@@ -311,7 +310,7 @@ export class ProfileComponent implements OnInit {
     const body = {
       profile_id: this.selectedProfileIndex,
       nickname: '',
-      teleid: this.teleId || '',
+      teleid: await this.utilService.encryptRSA(this.teleId) || '',
       chatid: this.chatId || ''
     }
 
@@ -447,7 +446,7 @@ export class ProfileComponent implements OnInit {
   async changePassword() {
     const body = {
       email: this.changePwEmail,
-      password: this.changePwCheck,
+      password: await this.utilService.encryptRSA(this.changePwCheck),
       profile: '',
       captcha: this.captcha
     }

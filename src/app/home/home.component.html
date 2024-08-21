@@ -631,11 +631,11 @@
             </li>
             <li>
                 <h3>{{ 'API.API_SECRET_KEY' | translate }} (Password)</h3>
-                <input type="text" required [(ngModel)]="ApiPassword" #inputApiPassword="ngModel" placeholder="{{ 'API.API_SECRET_KEY_TXT' | translate }}">
+                <input type="password" required [(ngModel)]="ApiPassword" #inputApiPassword="ngModel" placeholder="{{ 'API.API_SECRET_KEY_TXT' | translate }}">
             </li>
             <li>
                 <h3>{{ 'API.API_PASSPHASE' | translate }} (Passphase)</h3>
-                <input type="text" required [(ngModel)]="ApiPassphase" #inputApiPassphase="ngModel" placeholder="{{ 'API.API_PASSPHASE_TXT' | translate }}">
+                <input type="password" required [(ngModel)]="ApiPassphase" #inputApiPassphase="ngModel" placeholder="{{ 'API.API_PASSPHASE_TXT' | translate }}">
             </li>
         </ul>
         <p>{{ 'API.API_SETTING_NOTICE' | translate }}</p>

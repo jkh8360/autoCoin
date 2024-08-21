@@ -320,8 +320,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    this.utilService.clearTokens();
 
     if (this.loginSubscription) {
       this.loginSubscription.unsubscribe();

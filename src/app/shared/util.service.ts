@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommonDialogComponent } from '../common-dialog/common-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth/auth.service';
-import { ToastService } from '../toast/toast.service';
-import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +12,15 @@ export class UtilService {
   private baseUrl = '/api'; // 실제 API 서버 URL로 변경해주세요
   private authService: AuthService | null = null;
   private loggedOutSubject = new BehaviorSubject<boolean>(false);
+  private publicKey: Promise<CryptoKey>;
 
   constructor(
     private dialog: MatDialog,
-    private injector: Injector
-  ) {}
+    private injector: Injector,
+    private http: HttpClient
+  ) {
+    this.publicKey = this.loadPublicKey();
+  }
 
   loggedOut$ = this.loggedOutSubject.asObservable();
 
@@ -224,7 +227,7 @@ export class UtilService {
   async login(email: string, password: string) {
     const body = {
       'email': email,
-      'password': password
+      'password': await this.encryptRSA(password)
     }
 
     const data:any = await this.request('POST', 'users/login', body, false, false);
@@ -290,7 +293,7 @@ export class UtilService {
   async signIn(email:string, password: string) {
     const body = {
       'email': email,
-      'password': password
+      'password': await this.encryptRSA(password)
     }
 
     const data:any = await this.request('POST', 'users/register', body, false);
@@ -318,6 +321,7 @@ export class UtilService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('instanceId');
+    localStorage.removeItem('file');
   }
 
   getAccessToken(): string | null {
@@ -419,9 +423,9 @@ export class UtilService {
         instance_id: instance,
         payload: {
           credentials: {
-            key: apiKey,
-            passphase: apiPassphase,
-            secret: apiPassword,
+            key: await this.encryptRSA(apiKey),
+            passphase: await this.encryptRSA(apiPassphase),
+            secret: await this.encryptRSA(apiPassword),
             symbol: symbol,           // 임시
             provider: ApiProvider
           },
@@ -444,5 +448,68 @@ export class UtilService {
     } else {
       return '';
     }
+  }
+
+  /**
+   * 공개키 암호화
+   * public_key.pem
+   */
+  private async loadPublicKey(): Promise<CryptoKey> {
+    // .pem 파일에서 공개키 내용을 읽어옵니다.
+    const pemContent = await this.http.get('assets/public_key.pem', { responseType: 'text' }).toPromise();
+    return this.importPublicKey(pemContent);
+  }
+
+  private async importPublicKey(pemContent: string): Promise<CryptoKey> {
+    const pemHeader = "-----BEGIN PUBLIC KEY-----";
+    const pemFooter = "-----END PUBLIC KEY-----";
+    const pemContents = pemContent.substring(
+      pemContent.indexOf(pemHeader) + pemHeader.length,
+      pemContent.indexOf(pemFooter)
+    ).replace(/\s/g, '');
+    
+    const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
+
+    return await crypto.subtle.importKey(
+      "spki",
+      binaryDer,
+      {
+        name: "RSA-OAEP",
+        hash: "SHA-256",
+      },
+      true,
+      ["encrypt"]
+    );
+  }
+
+  async encryptRSA(plaintext: string): Promise<string> {
+    const encodedText = new TextEncoder().encode(plaintext);
+    const key = await this.publicKey;
+    const encryptedData = await crypto.subtle.encrypt(
+      {
+        name: "RSA-OAEP"
+      },
+      key,
+      encodedText
+    );
+
+    // 3. base64 인코드 (base64encode)
+    const uintArray = new Uint8Array(encryptedData);
+    const numberArray = Array.from(uintArray);  // Uint8Array를 일반 배열로 변환
+    const base64Encoded = btoa(String.fromCharCode.apply(null, numberArray));
+
+    console.log(base64Encoded);
+    
+    // 4. decode() 하여 string화
+    return base64Encoded;
+  }
+
+  private decodeBase64ToString(base64Encoded: string): string {
+    return atob(base64Encoded);
+  }
+
+  // 선택적: Base64로 다시 인코딩하는 메서드 (서버로 전송 시 필요할 수 있음)
+  encodeToBase64(decodedString: string): string {
+    return btoa(decodedString);
   }
 }
