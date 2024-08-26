@@ -34,7 +34,7 @@
         "INCREMENT": "Increment",
         "MAXIMUM": "Maximum",
         "SMOOTHING": "Smoothing",
-        "RSI_LENGTH": "RSI Period",
+        "RSI_PERIOD": "RSI Period",
         "STOCHASTIC_PERIOD": "Stochastic Period",
         "MOVE_AVERAGE": "MA",
         "FIBONACCI_RETRACEMENT": "Fibonacci retracements",
@@ -70,17 +70,7 @@
         "REMOVE_SHORT_SETTING": "Remove Short Settings",
         "REVERSE_POSITION_EXIT": "Reverse the close position",
         "SHORT_SETTINGS": "Short Settings",
-        "LONG_SETTINGS": "Long Settings",
-        "INDICATOR_SETTINGS": "지표 설정",
-        "COIN_LAST": "종가",
-        "COIN_OPEN": "시가",
-        "COIN_HIGH": "고가",
-        "COIN_LOW": "저가",
-        "SHORT_REVIEW": "단기 이평",
-        "LONG_REVIEW": "장기 이평",
-        "MAXIMUM_ACCEL_ELEMENT": "최대 가속요소",
-        "SIGNAL": "시그널",
-        "RSI_PERIOD": "RSI 기간"
+        "LONG_SETTINGS": "Long Settings"
     },
     "DEFAULT" : {
         "DEFAULT_SETTING": "PREFERENCES",
@@ -105,9 +95,7 @@
         "DISCONNECTED": "Disconnected",
         "BOT_CONTROL_STATUS": "Bot Control Status",
         "ON": "On",
-        "OFF": "Off",
-        "TYPE_TRANSACTION": "거래유형",
-        "ENTER_QUANTITY": "수량 입력"
+        "OFF": "Off"
     },
     "USE": {
         "HOW_TO_USE": "Guide",
@@ -188,23 +176,11 @@
         "LOGIN_ERROR": "아이디나 비밀번호가 일치하지 않습니다.",
         "PW_RULE": "8~32자의 영어 대소문자와 특수문자를 포함해주세요",
         "SIGNIN": "SIGN UP",
-        "SIGNIN_TXT_1": "계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의",
-        "SIGNIN_TXT_2": "에 동의하고 ",
-        "SIGNIN_TXT_3": "을 이해했음을 인정하는 것입니다.",
+        "SIGNIN_TXT": "By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.",
         "CONFIRM_SIGNIN": "DONE",
         "TERMS": "User Agreement",
         "PERSONAL_INFO": "Privacy Policy",
-        "IMAGE_CHANGE": "Edit Image",
-        "CAPTCHA_TXT": "인증 메일을 확인하고 captcha를 입력해주세요.",
-        "CERTIFY_EMAIL": "이메일을 인증해주세요.",
-        "ERROR_PASSWORD_TXT": "비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
-        "ERROR_PASSWORD_RULE": "유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
-        "ERROR_PASSWORD_CHECK": "비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
-        "INVALID_PASSWORD": "비밀번호가 일치하지 않습니다.",
-        "ERROR_CAPTCHA": "captcha를 입력해주세요",
-        "3MIN_CERTIFY": "이메일 인증은 3분 후에 가능합니다.",
-        "INPUT_EMAIL_CHECK": "이메일을 입력해주세요.",
-        "INPUT_EMAIL_RULE": "유효한 이메일 형식을 입력해주세요."
+        "IMAGE_CHANGE": "Edit Image"
     },
     "TOAST": {
         "NEED_LOGIN": "This service requires login.",
