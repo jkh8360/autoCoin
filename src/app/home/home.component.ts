@@ -244,11 +244,11 @@ export class HomeComponent implements AfterViewInit {
       { value: 'MA',                   label: 'MA',                    comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false  },
       { value: 'MACD',                 label: 'MACD',                  comparisonOptions: [this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
-        inputs: [{name: '단기 이평', defaultValue: '12'}, {name: '장기 이평', defaultValue: '26'}, {name: '시그널', defaultValue: '9'}], showConstant: false },
+        inputs: [{name: this.AUTO.SHORT_REVIEW, defaultValue: '12'}, {name: this.AUTO.LONG_REVIEW, defaultValue: '26'}, {name: this.AUTO.SIGNAL, defaultValue: '9'}], showConstant: false },
       { value: 'MFI',                  label: 'MFI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true },
       { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
-        inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: '최대 가속요소', defaultValue: '0.2'}], showConstant: false },
+        inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: this.AUTO.MAXIMUM_ACCEL_ELEMENT, defaultValue: '0.2'}], showConstant: false },
       { value: 'RSI',                  label: 'RSI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true  },
       { value: 'SMA',                  label: 'SMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
@@ -258,7 +258,7 @@ export class HomeComponent implements AfterViewInit {
       { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: [this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.SMOOTHING+'(%K)', defaultValue: '3'}], showConstant: true  },
       { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [''], 
-        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: 'RSI 기간', defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
+        inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.RSI_PERIOD, defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
       { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
     ];
@@ -284,13 +284,13 @@ export class HomeComponent implements AfterViewInit {
       [this.AUTO.DROPPED_BELOW_RATIO]: 'dropped_ratio'
     }
 
-    this.candleType = ['종가', '시가', '고가', '저가'];
+    this.candleType = [this.AUTO.COIN_LAST, this.AUTO.COIN_OPEN, this.AUTO.COIN_HIGH, this.AUTO.COIN_LOW];
 
     this.comparisonCandleMapping = {
-      '종가': 'last',
-      '시가': 'open',
-      '고가': 'high',
-      '저가': 'low'
+      [this.AUTO.COIN_LAST]: 'last',
+      [this.AUTO.COIN_OPEN]: 'open',
+      [this.AUTO.COIN_HIGH]: 'high',
+      [this.AUTO.COIN_LOW]: 'low'
     }
 
     this.selectedIndicator1 = this.indicatorOptions[0];

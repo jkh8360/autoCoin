@@ -204,10 +204,10 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>
-                    계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의 
-                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>에 동의하고 
+                    {{ 'MEMBER.SIGNIN_TXT_1' | translate }}
+                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>{{ 'MEMBER.SIGNIN_TXT_2' | translate }}
                     <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.PERSONAL_INFO' | translate }}</span></button>
-                    을 이해했음을 인정하는 것입니다.<br><br>
+                    {{ 'MEMBER.SIGNIN_TXT_3' | translate }}<br><br>
                 </h3>
             </li>
             <li>
@@ -225,10 +225,10 @@
             <li>
                 <p class="no_login_t" *ngIf="!signEmail">이메일을 입력해주세요.</p>
                 <p class="no_login_t" *ngIf="signEmail && !emailValid">유효한 이메일 형식을 입력해주세요.</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && !signPassword">비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && !passwordValid">유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && !signPasswordCheck">비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && signPasswordCheck && !passwordCheckValid">비밀번호가 일치하지 않습니다.</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && !signPassword">{{ 'MEMBER.ERROR_PASSWORD_TXT' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && !passwordValid">{{ 'MEMBER.ERROR_PASSWORD_RULE' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && !signPasswordCheck">{{ 'MEMBER.ERROR_PASSWORD_CHECK' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && signPasswordCheck && !passwordCheckValid">{{ 'MEMBER.INVALID_PASSWORD' | translate }}</p>
             </li>
         </ul>
         <button class="login_btn" (click)="authSign()" 
@@ -324,7 +324,7 @@
             <li>
                 <h3>CAPTCHA</h3>
                 <input type="text" [(ngModel)]="captcha" #inputCaptchaCheck="ngModel" [disabled]="!certifyYn"
-                placeholder="인증 메일을 확인하고 captcha를 입력해주세요.">
+                placeholder="{{ 'MEMBER.CAPTCHA_TXT' | translate }}">
             </li>
             <!-- <li>
                 <label for="agree" class="chk_box">
@@ -334,13 +334,13 @@
                 </label>
             </li> -->
             <li>
-                <p class="no_login_t" *ngIf="!certifyYn && !sendAfterEmail">이메일을 인증해주세요.</p>
-                <p class="no_login_t" *ngIf="certifyYn && !changePw">비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="certifyYn && changePw && !passwordValidChange">유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && !changePwCheck">비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && !passwordCheckValidChange">비밀번호가 일치하지 않습니다.</p>
-                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && passwordCheckValidChange && !captcha">captcha를 입력해주세요.</p>
-                <p class="no_login_t" *ngIf="!certifyYn && sendAfterEmail">이메일 인증은 3분 후에 가능합니다.</p>
+                <p class="no_login_t" *ngIf="!certifyYn && !sendAfterEmail">{{ 'MEMBER.CERTIFY_EMAIL' | translate }}</p>
+                <p class="no_login_t" *ngIf="certifyYn && !changePw">{{ 'MEMBER.ERROR_PASSWORD_TXT' | translate }}</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && !passwordValidChange">{{ 'MEMBER.ERROR_PASSWORD_RULE' | translate }}</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && !changePwCheck">{{ 'MEMBER.ERROR_PASSWORD_CHECK' | translate }}</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && !passwordCheckValidChange">{{ 'MEMBER.INVALID_PASSWORD' | translate }}</p>
+                <p class="no_login_t" *ngIf="certifyYn && changePw && passwordValidChange && changePwCheck && passwordCheckValidChange && !captcha">{{ 'MEMBER.ERROR_CAPTCHA' | translate }}</p>
+                <p class="no_login_t" *ngIf="!certifyYn && sendAfterEmail">{{ 'MEMBER.3MIN_CERTIFY' | translate }}</p>
             </li> 
         </ul>
         <button class="login_btn1" (click)="changePassword()" [class.disabled]="!isChangePassword()" [disabled]="!isChangePassword()">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
