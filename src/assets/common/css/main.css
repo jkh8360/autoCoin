@@ -959,7 +959,6 @@ text-decoration: underline;
     box-sizing: border-box;
     overflow: auto;
     line-height: 1.5;
-
 }
 .mobile_show {
     display: none !important;

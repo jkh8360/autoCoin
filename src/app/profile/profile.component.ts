@@ -276,6 +276,10 @@ export class ProfileComponent implements OnInit {
     this.showSignUp = false;
     this.showTerms = false;
     this.showPassword = false;
+
+    this.signEmail = '';
+    this.signPassword = '';
+    this.signPasswordCheck = '';
   }
 
   // 텔레그램 설정
@@ -331,6 +335,10 @@ export class ProfileComponent implements OnInit {
 
   openLogin() {
     this.showLogin = true;
+
+    this.signEmail = '';
+    this.signPassword = '';
+    this.signPasswordCheck = '';
   }
 
   openSignUp() {
@@ -451,7 +459,7 @@ export class ProfileComponent implements OnInit {
       captcha: this.captcha
     }
 
-    const data:any = await this.utilService.request('POST', 'users/reset_post', body, true, false);
+    const data:any = await this.utilService.request('POST', 'users/reset_post', body, false, false);
 
     if(data.desc === 'success') {
       this.showPassword = false;

@@ -183,7 +183,7 @@
                         <ul class="setting_ul">
                             <li>
                                 <div class="setting_box">
-                                    <p class="name">거래유형</p>
+                                    <p class="name">{{ 'DEFAULT.TRADE_TYPE' | translate }}</p>
                                     <select>
                                         <option>{{ 'DEFAULT.FUTURES' | translate }}</option>
                                     </select>
@@ -208,7 +208,7 @@
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">수량 입력</p>
+                                    <p class="name">{{ 'DEFAULT.ENTER_QUANTITY' | translate }}</p>
                                     <input type="text" value="0.1" (input)="onInput($event)" [(ngModel)]="candleConst">
                                 </div>
                             </li>
@@ -433,7 +433,7 @@
                         <ul class="setting_ul">
                             <li>
                                 <div class="setting_box">
-                                    <p class="name">거래유형</p>
+                                    <p class="name">{{ 'DEFAULT.TRADE_TYPE' | translate }}</p>
                                     <select>
                                         <option>{{ 'DEFAULT.FUTURES' | translate }}</option>
                                     </select>
@@ -458,7 +458,7 @@
                                     </select>
                                 </div>
                                 <div class="setting_box">
-                                    <p class="name">수량 입력</p>
+                                    <p class="name">{{ 'DEFAULT.ENTER_QUANTITY' | translate }}</p>
                                     <input type="text" value="0.1" (input)="onInput($event)">
                                 </div>
                             </li>

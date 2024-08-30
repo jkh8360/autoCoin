@@ -204,10 +204,10 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>
-                    계속 진행하여 회원가입을 완료함으로써 귀하는 본 사이트의 
-                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>에 동의하고 
+                    {{ 'MEMBER.SIGNIN_TXT_1' | translate }}
+                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>{{ 'MEMBER.SIGNIN_TXT_2' | translate }}
                     <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.PERSONAL_INFO' | translate }}</span></button>
-                    을 이해했음을 인정하는 것입니다.<br><br>
+                    {{ 'MEMBER.SIGNIN_TXT_3' | translate }}<br><br>
                 </h3>
             </li>
             <li>
@@ -223,12 +223,12 @@
                 <input type="password" [(ngModel)]="signPasswordCheck" #inputPasswordCheck="ngModel" required placeholder="{{ 'MEMBER.PASSWORD_TXT' | translate }}">
             </li>
             <li>
-                <p class="no_login_t" *ngIf="!signEmail">이메일을 입력해주세요.</p>
-                <p class="no_login_t" *ngIf="signEmail && !emailValid">유효한 이메일 형식을 입력해주세요.</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && !signPassword">비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && !passwordValid">유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && !signPasswordCheck">비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)</p>
-                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && signPasswordCheck && !passwordCheckValid">비밀번호가 일치하지 않습니다.</p>
+                <p class="no_login_t" *ngIf="!signEmail">{{ 'MEMBER.REQUIRE_EMAIL' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && !emailValid">{{ 'MEMBER.INVALID_EMAIL_RULE' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && !signPassword">{{ 'MEMBER.REQUIRE_PASSWORD' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && !passwordValid">{{ 'MEMBER.INVALID_PASSWORD' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && !signPasswordCheck">{{ 'MEMBER.REQUIRE_PASSWORD_CHECK' | translate }}</p>
+                <p class="no_login_t" *ngIf="signEmail && emailValid && signPassword && passwordValid && signPasswordCheck && !passwordCheckValid">{{ 'MEMBER.ERROR_PASSWORD' | translate }}</p>
             </li>
         </ul>
         <button class="login_btn" (click)="authSign()" 
@@ -248,52 +248,7 @@
         <button class="right " (click)="showTerms = false;"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
-        <div class="agree_text">
-            제4조(용어의 정의)<br>
-            이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
-            ① 회원.회원사 : 회사와 서비스 이용계약을 체결한 개인이나 법인 또는 법인에 준하는 단체.<br>
-            ⑦ 빅장 회원 : 회원(이하 "회원사"라 칭함)이 한달에 일정금액을 내고 서비스를 이용하는 개인이나 단체.<br>
-            ⑧ 전사독 회원 : 무료 서비스를 이용하는 개인이나 단체.<br><br>
-
-            제7조(이용 신청 및 승낙)<br>
-            ① 이용신청은 서비스의 이용자등록에서 다음사항을 가입신청 양식에 기록하여 신청합니다.<br>
-            ⓐ 이름<br>
-            ⓑ e-mail<br>
-            ⓒ 아이디,비밀번호<br>
-            ⓓ 주민등록번호<br>
-            ⓔ 주소<br>
-            ⓕ 전화번호<br>
-            ⓖ 회원등급<br>
-            ⓗ 개인.회원사<br>
-            ⓘ 빅장 구사 여부(또는 4. 이야오랷걁긝)<br><br>
-
-            제9조(이용계약의 종료)<br>
-            ① 이용계약은 회원 또는 회사의 해지에 의하여 즉시 뼈와 살이 분리됩니다.<br>
-            ② 회원은 해지의사 발생 시 즉시 회사에 e-mail을 통한 해지 신청을 합니다.<br>
-            ③ 회사는 다음과 같은 사유 발생시 이용신청에 대한 빅장을 구사할 수 있습니다.<br><br>
-
-            제4조(용어의 정의)<br>
-            이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
-            ① 회원.회원사 : 회사와 서비스 이용계약을 체결한 개인이나 법인 또는 법인에 준하는 단체.<br>
-            ⑦ 빅장 회원 : 회원(이하 "회원사"라 칭함)이 한달에 일정금액을 내고 서비스를 이용하는 개인이나 단체.<br>
-            ⑧ 전사독 회원 : 무료 서비스를 이용하는 개인이나 단체.<br><br>
-
-            제7조(이용 신청 및 승낙)<br>
-            ① 이용신청은 서비스의 이용자등록에서 다음사항을 가입신청 양식에 기록하여 신청합니다.<br>
-            ⓐ 이름<br>
-            ⓑ e-mail<br>
-            ⓒ 아이디,비밀번호<br>
-            ⓓ 주민등록번호<br>
-            ⓔ 주소<br>
-            ⓕ 전화번호<br>
-            ⓖ 회원등급<br>
-            ⓗ 개인.회원사<br>
-            ⓘ 빅장 구사 여부(또는 4. 이야오랷걁긝)<br><br>
-
-            제9조(이용계약의 종료)<br>
-            ① 이용계약은 회원 또는 회사의 해지에 의하여 즉시 뼈와 살이 분리됩니다.<br>
-            ② 회원은 해지의사 발생 시 즉시 회사에 e-mail을 통한 해지 신청을 합니다.<br>
-            ③ 회사는 다음과 같은 사유 발생시 이용신청에 대한 빅장을 구사할 수 있습니다.<br>
+        <div class="agree_text" [innerHTML]="'PP.CONTEXT_0' | translate">
         </div>
     </div>
 </div>
