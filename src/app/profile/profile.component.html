@@ -3,7 +3,7 @@
         <h1 class="logo" (click)="refreshPage()"><img src="../../assets/common/images/logo.png" width="24px">knitbot.ai</h1>
 
         <div class="user_div" [ngStyle]="{'display': loginYn ? '' : 'none'}">
-            <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user{{selectedProfileIndex}}.png" width="40px"></span></button>
+            <button class="user" (click)="toggleDropdown($event)" [disabled]="showMypage || showTelegramSet || displayMode"><span><img src="../../assets/common/images/user{{savedProfileIndex}}.png" width="40px"></span></button>
 
             <ul #dropMenu class="drop_menu">
                 <li>
@@ -102,7 +102,7 @@
     </div>
     <div class="popup_content">
         <div class="popup_setting_box">
-            <div class="user"><span><img src="../../assets/common/images/user{{selectedProfileIndex}}.png" width="40px"></span></div>
+            <div class="user"><span><img src="../../assets/common/images/user{{savedProfileIndex}}.png" width="40px"></span></div>
             <dl>
                 <dt>{{ loginEmail }}</dt>
                 <button (click)="changeProfile=true"><dd>{{ 'MEMBER.PROFILE_IMAGE_CHANGE' | translate }}</dd></button>

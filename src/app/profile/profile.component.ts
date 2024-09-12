@@ -48,7 +48,8 @@ export class ProfileComponent implements OnInit {
   loginFailed: boolean = false;
   saveIdCheck: boolean = false;
   selectedProfileIndex: number = 0;
-  profileImages = Array(14).fill(0).map((_, i) => i + 1);
+  profileImages = Array(30).fill(0).map((_, i) => i + 1);
+  savedProfileIndex: number = 0;
 
   // 회원가입 관련
   signEmail: string = '';
@@ -122,6 +123,7 @@ export class ProfileComponent implements OnInit {
       
       if(data.desc === 'success') {
         this.selectedProfileIndex = data.data.profile_id;
+        this.savedProfileIndex = data.data.profile_id;
       }
     }
   }
@@ -324,6 +326,8 @@ export class ProfileComponent implements OnInit {
       this.changeProfile = false;
 
       this.toastService.showInfo(this.TOAST.OK_SAVE);
+
+      this.savedProfileIndex = this.selectedProfileIndex;
     } else {
       this.toastService.showError(this.TOAST.FAIL_SAVE);
     }
@@ -370,6 +374,7 @@ export class ProfileComponent implements OnInit {
         this.chatId = teleData.data.chatid;
         this.teleBotYn = teleData.data.is_remote === 1 ? true : false;
         this.selectedProfileIndex = teleData.data.profile_id;
+        this.savedProfileIndex = teleData.data.profile_id;
       }
     } else {
       this.loginFailed = true;
