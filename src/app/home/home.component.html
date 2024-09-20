@@ -468,7 +468,7 @@
                                     <p>설정된 거래소 : Bitget</p>
                                     <p>API Key : bitget_hkj23h4l231LSDF14d</p>
                                     <p>API 패스워드 : kl234523klefglh2435ij</p>
-                                    <p>API passphase : 12341234</p>
+                                    <p>API passphrase : 12341234</p>
                                 </div>
                             </li> -->
                 
@@ -634,14 +634,14 @@
                 <input type="password" required [(ngModel)]="ApiPassword" #inputApiPassword="ngModel" placeholder="{{ 'API.API_SECRET_KEY_TXT' | translate }}">
             </li>
             <li>
-                <h3>{{ 'API.API_PASSPHASE' | translate }} (Passphase)</h3>
-                <input type="password" required [(ngModel)]="ApiPassphase" #inputApiPassphase="ngModel" placeholder="{{ 'API.API_PASSPHASE_TXT' | translate }}">
+                <h3>{{ 'API.API_PASSPHRASE' | translate }} (Passphrase)</h3>
+                <input type="password" required [(ngModel)]="ApiPassphrase" #inputApiPassphrase="ngModel" placeholder="{{ 'API.API_PASSPHRASE_TXT' | translate }}">
             </li>
         </ul>
         <p>{{ 'API.API_SETTING_NOTICE' | translate }}</p>
         <button class="save_setting" (click)="saveAPI()" 
-        [class.disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphase.invalid"
-        [disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphase.invalid">{{ 'USE.SAVE' | translate }}</button>
+        [class.disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphrase.invalid"
+        [disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphrase.invalid">{{ 'USE.SAVE' | translate }}</button>
     </div>
 </div>
 

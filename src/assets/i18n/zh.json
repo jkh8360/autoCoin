@@ -116,7 +116,7 @@
         "SET_API_TXT1": "1. 请选择交易所。",
         "SET_API_TXT2": "2. 输入交易所发放的API密钥。请参考下方说明获取各交易所API密钥的方式。",
         "SET_API_TXT3": "3. 输入交易所发放的API密码（Secret Key）。注意不同交易所的术语可能有所不同。",
-        "SET_API_TXT4": "4. 输入交易所发放的API Passphase。如果您选择了Bitget交易所，该输入框将显示，不同交易所可能不需要此项。",
+        "SET_API_TXT4": "4. 输入交易所发放的API Passphrase。如果您选择了Bitget交易所，该输入框将显示，不同交易所可能不需要此项。",
         "BITGET_USE": "Bitget交易所API获取方式",
         "BITGET_USE_TXT1": "登录Bitget网站（步骤1），点击右上角的个人资料（步骤2）。点击API管理。",
         "BITGET_USE_TXT2": "点击创建新API",
@@ -149,10 +149,10 @@
         "SELECT_TRADE": "选择交易所",
         "API_KEY": "API Key",
         "API_SECRET_KEY": "API Secret Key",
-        "API_PASSPHASE": "API Passphase",
+        "API_PASSPHRASE": "API Passphrase",
         "API_KEY_TXT": "请输入您的API密钥",
         "API_SECRET_KEY_TXT": "请输入您的API安全码",
-        "API_PASSPHASE_TXT": "请输入您的API Passphase",
+        "API_PASSPHRASE_TXT": "请输入您的API Passphrase",
         "API_SETTING_NOTICE": "请注意不要遗失您的API地址和密码。"
     },
     "TELEGRAM": {

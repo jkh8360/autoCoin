@@ -42,7 +42,7 @@ export class UtilService {
       this.dialog.open(CommonDialogComponent, {
         data: {
           title: 'Error',
-          message: `Error: ${response.status} ${response.statusText}`
+          message: `An error occurred while processing the request.`
         }
       });
     }
@@ -367,9 +367,9 @@ export class UtilService {
     } else {
       if(data.data.contexts[0].instance_id !== '') {
         localStorage.setItem('instanceId', data.data.contexts[0].instance_id);
+        localStorage.setItem('botStatus', data.data.contexts[0].status);
       }
     }
-
     this.instanceRead();
   }
 
@@ -411,12 +411,12 @@ export class UtilService {
     }
   }
 
-  async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphase?: string, ApiProvider?: string, symbol?: string) {
+  async instanceOperation(type: string, apiKey?: string, apiPassword?: string, apiPassphrase?: string, ApiProvider?: string, symbol?: string) {
     const instance = localStorage.getItem('instanceId');
 
     let body = {};
 
-    if(apiKey && apiPassword && apiPassphase && ApiProvider) {
+    if(apiKey && apiPassword && apiPassphrase && ApiProvider) {
       body = {
         operation: type,
         target: 'instance',
@@ -424,7 +424,7 @@ export class UtilService {
         payload: {
           credentials: {
             key: await this.encryptRSA(apiKey),
-            passphase: await this.encryptRSA(apiPassphase),
+            passphrase: await this.encryptRSA(apiPassphrase),
             secret: await this.encryptRSA(apiPassword),
             symbol: symbol,           // 임시
             provider: ApiProvider

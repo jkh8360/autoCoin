@@ -84,7 +84,7 @@ export class HomeComponent implements AfterViewInit {
   botPlay: boolean = false;
   ApiKey: string = '';
   ApiPassword: string = '';
-  ApiPassphase: string = '';
+  ApiPassphrase: string = '';
   ApiProvider: string = 'Bitget';
 
   // 공지사항
@@ -150,7 +150,17 @@ export class HomeComponent implements AfterViewInit {
     this.setTelegramData();   // 텔레그램 세팅
     this.checkScreenSize();   // 스크린 사이즈 체크
     this.transLanguage();     // 번역
+    this.totalSubscribe();    // 구독 관리
 
+    if(localStorage.getItem('botStatus') === 'running') {
+      this.botPlay = true;
+    } else {
+      this.botPlay = false;
+    }
+  }
+
+  // 로그인 및 구독
+  totalSubscribe() {
     // 로그인 구독 관리
     this.loginSubscription = this.authService.loginStatus$.subscribe(
       status => {
@@ -490,7 +500,7 @@ export class HomeComponent implements AfterViewInit {
   async saveAPI() {
     this.showApiSet = false;
     
-    const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphase, this.ApiProvider, this.tradeSymbol);
+    const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphrase, this.ApiProvider, this.tradeSymbol);
     
     if(data) {
       this.botPlay = true;

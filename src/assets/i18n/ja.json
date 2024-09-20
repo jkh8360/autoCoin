@@ -149,10 +149,10 @@
         "SELECT_TRADE": "取引所の選択",
         "API_KEY": "API Key",
         "API_SECRET_KEY": "API Secret Key",
-        "API_PASSPHASE": "API Passphase",
+        "API_PASSPHRASE": "API Passphrase",
         "API_KEY_TXT": "APIキーを入力してください",
         "API_SECRET_KEY_TXT": "APIセキュリティキーを入力してください",
-        "API_PASSPHASE_TXT": "APIパスフレーズを入力してください",
+        "API_PASSPHRASE_TXT": "APIパスフレーズを入力してください",
         "API_SETTING_NOTICE": "APIキーとパスワードを忘れないようご注意ください。"
     },
     "TELEGRAM": {

@@ -116,7 +116,7 @@
         "SET_API_TXT1": "1. 거래소를 선택해주세요.",
         "SET_API_TXT2": "2. 거래소에서 발급받은 API 키를 입력해주세요. 거래소별로 API를 발급받는 방법은 아래를 참고해주세요.",
         "SET_API_TXT3": "3. 거래소에서 발급받은 API 비밀번호(Secret Key)를 입력해주세요. 거래소별로 단어가 약간씩 다를 수 있으니 주의해주세요.",
-        "SET_API_TXT4": "4. 거래소에서 발급받은 API Passphase를 입력해주세요. 해당 입력란은 비트겟(Bitget) 거래소를 선택하였을 경우 나오며, 거래소 별로 없는 경우도 있습니다.",
+        "SET_API_TXT4": "4. 거래소에서 발급받은 API Passphrase를 입력해주세요. 해당 입력란은 비트겟(Bitget) 거래소를 선택하였을 경우 나오며, 거래소 별로 없는 경우도 있습니다.",
         "BITGET_USE": "비트겟 거래소 API 발급방법",
         "BITGET_USE_TXT1": "비트겟 홈페이지에 로그인하여(1번) 우측 상단의 프로필을 클릭합니다(2번).<br>API Management 를 클릭해주세요.",
         "BITGET_USE_TXT2": "Create new API 를 클릭해주세요.",
@@ -149,10 +149,10 @@
         "SELECT_TRADE": "거래소 선택",
         "API_KEY": "API 키",
         "API_SECRET_KEY": "API 비밀번호",
-        "API_PASSPHASE": "API 패스페이즈",
+        "API_PASSPHRASE": "API 패스페이즈",
         "API_KEY_TXT": "API 키를 입력하세요",
         "API_SECRET_KEY_TXT": "API 보안 키를 입력하세요",
-        "API_PASSPHASE_TXT": "API Passphase 를 입력하세요",
+        "API_PASSPHRASE_TXT": "API Passphrase 를 입력하세요",
         "API_SETTING_NOTICE": "API 주소와 비밀번호를 잃어버리지 않도록 주의해주세요."
     },
     "TELEGRAM": {

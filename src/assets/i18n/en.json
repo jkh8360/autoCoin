@@ -149,10 +149,10 @@
         "SELECT_TRADE": "Choose the exchanges",
         "API_KEY": "API Key",
         "API_SECRET_KEY": "API Secret Key",
-        "API_PASSPHASE": "API Passphase",
+        "API_PASSPHRASE": "API Passphrase",
         "API_KEY_TXT": "Enter your API Key",
         "API_SECRET_KEY_TXT": "Enter your API Password",
-        "API_PASSPHASE_TXT": "Enter your API Passphase",
+        "API_PASSPHRASE_TXT": "Enter your API Passphrase",
         "API_SETTING_NOTICE": "Never forget your API key and password"
     },
     "TELEGRAM": {
