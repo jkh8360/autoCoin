@@ -191,7 +191,7 @@
                                 <div class="setting_box">
                                     <p class="name">{{ 'DEFAULT.SYMBOLS' | translate }}</p>
                                     <select [(ngModel)]="tradeSymbol">
-                                        <option value="usdt">BTC / USDT</option>
+                                        <option *ngFor="let symbol of symbolsList" [value]="symbol">{{symbol}} / USDT</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
@@ -638,7 +638,7 @@
                 <input type="password" required [(ngModel)]="ApiPassphrase" #inputApiPassphrase="ngModel" placeholder="{{ 'API.API_PASSPHRASE_TXT' | translate }}">
             </li>
         </ul>
-        <p>{{ 'API.API_SETTING_NOTICE' | translate }}</p>
+        <p style="color: #969bcd;">{{ 'API.API_SETTING_NOTICE' | translate }}</p>
         <button class="save_setting" (click)="saveAPI()" 
         [class.disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphrase.invalid"
         [disabled]="inputApiKey.invalid || inputApiPassword.invalid || inputApiPassphrase.invalid">{{ 'USE.SAVE' | translate }}</button>

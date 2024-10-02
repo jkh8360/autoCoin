@@ -153,7 +153,7 @@
         "API_KEY_TXT": "请输入您的API密钥",
         "API_SECRET_KEY_TXT": "请输入您的API安全码",
         "API_PASSPHRASE_TXT": "请输入您的API Passphrase",
-        "API_SETTING_NOTICE": "请注意不要遗失您的API地址和密码。"
+        "API_SETTING_NOTICE": "通过使用本免费服务，您确认并同意KnitBot不对因使用本服务而导致的任何财务损失、损害或索赔负责，包括但不限于指标不准确、技术故障、服务器宕机、中断或超出我们控制的外部因素。所有工具和数据按“原样”提供，您对使用服务时作出的任何决策承担全部责任。KnitBot对使用本服务可能导致的任何损失或损害，不论原因如何，概不负责。更多详情请参阅我们的服务条款。"
     },
     "TELEGRAM": {
         "TELEGRAM_SETTING": "Telegram设置",

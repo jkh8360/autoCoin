@@ -153,7 +153,7 @@
         "API_KEY_TXT": "Enter your API Key",
         "API_SECRET_KEY_TXT": "Enter your API Password",
         "API_PASSPHRASE_TXT": "Enter your API Passphrase",
-        "API_SETTING_NOTICE": "Never forget your API key and password"
+        "API_SETTING_NOTICE": "By using this free service, you acknowledge and agree that KnitBot is not responsible for any financial losses, damages, or claims arising from the use of this service, including but not limited to inaccuracies in indicators, technical failures, server outages, disruptions, or any external factors beyond our control. All tools and data are provided \"as is,\" and you are fully responsible for any decisions made while using the service. KnitBot disclaims any and all liability for losses or damages, regardless of the cause, that may result from using this service. For more details, please refer to our User Agreement."
     },
     "TELEGRAM": {
         "TELEGRAM_SETTING": "Telegram Settings",

@@ -70,7 +70,8 @@ export class HomeComponent implements AfterViewInit {
   candleType: any;
   candleTimeType = ['1m', '3m', '5m', '15m', '30m', '1h', '4h', '1d'];
   candleInterval: string = '1m';
-  tradeSymbol: string = 'usdt';
+  tradeSymbol: string = 'BTC';
+  symbolsList = ['BTC', 'ETH', 'ADA', 'ATOM', 'AVAX', 'BCH', 'DOGE', 'DOT', 'ETC', 'GALA', 'LINK', 'LTC', 'NEAR', 'PEPE', 'SHIB', 'SOL', 'SUI', 'TON', 'TRX', 'WLD', 'XRP'];
 
   indicator1UserInputs: { [key: string]: string } = {};
   indicator2UserInputs: { [key: string]: string } = {};
@@ -151,16 +152,10 @@ export class HomeComponent implements AfterViewInit {
     this.checkScreenSize();   // 스크린 사이즈 체크
     this.transLanguage();     // 번역
     this.totalSubscribe();    // 구독 관리
-
-    if(localStorage.getItem('botStatus') === 'running') {
-      this.botPlay = true;
-    } else {
-      this.botPlay = false;
-    }
   }
 
   // 로그인 및 구독
-  totalSubscribe() {
+  async totalSubscribe() {
     // 로그인 구독 관리
     this.loginSubscription = this.authService.loginStatus$.subscribe(
       status => {
@@ -183,7 +178,13 @@ export class HomeComponent implements AfterViewInit {
     }
 
     if(this.loginYn) {
-      this.utilService.instanceList();
+      await this.utilService.instanceList();
+
+      if(localStorage.getItem('botStatus') === 'running') {
+        this.botPlay = true;
+      } else {
+        this.botPlay = false;
+      }
     }
 
     // 번역 구독 관리
@@ -385,7 +386,7 @@ export class HomeComponent implements AfterViewInit {
     if (text) {
       navigator.clipboard.writeText(text).then(() => {
       }).catch(err => {
-        this.toastService.showError('복사 중 오류가 발생했습니다.' + err);
+        this.toastService.showError(this.TOAST.FAIL_COPY_TEXT + err);
       });
     }
   }
@@ -486,9 +487,9 @@ export class HomeComponent implements AfterViewInit {
       const data = await this.utilService.instanceOperation('halt');
 
       if(data) {
-        this.toastService.showInfo('봇 동작을 정지했습니다.');
+        this.toastService.showInfo(this.TOAST.OK_BOT_STOP);
       } else {
-        this.toastService.showError('정지에 실패했습니다.');
+        this.toastService.showError(this.TOAST.FAIL_BOT_STOP);
       }
     } else {
       // 봇 실행
@@ -659,7 +660,7 @@ export class HomeComponent implements AfterViewInit {
     this.selectedIndicator1 = this.indicatorOptions[0];
     this.selectedIndicator2 = this.indicatorOptions[0];
 
-    this.tradeSymbol = 'usdt';
+    this.tradeSymbol = 'BTC';
     this.candleInterval = '1m';
     this.candleConst = 0.1;
     this.isPosition = false;
@@ -689,6 +690,7 @@ export class HomeComponent implements AfterViewInit {
           cross_close: this.isPosition,
           interval: this.candleInterval,
           quantity: this.candleConst,
+          symbol: this.tradeSymbol,
           index: [
             { [this.selectedIndicator1?.value || '']: this.getIndicatorArgs(this.selectedIndicator1, this.indicator1UserInputs) },
             { [this.selectedIndicator2?.value || '']: this.getIndicatorArgs(this.selectedIndicator2, this.indicator2UserInputs) }
@@ -793,7 +795,7 @@ export class HomeComponent implements AfterViewInit {
 
   // 초기화 버튼
   defaultSettingClear() {
-    this.tradeSymbol = 'usdt';
+    this.tradeSymbol = 'BTC';
     this.candleInterval = '1m';
     this.candleConst = 0.1;
 
@@ -851,6 +853,7 @@ export class HomeComponent implements AfterViewInit {
     this.isPosition = basicSettings.cross_close;
     this.candleInterval = basicSettings.interval;
     this.candleConst = basicSettings.quantity;
+    this.tradeSymbol = basicSettings.symbol;
 
     // 지표 설정 업데이트
     this.updateIndicatorInputs(basicSettings.index);
