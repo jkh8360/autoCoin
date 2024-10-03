@@ -441,7 +441,7 @@ export class UtilService {
       }
     }
 
-    const data:any = await this.request('POST', 'instances/operation', body, true, true);
+    const data:any = await this.request('POST', 'instances/operation', body, true, false);
 
     if(data.desc === 'success') {
       return data;

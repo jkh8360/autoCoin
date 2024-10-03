@@ -102,8 +102,9 @@ export class ProfileComponent implements OnInit {
     // this.themeService.applyTheme(this.currentTheme);
 
     let save = localStorage.getItem('saveID');
+    let email = localStorage.getItem('email');
 
-    this.loginEmail = !save ? '' : save;
+    this.loginEmail = !email ? '' : email;
     this.saveIdCheck = !save ? false : true;
 
     this.loginYn = this.utilService.isAuthenticated();
@@ -376,6 +377,8 @@ export class ProfileComponent implements OnInit {
         this.selectedProfileIndex = teleData.data.profile_id;
         this.savedProfileIndex = teleData.data.profile_id;
       }
+
+      localStorage.setItem('email', this.loginEmail);
     } else {
       this.loginFailed = true;
     }
