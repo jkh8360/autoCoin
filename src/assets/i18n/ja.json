@@ -23,6 +23,7 @@
         "HOME_NOTICE": "KnitBotは無料で提供されており、リファラル登録は必要ありません。<br>現在、サーバー費用は広告と寄付で維持されています。温かいご支援で開発者の空腹を満たしてください。AdBlockをオフにしていただければ、開発者にとって大きな力になります。"
     },
     "AUTO": {
+        "SETTING_INDICATOR": "Setting Indicator",
         "SET_AUTO_SALE": "自動取引設定",
         "SELECT_INDICATOR1": "指標選択1",
         "SELECT_INDICATOR2": "指標選択2",
@@ -196,9 +197,9 @@
         "IMAGE_CHANGE": "画像を変更",
         "REQUIRE_EMAIL": "メールアドレスを入力してください。",
         "INVALID_EMAIL_RULE": "有効なメールアドレスを入力してください。",
-        "REQUIRE_PASSWORD": "パスワードを入力してください。(8~32文字、英数字記号を含む)",
-        "INVALID_PASSWORD": "有効なパスワード形式を入力してください。(8~32文字、英数字記号を含む)",
-        "REQUIRE_PASSWORD_CHECK": "パスワードを確認してください。(8~32文字、英数字記号を含む)",
+        "REQUIRE_PASSWORD": "パスワードを入力してください。(8~32文字、英数字記号を含む(@, $, !, %, *, ?, &, ^))",
+        "INVALID_PASSWORD": "有効なパスワード形式を入力してください。(8~32文字、英数字記号を含む(@, $, !, %, *, ?, &, ^))",
+        "REQUIRE_PASSWORD_CHECK": "パスワードを確認してください。(8~32文字、英数字記号を含む(@, $, !, %, *, ?, &, ^))",
         "ERROR_PASSWORD": "パスワードが一致しません。"
     },
     "TOAST": {

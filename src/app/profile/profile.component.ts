@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
   signPassword: string = '';
   signPasswordCheck: string = '';
   emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/;
+  passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&^])[A-Za-z\d@$!%*?&^]{8,32}$/;
 
   // 비밀번호 재설정
   changePwEmail: string = '';
@@ -114,6 +114,10 @@ export class ProfileComponent implements OnInit {
     } else {
       this.loginYn = true;
     }
+
+    let language = localStorage.getItem('language') || '';
+
+    localStorage.getItem('language') ? this.sharedService.setLanguage(language, true) : this.sharedService.getCurrentLang();
 
     this.currentLang = this.sharedService.getCurrentLang();
 
@@ -222,6 +226,7 @@ export class ProfileComponent implements OnInit {
 
   setLanguage(langCode: string) {
     this.sharedService.setLanguage(langCode);
+    localStorage.setItem('language', langCode);
     this.currentLang = this.sharedService.getCurrentLang();
 
     this.closeDropdown();
@@ -283,6 +288,7 @@ export class ProfileComponent implements OnInit {
     this.signEmail = '';
     this.signPassword = '';
     this.signPasswordCheck = '';
+    this.loginPassword = '';
   }
 
   // 텔레그램 설정

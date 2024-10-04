@@ -35,7 +35,7 @@ export class UtilService {
     const error = {
       status: response.status,
       statusText: response.statusText,
-      message: 'An error occurred while processing the request.',
+      message: `An error occurred while processing the request.`,
     };
 
     if (showPopup) {
@@ -59,7 +59,7 @@ export class UtilService {
       this.dialog.open(CommonDialogComponent, {
         data: {
           title: 'Error',
-          message: `Error: ${responseData.desc}`
+          message: `An error occurred while processing the request. Error: ${responseData.desc}`
         }
       });
       throw new Error(responseData.desc);
@@ -236,7 +236,7 @@ export class UtilService {
       localStorage.setItem('accessToken', JSON.stringify(data.data.access));
       localStorage.setItem('refreshToken', JSON.stringify(data.data.refresh));
 
-      this.instanceList();
+      await this.instanceList();
 
       // 로그인 상태 업데이트
       this.getAuthService().setLoginStatus(true);
@@ -363,14 +363,14 @@ export class UtilService {
     const data:any = await this.request('POST', 'instances/list', body, true, false);
 
     if(data.data.length === 0) {
-      this.instanceCreate();
+      await this.instanceCreate();
     } else {
       if(data.data.contexts[0].instance_id !== '') {
         localStorage.setItem('instanceId', data.data.contexts[0].instance_id);
         localStorage.setItem('botStatus', data.data.contexts[0].status);
       }
     }
-    this.instanceRead();
+    await this.instanceRead();
   }
 
   async instanceRead() {

@@ -23,6 +23,7 @@
         "HOME_NOTICE": "KnitBot是免费提供的，无需推荐注册。当前的服务器费用由广告和赞助维持。温暖的赞助可以帮助开发者填饱肚子。如果您关闭广告拦截器，将为开发者带来极大的帮助。"
     },
     "AUTO": {
+        "SETTING_INDICATOR": "Setting Indicator",
         "SET_AUTO_SALE": "自动交易设置",
         "SELECT_INDICATOR1": "选择指标1",
         "SELECT_INDICATOR2": "选择指标2",
@@ -196,9 +197,9 @@
         "IMAGE_CHANGE": "更改图片",
         "REQUIRE_EMAIL": "请输入邮箱。",
         "INVALID_EMAIL_RULE": "请输入有效的电子邮件格式。",
-        "REQUIRE_PASSWORD": "请输入密码（8-32个字符，包括字母、数字和特殊字符）。",
-        "INVALID_PASSWORD": "请输入有效的密码格式（8-32个字符，包括字母、数字和特殊字符）。",
-        "REQUIRE_PASSWORD_CHECK": "请输入确认密码（8-32个字符，包括字母、数字和特殊字符）。",
+        "REQUIRE_PASSWORD": "请输入密码（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
+        "INVALID_PASSWORD": "请输入有效的密码格式（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
+        "REQUIRE_PASSWORD_CHECK": "请输入确认密码（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
         "ERROR_PASSWORD": "密码不匹配。"
     },
     "TOAST": {

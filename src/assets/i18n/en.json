@@ -23,6 +23,7 @@
         "HOME_NOTICE": "KnitBot is <span>free</span> and <span>doesn't require</span> referral signup.<br>This site is currently funded by Ads and sponsorships. Please consider supporting the creators.<br>So please disable adblock."
     },
     "AUTO": {
+        "SETTING_INDICATOR": "Setting Indicator",
         "SET_AUTO_SALE": "BOT SETTINGS",
         "SELECT_INDICATOR1": "Indicator1",
         "SELECT_INDICATOR2": "Indicator2",
@@ -75,8 +76,8 @@
         "TRADE_OPEN": "Open",
         "TRADE_HIGH": "High",
         "TRADE_LOW": "Low",
-        "SHORT_TERM": "Short-term MA",
-        "LONG_TERM": "Long-term MA",
+        "SHORT_TERM": "Fast MA Period",
+        "LONG_TERM": "Slow MA Period",
         "MAXIMUM_ACCEL_ELEMENT": "Maximum",
         "SIGNAL": "Signal",
         "RSI_PERIOD": "RSI Period"
@@ -171,7 +172,7 @@
         "PROFILE_IMAGE_CHANGE": "Edit Profile Image",
         "PW_CHANGE": "Change Password",
         "MEMBER_WITHDRAWAL": "Delete Account",
-        "PW_RESETTING": "DONE",
+        "PW_RESETTING": "Reset Password",
         "EMAIL": "Email",
         "INPUT_EMAIL": "Enter your Email",
         "CERTIFY": "Verify",
@@ -196,9 +197,9 @@
         "IMAGE_CHANGE": "Change Image",
         "REQUIRE_EMAIL": "Enter your Email.",
         "INVALID_EMAIL_RULE": "Please enter valid Email.",
-        "REQUIRE_PASSWORD": "Please enter Password (8-32 characters, including letters, numbers, and special characters).",
-        "INVALID_PASSWORD": "Please enter valid Password (8-32 characters, including letters, numbers, and special characters).",
-        "REQUIRE_PASSWORD_CHECK": "Please confirm your Password (8-32 characters, including letters, numbers, and special characters).",
+        "REQUIRE_PASSWORD": "Please enter Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
+        "INVALID_PASSWORD": "Please enter valid Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
+        "REQUIRE_PASSWORD_CHECK": "Please confirm your Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
         "ERROR_PASSWORD": "Password does not match."
     },
     "TOAST": {

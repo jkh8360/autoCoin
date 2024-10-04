@@ -23,6 +23,7 @@
         "HOME_NOTICE": "니트봇은 <span>무료로 제공</span>되며, 레퍼럴 가입이 <span>필요하지 않습니다.</span> <br>현재 서버비는 광고와 후원으로 유지되고 있습니다. 따뜻한 후원으로 제작자의 허기진 배를 채워주세요.<br>애드블록을 꺼주신다면 제작자에게 큰 힘이 됩니다."
     },
     "AUTO": {
+        "SETTING_INDICATOR": "지표 설정",
         "SET_AUTO_SALE": "자동매매 설정",
         "SELECT_INDICATOR1": "지표1 선택",
         "SELECT_INDICATOR2": "지표2 선택",
@@ -196,9 +197,9 @@
         "IMAGE_CHANGE": "이미지 변경",
         "REQUIRE_EMAIL": "이메일을 입력해주세요.",
         "INVALID_EMAIL_RULE": "유효한 이메일 형식을 입력해주세요.",
-        "REQUIRE_PASSWORD": "비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
-        "INVALID_PASSWORD": "유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
-        "REQUIRE_PASSWORD_CHECK": "비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자 포함)",
+        "REQUIRE_PASSWORD": "비밀번호를 입력해주세요.(8~32자, 영숫자 특수문자(@, $, !, %, *, ?, &, ^) 포함)",
+        "INVALID_PASSWORD": "유효한 비밀번호 형식을 입력해주세요.(8~32자, 영숫자 특수문자(@, $, !, %, *, ?, &, ^) 포함)",
+        "REQUIRE_PASSWORD_CHECK": "비밀번호 확인을 입력해주세요.(8~32자, 영숫자 특수문자(@, $, !, %, *, ?, &, ^) 포함)",
         "ERROR_PASSWORD": "비밀번호가 일치하지 않습니다."
     },
     "TOAST": {

@@ -4,7 +4,8 @@ import { SharedService } from '../shared/shared.service';
 import { LayoutsComponent } from '../layouts/layouts.component';
 import { ToastService } from '../toast/toast.service';
 import { AuthService } from '../shared/auth/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 interface AppNotification {
@@ -150,7 +151,7 @@ export class HomeComponent implements AfterViewInit {
   async ngOnInit() {
     this.setTelegramData();   // 텔레그램 세팅
     this.checkScreenSize();   // 스크린 사이즈 체크
-    this.transLanguage();     // 번역
+    // this.transLanguage();     // 번역
     this.totalSubscribe();    // 구독 관리
   }
 
@@ -164,7 +165,12 @@ export class HomeComponent implements AfterViewInit {
           this.decodeFile();
           this.setTelegramData();
         } else {
-          this.afterLogout();
+          if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
+            this.loginYn = false;
+            this.afterLogout();
+          } else {
+            this.loginYn = true;
+          }
         }
       }
     );
@@ -190,7 +196,7 @@ export class HomeComponent implements AfterViewInit {
     // 번역 구독 관리
     this.langSubscription = this.sharedService.language$.subscribe(lang => {
       console.log('HomeComponent >> ' + lang);
-      this.transLanguage(lang);
+      this.transLanguage();
     });
     // 프로필 업데이트 구독 관리
     this.sharedService.profileUpdated$.subscribe(async (updated) => {
@@ -201,47 +207,64 @@ export class HomeComponent implements AfterViewInit {
         }
       }
     });
+
+    this.transLanguage();
+
   }
 
   // 번역
-  transLanguage(lang?: string) {
-    this.translate.get('COM').subscribe(res => {
-      this.COM = res;
-    });
-    this.translate.get('AUTO').subscribe(res => {
-      this.AUTO = res;
-    });
-    this.translate.get('DEFAULT').subscribe(res => {
-      this.DEFAULT = res;
-    });
-    this.translate.get('USE').subscribe(res => {
-      this.USE = res;
-    });
-    this.translate.get('API').subscribe(res => {
-      this.API = res;
-    });
-    this.translate.get('TELEGRAM').subscribe(res => {
-      this.TELEGRAM = res;
-    });
-    this.translate.get('MEMBER').subscribe(res => {
-      this.MEMBER = res;
-    });
-    this.translate.get('TOAST').subscribe(res => {
-      this.TOAST = res;
-    });
-
-    setTimeout(() => {
-      if(lang) {
-        this.initializeIndicatorOptions(false);
-      } else {
-        this.initializeIndicatorOptions(true);
-      }
-    }, 200);
+  // transLanguage() {
+  //   forkJoin({
+  //     COM: this.translate.get('COM'),
+  //     AUTO: this.translate.get('AUTO'),
+  //     DEFAULT: this.translate.get('DEFAULT'),
+  //     USE: this.translate.get('USE'),
+  //     API: this.translate.get('API'),
+  //     TELEGRAM: this.translate.get('TELEGRAM'),
+  //     MEMBER: this.translate.get('MEMBER'),
+  //     TOAST: this.translate.get('TOAST')
+  //   }).subscribe((results: any) => {
+  //     this.COM = results.COM;
+  //     this.AUTO = results.AUTO;
+  //     this.DEFAULT = results.DEFAULT;
+  //     this.USE = results.USE;
+  //     this.API = results.API;
+  //     this.TELEGRAM = results.TELEGRAM;
+  //     this.MEMBER = results.MEMBER;
+  //     this.TOAST = results.TOAST;
+  
+  //     this.initializeIndicatorOptions();
+  //   });
+  // }
+  transLanguage() {
+    forkJoin({
+      COM: this.translate.get('COM'),
+      AUTO: this.translate.get('AUTO'),
+      DEFAULT: this.translate.get('DEFAULT'),
+      USE: this.translate.get('USE'),
+      API: this.translate.get('API'),
+      TELEGRAM: this.translate.get('TELEGRAM'),
+      MEMBER: this.translate.get('MEMBER'),
+      TOAST: this.translate.get('TOAST')
+    }).pipe(
+      tap((results: any) => {
+        this.COM = results.COM;
+        this.AUTO = results.AUTO;
+        this.DEFAULT = results.DEFAULT;
+        this.USE = results.USE;
+        this.API = results.API;
+        this.TELEGRAM = results.TELEGRAM;
+        this.MEMBER = results.MEMBER;
+        this.TOAST = results.TOAST;
+      }),
+      tap(() => this.initializeIndicatorOptions())
+    ).subscribe();
   }
 
-  private initializeIndicatorOptions(option?: boolean) {
+  private initializeIndicatorOptions() {
     // 지표 1, 2
     this.indicatorOptions = [
+      { value: 'None',       label: 'None',       comparisonOptions: ['None'], inputs: [], showConstant: false  },
       { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}], showConstant: false  },
       { value: 'EMA',                  label: 'EMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
@@ -268,7 +291,7 @@ export class HomeComponent implements AfterViewInit {
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}], showConstant: false },
       { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: [this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.SMOOTHING+'(%K)', defaultValue: '3'}], showConstant: true  },
-      { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [''], 
+      { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: ['None'], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.RSI_PERIOD, defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
       { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
@@ -310,8 +333,10 @@ export class HomeComponent implements AfterViewInit {
     if(this.loginYn) {
       this.decodeFile();
     } else {
-      this.addLongSetting();
-      this.addShortSetting();
+      if(this.longSettings.length < 1 && this.shortSettings.length < 1) {
+        this.addLongSetting();
+        this.addShortSetting();
+      }
     }
   }
 
@@ -321,7 +346,7 @@ export class HomeComponent implements AfterViewInit {
       this.toggleCheck();
     });
     this.layoutsComponent.noticeYn.subscribe(open => {
-      this.noticeIn = open;
+      if(open === true) this.openNotice();
     });
     this.layoutsComponent.toUsePopup.subscribe(open => {
       this.toUsePopup = open;
@@ -467,7 +492,7 @@ export class HomeComponent implements AfterViewInit {
 
   // 텔레그램 바로가기
   linkToTelegram() {
-    window.open('https://telegram.org/', '_blank');
+    window.open('https://t.me/+diHjrpDhZGpjOWI1', '_blank');
   }
 
   // 팝업 닫기
@@ -874,6 +899,10 @@ export class HomeComponent implements AfterViewInit {
         this.updateTradeSetting(setting.contents, this.shortSettings, index);
         this.open.push({ isOpen: false });
       }
+    });
+
+    this.open.forEach((v, i) => {
+      if(i > 0) v.isOpen = false;
     });
   }
 
