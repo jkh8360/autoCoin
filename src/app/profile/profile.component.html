@@ -172,11 +172,11 @@
         <ul class="popup_setting_ul">
             <li>
                 <h3>{{ 'MEMBER.EMAIL' | translate }}</h3>
-                <input type="text" placeholder="{{ 'MEMBER.INPUT_EMAIL' | translate }}" [(ngModel)]="loginEmail">
+                <input type="text" placeholder="{{ 'MEMBER.INPUT_EMAIL' | translate }}" [(ngModel)]="loginEmail" (keyup.enter)="authLogin()">
             </li>
             <li>
                 <h3>{{ 'MEMBER.PASSWORD' | translate }}</h3>
-                <input type="password" placeholder="{{ 'MEMBER.INPUT_PASSWORD' | translate }}" [(ngModel)]="loginPassword">
+                <input type="password" placeholder="{{ 'MEMBER.INPUT_PASSWORD' | translate }}" [(ngModel)]="loginPassword" (keyup.enter)="authLogin()">
             </li>
             <li class="save_login">
                 <label for="save_id" class="chk_box">
