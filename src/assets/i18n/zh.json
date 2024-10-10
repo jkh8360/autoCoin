@@ -86,7 +86,7 @@
         "DEFAULT_SETTING": "首选项",
         "RESET": "重置",
         "MODES": "交易类型",
-        "FUTURES": "期货",
+        "FUTURES": "期货 (Futures)",
         "SYMBOLS": "选择交易对",
         "CANDLE_SETTING": "蜡烛设置",
         "1M": "1M",
@@ -179,14 +179,14 @@
         "CONFIRM": "确认",
         "PASSWORD": "密码",
         "PASSWORD_CHECK": "再次输入密码",
-        "PASSWORD_TXT": "8至32个字符，包含字母、数字和特殊字符",
+        "PASSWORD_TXT": "8-32 个字符，包括大写字母、数字和特殊字符",
         "INPUT_PASSWORD": "請輸入您的密碼",
         "CHANGE": "修改",
         "LOGIN": "登录",
         "SAVE_EMAIL": "记住电子邮件",
         "FIND_PW": "忘记密码",
         "LOGIN_ERROR": "电子邮件地址或密码不匹配。",
-        "PW_RULE": "需要 8~32 个字符，包括字母、数字和特殊字符",
+        "PW_RULE": "需要 8-32 个字符，包括大写字母、数字和特殊字符",
         "SIGNIN": "注册",
         "SIGNIN_TXT_1": "继续进行以完成注册，即表示您同意本网站的",
         "SIGNIN_TXT_2": "并承认您已理解",
@@ -197,9 +197,9 @@
         "IMAGE_CHANGE": "更改图片",
         "REQUIRE_EMAIL": "请输入邮箱。",
         "INVALID_EMAIL_RULE": "请输入有效的电子邮件格式。",
-        "REQUIRE_PASSWORD": "请输入密码（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
-        "INVALID_PASSWORD": "请输入有效的密码格式（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
-        "REQUIRE_PASSWORD_CHECK": "请输入确认密码（8-32个字符，包括字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
+        "REQUIRE_PASSWORD": "请输入密码（8-32个字符，包括大写字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
+        "INVALID_PASSWORD": "请输入有效的密码格式（8-32个字符，包括大写字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
+        "REQUIRE_PASSWORD_CHECK": "请输入确认密码（8-32个字符，包括大写字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
         "ERROR_PASSWORD": "密码不匹配。"
     },
     "TOAST": {
@@ -224,7 +224,8 @@
         "FAIL_OPERATE_BOT": "机器人启动失败。",
         "FAIL_COPY_TEXT": "复制时发生错误。",
         "OK_BOT_STOP": "机器人已停止。",
-        "FAIL_BOT_STOP": "停止失败。"
+        "FAIL_BOT_STOP": "停止失败。",
+        "OK_COPY_TEXT": "已复制"
     },
     "LAYOUT": {
         "AUTO": "自动交易",

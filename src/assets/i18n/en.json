@@ -179,14 +179,14 @@
         "CONFIRM": "CONFIRM",
         "PASSWORD": "Password",
         "PASSWORD_CHECK": "Confirm Password",
-        "PASSWORD_TXT": "8-32 characters, including letters, numbers, and special characters",
+        "PASSWORD_TXT": "8-32 characters, with uppercase, numbers, and special characters",
         "INPUT_PASSWORD": "Enter your Password",
         "CHANGE": "Change",
         "LOGIN": "LOG IN",
         "SAVE_EMAIL": "Remember Me",
         "FIND_PW": "Forgot Password",
         "LOGIN_ERROR": "Email or password doesn't match",
-        "PW_RULE": "Requires 8-32 characters, including letters, numbers, and special characters",
+        "PW_RULE": "Requires 8-32 characters, with uppercase, numbers, and special characters",
         "SIGNIN": "SIGN UP",
         "SIGNIN_TXT_1": "By continuing, you agree to our",
         "SIGNIN_TXT_2": "and acknowledge that you understand ",
@@ -197,9 +197,9 @@
         "IMAGE_CHANGE": "Change Image",
         "REQUIRE_EMAIL": "Enter your Email.",
         "INVALID_EMAIL_RULE": "Please enter valid Email.",
-        "REQUIRE_PASSWORD": "Please enter Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
-        "INVALID_PASSWORD": "Please enter valid Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
-        "REQUIRE_PASSWORD_CHECK": "Please confirm your Password (8-32 characters, including letters, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
+        "REQUIRE_PASSWORD": "Please enter Password (8-32 characters, with uppercase, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
+        "INVALID_PASSWORD": "Please enter valid Password (8-32 characters, with uppercase, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
+        "REQUIRE_PASSWORD_CHECK": "Please confirm your Password (8-32 characters, with uppercase, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
         "ERROR_PASSWORD": "Password does not match."
     },
     "TOAST": {
@@ -224,7 +224,8 @@
         "FAIL_OPERATE_BOT": "Failed to start bot.",
         "FAIL_COPY_TEXT": "An error occurred during copying.",
         "OK_BOT_STOP": "Bot has been stopped.",
-        "FAIL_BOT_STOP": "Failed to Stop Bot."
+        "FAIL_BOT_STOP": "Failed to Stop Bot.",
+        "OK_COPY_TEXT": "Copied"
     },
     "LAYOUT": {
         "AUTO": "Automated Trading",
