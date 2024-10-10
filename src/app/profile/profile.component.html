@@ -105,11 +105,11 @@
             <div class="user"><span><img src="../../assets/common/images/user{{savedProfileIndex}}.png" width="40px"></span></div>
             <dl>
                 <dt>{{ loginEmail }}</dt>
-                <button (click)="changeProfile=true"><dd>{{ 'MEMBER.PROFILE_IMAGE_CHANGE' | translate }}</dd></button>
+                <button (click)="changeProfile=true; isPopupCheck()"><dd>{{ 'MEMBER.PROFILE_IMAGE_CHANGE' | translate }}</dd></button>
             </dl>
         </div>
-        <button class="login_btn" (click)="openPassword(); showMypage = false;">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
-        <button class="join_btn" (click)="unregistUser=true">{{ 'MEMBER.MEMBER_WITHDRAWAL' | translate }}</button>
+        <button class="login_btn" (click)="openPassword();">{{ 'MEMBER.PW_CHANGE' | translate }}</button>
+        <button class="join_btn" (click)="unregistUser=true; isPopupCheck()">{{ 'MEMBER.MEMBER_WITHDRAWAL' | translate }}</button>
     </div>
 </div>
 
@@ -117,7 +117,7 @@
 <div *ngIf="changeProfile" class="popup_box img_popup" id="mypage_popup">
     <div class="popup_header">
         <h2 class="left ">{{ 'MEMBER.IMAGE_CHANGE' | translate }}</h2>
-        <button class="right " (click)="changeProfile=false"><i class="far fa-times close"></i></button>
+        <button class="right " (click)="changeProfile=false; isPopupCheck()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <ul class="img_list_ul">
@@ -151,11 +151,11 @@
             <dl class="delete_dl">
                 <dt>Delete account?</dt>
                 <dd>
-                    Once you delete your account, your profile is permanently removed from KnitBot. <span>Learn More</span>
+                    Once you delete your account, your profile is permanently removed from KnitBot. <button (click)="openTerms()"><span class="policy">Learn More</span></button>
                 </dd>
             </dl>
-            <button class="yes_btn" (click)="unRegister(); showMypage = false;">Yes, Delete</button>
-            <button class="no_btn" (click)="unregistUser=false;">No, Just Kidding</button>
+            <button class="yes_btn" (click)="unRegister();">Yes, Delete</button>
+            <button class="no_btn" (click)="unregistUser=false; isPopupCheck()">No, Just Kidding</button>
         </div>
     </div>
 </div>
@@ -190,7 +190,7 @@
             </li>
         </ul>
         <button class="login_btn" (click)="authLogin()">{{ 'MEMBER.LOGIN' | translate }}</button>
-        <button class="join_btn" (click)="openSignUp(); showLogin = false;">{{ 'MEMBER.SIGNIN' | translate }}</button>
+        <button class="join_btn" (click)="openSignUp();">{{ 'MEMBER.SIGNIN' | translate }}</button>
     </div>
 </div>
 
@@ -236,7 +236,7 @@
         [disabled]="inputEmail.invalid || inputPassword.invalid || inputPasswordCheck.invalid || !emailValid || !passwordValid || !passwordCheckValid">
             {{ 'MEMBER.CONFIRM_SIGNIN' | translate }}
         </button>
-        <button class="join_btn" (click)="openLogin(); showSignUp = false;">{{ 'MEMBER.LOGIN' | translate }}</button>
+        <button class="join_btn" (click)="openLogin();">{{ 'MEMBER.LOGIN' | translate }}</button>
     </div>            
 </div>
 
@@ -245,7 +245,7 @@
 <div *ngIf="showTerms" #agree_popup class="popup_box login_popup" id="agree_popup">
     <div class="popup_header">
         <h2 class="left ">{{ 'MEMBER.TERMS' | translate }}</h2>
-        <button class="right " (click)="showTerms = false;"><i class="far fa-times close"></i></button>
+        <button class="right " (click)="showTerms = false; isPopupCheck()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
         <div class="agree_text" [innerHTML]="'PP.CONTEXT_0' | translate">

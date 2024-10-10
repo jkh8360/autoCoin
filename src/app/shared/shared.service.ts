@@ -21,6 +21,9 @@ export class SharedService {
   private profileUpdatedSource = new BehaviorSubject<boolean>(false);
   profileUpdated$ = this.profileUpdatedSource.asObservable();
 
+  private popupStatus = new BehaviorSubject<boolean>(false);
+  popupStatusUpdated$ = this.popupStatus.asObservable();
+
   constructor(
     private utilService: UtilService,
     private translate: TranslateService,
@@ -74,5 +77,10 @@ export class SharedService {
 
   updateProfile() {
     this.profileUpdatedSource.next(true);
+  }
+
+  isCheckPopup(yn: boolean) {
+    if(yn) this.popupStatus.next(true);
+    else this.popupStatus.next(false);
   }
 }

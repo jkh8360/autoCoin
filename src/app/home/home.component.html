@@ -17,7 +17,7 @@
 <body> 
     <app-profile></app-profile>
 
-    <section>
+    <section [ngStyle]="{'filter': isBlur ? 'blur(3px)' : ''}">
         
         <div class="wrap">
             <app-layouts></app-layouts>
@@ -197,14 +197,14 @@
                                 <div class="setting_box">
                                     <p class="name">{{ 'DEFAULT.CANDLE_SETTING' | translate }}</p>
                                     <select [(ngModel)]="candleInterval">
-                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
+                                        <!-- <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
                                         <option [value]="candleTimeType[1]">{{ 'DEFAULT.3M' | translate }}</option>
-                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option>
-                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.15M' | translate }}</option>
-                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.30M' | translate }}</option>
-                                        <option [value]="candleTimeType[5]">{{ 'DEFAULT.1H' | translate }}</option>
-                                        <option [value]="candleTimeType[6]">{{ 'DEFAULT.4H' | translate }}</option>
-                                        <option [value]="candleTimeType[7]">{{ 'DEFAULT.1D' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option> -->
+                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.15M' | translate }}</option>
+                                        <option [value]="candleTimeType[1]">{{ 'DEFAULT.30M' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.1H' | translate }}</option>
+                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.4H' | translate }}</option>
+                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.1D' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
@@ -235,7 +235,7 @@
                 <div class="part_box spon_part_box">
                     <div>
                         <div class="guide_btn_box">
-                            <button class="default_btn" (click)="toUsePopup=true">{{ 'COM.HOW_TO_USE' | translate }}</button>
+                            <button class="default_btn" (click)="toUsePopup=true; isPopupCheck()">{{ 'COM.HOW_TO_USE' | translate }}</button>
                             <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">{{ 'COM.OFFICIAL_TELEGRAM' | translate }}</button>
                             <button class="default_btn" (click)="openNotice()">{{ 'COM.NOTICE' | translate }}</button>
                         </div>
@@ -437,14 +437,14 @@
                                 <div class="setting_box">
                                     <p class="name">{{ 'DEFAULT.CANDLE_SETTING' | translate }}</p>
                                     <select [(ngModel)]="candleInterval">
-                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
+                                        <!-- <option [value]="candleTimeType[0]">{{ 'DEFAULT.1M' | translate }}</option>
                                         <option [value]="candleTimeType[1]">{{ 'DEFAULT.3M' | translate }}</option>
-                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option>
-                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.15M' | translate }}</option>
-                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.30M' | translate }}</option>
-                                        <option [value]="candleTimeType[5]">{{ 'DEFAULT.1H' | translate }}</option>
-                                        <option [value]="candleTimeType[6]">{{ 'DEFAULT.4H' | translate }}</option>
-                                        <option [value]="candleTimeType[7]">{{ 'DEFAULT.1D' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.5M' | translate }}</option> -->
+                                        <option [value]="candleTimeType[0]">{{ 'DEFAULT.15M' | translate }}</option>
+                                        <option [value]="candleTimeType[1]">{{ 'DEFAULT.30M' | translate }}</option>
+                                        <option [value]="candleTimeType[2]">{{ 'DEFAULT.1H' | translate }}</option>
+                                        <option [value]="candleTimeType[3]">{{ 'DEFAULT.4H' | translate }}</option>
+                                        <option [value]="candleTimeType[4]">{{ 'DEFAULT.1D' | translate }}</option>
                                     </select>
                                 </div>
                                 <div class="setting_box">
@@ -484,7 +484,7 @@
                 <div class="part_box spon_part_box">
                     <div>
                         <div class="guide_btn_box">
-                            <button class="default_btn" (click)="toUsePopup=true">{{ 'USE.HOW_TO_USE' | translate }}</button>
+                            <button class="default_btn" (click)="toUsePopup=true; isPopupCheck()">{{ 'USE.HOW_TO_USE' | translate }}</button>
                             <button class="default_btn" (click)="linkToTelegram()"><img src="../../assets/common/images/telegram.png" width="14px">{{ 'COM.OFFICIAL_TELEGRAM' | translate }}</button>
                             <button class="default_btn" (click)="openNotice()">{{ 'COM.NOTICE' | translate }}</button>
                         </div>
@@ -570,7 +570,7 @@
 </div>
 
 <!-- 공지 상세 팝업 -->
-<div *ngIf="showDetail" class="popup_box" id="notice_view_popup">
+<div class="popup_box" id="notice_view_popup" *ngIf="showDetail">
     <div class="popup_header">
         <button class="left" (click)="closeDetailPopup()"><i class="far fa-chevron-left back"></i></button>
         <a href="https://telegram.org/" target="_blank" class="telegram"><img src="../../assets/common/images/telegram.png" width="28" ></a>
@@ -592,7 +592,7 @@
 </div>
 
 <!-- API 설정 팝업 -->
-<div *ngIf="showApiSet" class="popup_box" id="api_setting_popup">
+<div class="popup_box" id="api_setting_popup" *ngIf="showApiSet">
     <div class="popup_header">
         <h2 class="left ">{{ 'API.API_SETTING' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>
@@ -626,7 +626,7 @@
 </div>
 
 <!-- 사용 방법 팝업 -->
-<div *ngIf="toUsePopup" class="popup_box" id="guide_popup">
+<div class="popup_box" id="guide_popup" *ngIf="toUsePopup">
     <div class="popup_header">
         <h2 class="left ">{{ 'USE.HOW_TO_USE' | translate }}</h2>
         <button class="right " (click)="closePopup()"><i class="far fa-times close"></i></button>

@@ -217,6 +217,7 @@ export class ProfileComponent implements OnInit {
 
         setTimeout(() => {
           this.showTelegramSet = true;
+          this.isPopupCheck();
         }, 200);
       });
     }
@@ -270,6 +271,7 @@ export class ProfileComponent implements OnInit {
   // 마이페이지
   openMypage() {
     this.showMypage = true;
+    this.isPopupCheck();
     this.closeDropdown();
   }
 
@@ -289,6 +291,8 @@ export class ProfileComponent implements OnInit {
     this.signPassword = '';
     this.signPasswordCheck = '';
     this.loginPassword = '';
+
+    this.isPopupCheck();
   }
 
   // 텔레그램 설정
@@ -305,6 +309,7 @@ export class ProfileComponent implements OnInit {
 
     if(data.desc === 'check') {
       this.showTelegramSet = false;
+      this.isPopupCheck();
 
       this.errSaveTele = false;
 
@@ -346,6 +351,8 @@ export class ProfileComponent implements OnInit {
 
   openLogin() {
     this.showLogin = true;
+    this.showSignUp = false;
+    this.isPopupCheck();
 
     this.signEmail = '';
     this.signPassword = '';
@@ -354,14 +361,19 @@ export class ProfileComponent implements OnInit {
 
   openSignUp() {
     this.showSignUp = true;
+    this.showLogin = false;
+    this.isPopupCheck();
   }
 
   openTerms() {
     this.showTerms = true;
+    this.isPopupCheck();
   }
 
   openPassword() {
     this.showPassword = true;
+    this.showMypage = false;
+    this.isPopupCheck();
   }
 
   // 로그인
@@ -371,6 +383,7 @@ export class ProfileComponent implements OnInit {
     if(data) {
       this.loginYn = true;
       this.showLogin = false;
+      this.isPopupCheck();
 
       this.toastService.showInfo(this.TOAST.OK_LOGIN);
 
@@ -399,6 +412,7 @@ export class ProfileComponent implements OnInit {
   // 회원가입
   async authSign() {
     this.showSignUp = false;
+    this.isPopupCheck();
 
     const data:any = await this.utilService.signIn(this.signEmail, this.signPassword);
 
@@ -431,6 +445,9 @@ export class ProfileComponent implements OnInit {
 
   // 회원탈퇴
   async unRegister() {
+    this.showMypage = false;
+    this.isPopupCheck();
+
     const body = {
       operation: 'delete'
     }
@@ -477,6 +494,7 @@ export class ProfileComponent implements OnInit {
 
     if(data.desc === 'success') {
       this.showPassword = false;
+      this.isPopupCheck();
 
       this.changePwEmail = '';
       this.changePw = '';
@@ -503,5 +521,21 @@ export class ProfileComponent implements OnInit {
 
   refreshPage() {
     window.location.reload();
+  }
+
+  isPopupCheck() {
+  if(this.showTelegramSet || 
+    this.showMypage || 
+    this.showLogin || 
+    this.showSignUp || 
+    this.showTerms || 
+    this.showPassword || 
+    this.changeProfile || 
+    this.unregistUser) {
+      this.sharedService.isCheckPopup(true);
+    } else {
+      this.sharedService.isCheckPopup(false);
+    }
+  
   }
 }

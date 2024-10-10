@@ -45,6 +45,7 @@ export class HomeComponent implements AfterViewInit {
   autoHoverd: boolean = false;
   defaultHoverd: boolean = false;
   operateHoverd: boolean = false;
+  isBlur: boolean = false;
 
   // 각 설정의 슬라이드 상태를 저장할 배열
   open: { isOpen: boolean }[] = [
@@ -69,8 +70,8 @@ export class HomeComponent implements AfterViewInit {
   isPosition: boolean = false;
   candleConst: number = 0.1;
   candleType: any;
-  candleTimeType = ['1m', '3m', '5m', '15m', '30m', '1h', '4h', '1d'];
-  candleInterval: string = '1m';
+  candleTimeType = ['15m', '30m', '1h', '4h', '1d'];
+  candleInterval: string = '15m';
   tradeSymbol: string = 'BTC';
   symbolsList = ['BTC', 'ETH', 'ADA', 'ATOM', 'AVAX', 'BCH', 'DOGE', 'DOT', 'ETC', 'GALA', 'LINK', 'LTC', 'NEAR', 'PEPE', 'SHIB', 'SOL', 'SUI', 'TON', 'TRX', 'WLD', 'XRP'];
 
@@ -208,8 +209,15 @@ export class HomeComponent implements AfterViewInit {
       }
     });
 
-    this.transLanguage();
+    this.sharedService.popupStatusUpdated$.subscribe(async (updated) => {
+      if(updated) {
+        this.isBlur = true;
+      } else {
+        this.isBlur = false;
+      }
+    });
 
+    this.transLanguage();
   }
 
   // 번역
@@ -350,6 +358,7 @@ export class HomeComponent implements AfterViewInit {
     });
     this.layoutsComponent.toUsePopup.subscribe(open => {
       this.toUsePopup = open;
+      this.isPopupCheck();
     });
 
     this.preventCopyAndDrag();
@@ -410,6 +419,7 @@ export class HomeComponent implements AfterViewInit {
     const text = element.textContent;
     if (text) {
       navigator.clipboard.writeText(text).then(() => {
+        this.toastService.showInfo(this.TOAST.OK_COPY_TEXT);
       }).catch(err => {
         this.toastService.showError(this.TOAST.FAIL_COPY_TEXT + err);
       });
@@ -502,6 +512,8 @@ export class HomeComponent implements AfterViewInit {
 
     this.showApiSet = false;
     this.toUsePopup = false;
+
+    this.isPopupCheck();
   }
 
   // 봇 동작
@@ -519,12 +531,14 @@ export class HomeComponent implements AfterViewInit {
     } else {
       // 봇 실행
       this.showApiSet = true;
+      this.isPopupCheck();
     }
   }
 
   //API 설정 저장
   async saveAPI() {
     this.showApiSet = false;
+    this.isPopupCheck();
     
     const data = await this.utilService.instanceOperation('start', this.ApiKey, this.ApiPassword, this.ApiPassphrase, this.ApiProvider, this.tradeSymbol);
     
@@ -538,7 +552,9 @@ export class HomeComponent implements AfterViewInit {
   }
 
   openNotice() {
-    this.noticeIn=true; 
+    this.noticeIn=true;
+    this.isPopupCheck();
+
     this.currentPage = 1;
     this.loadNotifications();
   }
@@ -602,14 +618,18 @@ export class HomeComponent implements AfterViewInit {
   // 공지 상세 뒤로가기
   closeDetailPopup() {
     this.showDetail = false;
+    this.noticeIn = true;
+    this.isPopupCheck();
   }
 
   // 공지 상세 보기
   async showNotificationDetails(notification:any) {
     const data: any = await this.detailNotifications(notification);
+    this.noticeIn = false;
 
     this.selectedNotification = data;
     this.showDetail = true;
+    this.isPopupCheck();
   }
 
   // 공지 상세 이전
@@ -686,7 +706,7 @@ export class HomeComponent implements AfterViewInit {
     this.selectedIndicator2 = this.indicatorOptions[0];
 
     this.tradeSymbol = 'BTC';
-    this.candleInterval = '1m';
+    this.candleInterval = '15m';
     this.candleConst = 0.1;
     this.isPosition = false;
 
@@ -821,7 +841,7 @@ export class HomeComponent implements AfterViewInit {
   // 초기화 버튼
   defaultSettingClear() {
     this.tradeSymbol = 'BTC';
-    this.candleInterval = '1m';
+    this.candleInterval = '15m';
     this.candleConst = 0.1;
 
     this.toastService.showInfo(this.TOAST.OK_RESET);
@@ -964,5 +984,10 @@ export class HomeComponent implements AfterViewInit {
       }
     }
     return undefined;
+  }
+
+  isPopupCheck() {
+    if(this.noticeIn || this.showDetail || this.showApiSet || this.toUsePopup) this.isBlur = true;
+    else this.isBlur = false;
   }
 }
