@@ -176,13 +176,7 @@ export class HomeComponent implements AfterViewInit {
       }
     );
 
-    this.loginYn = this.utilService.isAuthenticated();
-
-    if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
-      this.loginYn = false;
-    } else {
-      this.loginYn = true;
-    }
+    this.loginYn = !!(localStorage.getItem('accessToken') && localStorage.getItem('refreshToken'));
 
     if(this.loginYn) {
       await this.utilService.instanceList();

@@ -17,7 +17,7 @@
 <body> 
     <app-profile></app-profile>
 
-    <section [ngStyle]="{'filter': isBlur ? 'blur(3px)' : ''}">
+    <section [ngClass]="{'background-blur': isBlur}">
         
         <div class="wrap">
             <app-layouts></app-layouts>

@@ -1145,3 +1145,7 @@ body.dark-mode {
     -ms-user-select: none;
     -webkit-touch-callout: none;
 }
+.background-blur {
+    filter: blur(3px);
+    pointer-events: none;
+}

@@ -98,22 +98,18 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    // this.currentTheme = this.themeService.getTheme();
-    // this.themeService.applyTheme(this.currentTheme);
-
     let save = localStorage.getItem('saveID');
     let email = localStorage.getItem('email');
 
-    this.loginEmail = !email ? '' : email;
-    this.saveIdCheck = !save ? false : true;
+    this.loginEmail = email ?? '';
+    this.saveIdCheck = !!save;
 
-    this.loginYn = this.utilService.isAuthenticated();
-
-    if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
-      this.loginYn = false;
-    } else {
-      this.loginYn = true;
-    }
+    this.loginYn = !!(localStorage.getItem('accessToken') && localStorage.getItem('refreshToken'));
+    // if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
+    //   this.loginYn = false;
+    // } else {
+    //   this.loginYn = true;
+    // }
 
     let language = localStorage.getItem('language') || '';
 
@@ -124,11 +120,15 @@ export class ProfileComponent implements OnInit {
     this.transLanguage();
 
     if(this.loginYn) {
-      const data = await this.sharedService.loadTelegramSetting();
-      
-      if(data.desc === 'success') {
-        this.selectedProfileIndex = data.data.profile_id;
-        this.savedProfileIndex = data.data.profile_id;
+      try {
+        const data = await this.sharedService.loadTelegramSetting();
+
+        if(data.desc === 'success') {
+          this.selectedProfileIndex = data.data.profile_id;
+          this.savedProfileIndex = data.data.profile_id;
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
   }
