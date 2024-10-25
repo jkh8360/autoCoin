@@ -267,39 +267,40 @@ export class HomeComponent implements AfterViewInit {
     // 지표 1, 2
     this.indicatorOptions = [
       { value: 'None',       label: 'None',       comparisonOptions: ['None'], inputs: [], showConstant: false  },
-      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
+      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: ['None', this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}], showConstant: false  },
-      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: [this.AUTO.SURPASSED_RATIO, this.AUTO.DROPPED_BELOW_RATIO], 
+      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: ['None', this.AUTO.SURPASSED_RATIO, this.AUTO.DROPPED_BELOW_RATIO], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}, {name: this.AUTO.RETRACEMENT, defaultValue: '0.618'}], showConstant: false  },
-      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}], showConstant: false  },
-      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: [this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
+      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: ['None', this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}, {name: this.AUTO.ATR_LENGTH, defaultValue: '10'}], showConstant: false },
-      { value: 'MA',                   label: 'MA',                    comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'MA',                   label: 'MA',                    comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false  },
-      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: [this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
+      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: ['None', this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
         inputs: [{name: this.AUTO.SHORT_TERM, defaultValue: '12'}, {name: this.AUTO.LONG_TERM, defaultValue: '26'}, {name: this.AUTO.SIGNAL, defaultValue: '9'}], showConstant: false },
-      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
+      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: ['None', this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true },
-      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: this.AUTO.MAXIMUM_ACCEL_ELEMENT, defaultValue: '0.2'}], showConstant: false },
-      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: [this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
+      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: ['None', this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true  },
-      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: [this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}], showConstant: false },
-      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: [this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
+      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: ['None', this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.SMOOTHING+'(%K)', defaultValue: '3'}], showConstant: true  },
       { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: ['None'], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.RSI_PERIOD, defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
-      { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
+      { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: ['None', this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
     ];
 
     this.comparisonOptionMapping = {
+      'None': 'none',
       [this.AUTO.SURPASSED_UPPER_LINE]: 'surpassed_upper_line',
       [this.AUTO.DROPPED_BELOW_UPPER_LINE]: 'surpassed_lower_line',
       [this.AUTO.SURPASSED_LOWER_LINE]: 'dropped_upper_line',
@@ -329,7 +330,7 @@ export class HomeComponent implements AfterViewInit {
       [this.AUTO.TRADE_LOW]: 'low'
     }
 
-    this.selectedIndicator1 = this.indicatorOptions[0];
+    this.selectedIndicator1 = this.indicatorOptions.slice(1)[0];
     this.selectedIndicator2 = this.indicatorOptions[0];
     
     if(this.loginYn) {
@@ -877,47 +878,52 @@ export class HomeComponent implements AfterViewInit {
    */
   decodeFile() {
     const encodedData = localStorage.getItem('file') || '';
-
-    const jsonString = atob(encodedData);
-    const parsedData = JSON.parse(jsonString);
-
-    console.log(JSON.stringify(parsedData));
-
-    // 기존 설정 초기화
-    this.longSettings = [];
-    this.shortSettings = [];
-
-    // 기본 설정 업데이트
-    const basicSettings = parsedData[0].contents;
-    this.isPosition = basicSettings.cross_close;
-    this.candleInterval = basicSettings.interval;
-    this.candleConst = basicSettings.quantity;
-    this.tradeSymbol = basicSettings.symbol;
-
-    // 지표 설정 업데이트
-    this.updateIndicatorInputs(basicSettings.index);
-
-    // 롱 설정 업데이트
-    const longSettings = parsedData.filter((item: any) => item.contents.position === 'long');
-    longSettings.forEach((setting: any, index: any) => {
-      if (index < 4) { // 최대 4개까지만 처리
-        this.updateTradeSetting(setting.contents, this.longSettings, index);
-        this.open.push({ isOpen: false });
-      }
-    });
-
-    // 숏 설정 업데이트
-    const shortSettings = parsedData.filter((item: any) => item.contents.position === 'short');
-    shortSettings.forEach((setting: any, index: any) => {
-      if (index < 4) { // 최대 4개까지만 처리
-        this.updateTradeSetting(setting.contents, this.shortSettings, index);
-        this.open.push({ isOpen: false });
-      }
-    });
-
-    this.open.forEach((v, i) => {
-      if(i > 0) v.isOpen = false;
-    });
+    
+    if(encodedData) {
+      const jsonString = atob(encodedData);
+      const parsedData = JSON.parse(jsonString);
+  
+      console.log(JSON.stringify(parsedData));
+  
+      // 기존 설정 초기화
+      this.longSettings = [];
+      this.shortSettings = [];
+  
+      // 기본 설정 업데이트
+      const basicSettings = parsedData[0].contents;
+      this.isPosition = basicSettings.cross_close;
+      this.candleInterval = basicSettings.interval;
+      this.candleConst = basicSettings.quantity;
+      this.tradeSymbol = basicSettings.symbol;
+  
+      // 지표 설정 업데이트
+      this.updateIndicatorInputs(basicSettings.index);
+  
+      // 롱 설정 업데이트
+      const longSettings = parsedData.filter((item: any) => item.contents.position === 'long');
+      longSettings.forEach((setting: any, index: any) => {
+        if (index < 4) { // 최대 4개까지만 처리
+          this.updateTradeSetting(setting.contents, this.longSettings, index);
+          this.open.push({ isOpen: false });
+        }
+      });
+  
+      // 숏 설정 업데이트
+      const shortSettings = parsedData.filter((item: any) => item.contents.position === 'short');
+      shortSettings.forEach((setting: any, index: any) => {
+        if (index < 4) { // 최대 4개까지만 처리
+          this.updateTradeSetting(setting.contents, this.shortSettings, index);
+          this.open.push({ isOpen: false });
+        }
+      });
+  
+      this.open.forEach((v, i) => {
+        if(i > 0) v.isOpen = false;
+      });
+    } else {
+      this.addLongSetting();
+      this.addShortSetting();
+    }
   }
 
   updateTradeSetting(parsedSetting: any, settingsArray: TradeSettings[], index: number) {

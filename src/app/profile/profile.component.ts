@@ -36,7 +36,8 @@ export class ProfileComponent implements OnInit {
   loginYn: boolean = false;
   showLogin: boolean = false;
   showSignUp: boolean = false;
-  showTerms: boolean = false;
+  showUaTerms: boolean = false;
+  showPpTerms: boolean = false;
   showPassword: boolean = false;
 
   changeProfile: boolean = false;
@@ -284,13 +285,19 @@ export class ProfileComponent implements OnInit {
 
     this.showLogin = false;
     this.showSignUp = false;
-    this.showTerms = false;
+    this.showUaTerms = false;
+    this.showPpTerms = false;
     this.showPassword = false;
 
     this.signEmail = '';
     this.signPassword = '';
     this.signPasswordCheck = '';
     this.loginPassword = '';
+
+    this.changePw = '';
+    this.changePwCheck = '';
+    this.changePwEmail = '';
+    this.captcha = '';
 
     this.isPopupCheck();
   }
@@ -365,8 +372,13 @@ export class ProfileComponent implements OnInit {
     this.isPopupCheck();
   }
 
-  openTerms() {
-    this.showTerms = true;
+  openUaTerms() {
+    this.showUaTerms = true;
+    this.isPopupCheck();
+  }
+
+  openPpTerms() {
+    this.showPpTerms = true;
     this.isPopupCheck();
   }
 
@@ -452,9 +464,9 @@ export class ProfileComponent implements OnInit {
       operation: 'delete'
     }
 
-    const data:any = await this.utilService.request('DELETE', 'users/unregister', body, true, false);
+    const data:any = await this.utilService.request('POST', 'users/unregister', body, true, false);
 
-    if(data.desc === 'success') {
+    if(data.desc === 'bye') {
       this.utilService.clearTokens();
 
       this.showLogout = true;
@@ -462,6 +474,8 @@ export class ProfileComponent implements OnInit {
       this.loginFailed = false;
 
       this.toastService.showInfo(this.TOAST.OK_UNREGISTE);
+    } else {
+      this.toastService.showError(this.TOAST.FAIL_UNREGISTE);
     }
   }
 
@@ -528,7 +542,8 @@ export class ProfileComponent implements OnInit {
     this.showMypage || 
     this.showLogin || 
     this.showSignUp || 
-    this.showTerms || 
+    this.showUaTerms || 
+    this.showPpTerms || 
     this.showPassword || 
     this.changeProfile || 
     this.unregistUser) {

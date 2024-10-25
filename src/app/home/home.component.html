@@ -59,7 +59,7 @@
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select (change)="onIndicatorChange(1, $event)" [ngModel]="selectedIndicator1?.value">
-                                            <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
+                                            <option *ngFor="let option of indicatorOptions | slice:1" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngFor="let input of selectedIndicator1?.inputs; let i = index">
@@ -299,7 +299,7 @@
                                     <div class="setting_box">
                                         <p class="name">{{ 'AUTO.SELECT_INDICATOR1' | translate }}</p>
                                         <select (change)="onIndicatorChange(1, $event)" [ngModel]="selectedIndicator1?.value">
-                                            <option *ngFor="let option of indicatorOptions" [value]="option.value">{{option.label}}</option>
+                                            <option *ngFor="let option of indicatorOptions | slice:1" [value]="option.value">{{option.label}}</option>
                                         </select>
                                     </div>
                                     <div class="setting_box" *ngFor="let input of selectedIndicator1?.inputs; let i = index">

@@ -151,7 +151,7 @@
             <dl class="delete_dl">
                 <dt>Delete account?</dt>
                 <dd>
-                    Once you delete your account, your profile is permanently removed from KnitBot. <button (click)="openTerms()"><span class="policy">Learn More</span></button>
+                    Once you delete your account, your profile is permanently removed from KnitBot. <button (click)="openPpTerms()"><span class="policy">Learn More</span></button>
                 </dd>
             </dl>
             <button class="yes_btn" (click)="unRegister();">Yes, Delete</button>
@@ -205,8 +205,8 @@
             <li>
                 <h3>
                     {{ 'MEMBER.SIGNIN_TXT_1' | translate }}
-                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>{{ 'MEMBER.SIGNIN_TXT_2' | translate }}
-                    <button (click)="openTerms()"><span class="policy">{{ 'MEMBER.PERSONAL_INFO' | translate }}</span></button>
+                    <button (click)="openUaTerms()"><span class="policy">{{ 'MEMBER.TERMS' | translate }}</span></button>{{ 'MEMBER.SIGNIN_TXT_2' | translate }}
+                    <button (click)="openPpTerms()"><span class="policy">{{ 'MEMBER.PERSONAL_INFO' | translate }}</span></button>
                     {{ 'MEMBER.SIGNIN_TXT_3' | translate }}<br><br>
                 </h3>
             </li>
@@ -241,14 +241,26 @@
 </div>
 
 
-<!-- 이용약관 안내 팝업 -->
-<div *ngIf="showTerms" #agree_popup class="popup_box login_popup" id="agree_popup">
+<!-- UA 안내 팝업 -->
+<div *ngIf="showUaTerms" #agree_popup class="popup_box login_popup" id="agree_popup">
     <div class="popup_header">
         <h2 class="left ">{{ 'MEMBER.TERMS' | translate }}</h2>
-        <button class="right " (click)="showTerms = false; isPopupCheck()"><i class="far fa-times close"></i></button>
+        <button class="right " (click)="showUaTerms = false; isPopupCheck()"><i class="far fa-times close"></i></button>
     </div>
     <div class="popup_content">
-        <div class="agree_text" [innerHTML]="'PP.CONTEXT_0' | translate">
+        <div class="agree_text" [innerHTML]="'UA.CONTEXT' | translate">
+        </div>
+    </div>
+</div>
+
+<!-- PP 안내 팝업 -->
+<div *ngIf="showPpTerms" #agree_popup class="popup_box login_popup" id="agree_popup">
+    <div class="popup_header">
+        <h2 class="left ">{{ 'MEMBER.PERSONAL_INFO' | translate }}</h2>
+        <button class="right " (click)="showPpTerms = false; isPopupCheck()"><i class="far fa-times close"></i></button>
+    </div>
+    <div class="popup_content">
+        <div class="agree_text" [innerHTML]="'PP.CONTEXT' | translate">
         </div>
     </div>
 </div>
@@ -279,7 +291,7 @@
             <li>
                 <h3>CAPTCHA</h3>
                 <input type="text" [(ngModel)]="captcha" #inputCaptchaCheck="ngModel" [disabled]="!certifyYn"
-                placeholder="인증 메일을 확인하고 captcha를 입력해주세요.">
+                placeholder="{{ 'MEMBER.CAPTCHA_HOLDER' | translate }}">
             </li>
             <!-- <li>
                 <label for="agree" class="chk_box">
