@@ -140,7 +140,7 @@
         "DEFAULT_SETTING_TXT": "You can select the trade type. <br>Currently, only Futures trading is supported.<br><br>In the Trade Symbol Selection, you can choose the symbol that the bot will trade.<br><br>In the Candle Settings, you set the time frame that will be used as the basis for evaluating automated trading indicators or bot action conditions. <span>Be cautious when setting the candle time frame, as certain indicators or conditions may vary depending on the selected time frame.</span><br><br>The Quantity refers to the amount of the selected trading symbol that will be used in automated trading. <span>Note that the quantity refers to the amount of the selected coin, not USDT, so make sure to set the quantity based on the coin's amount!</span>",
         "BOT_ACTING": "Bot Start and Stop",
         "BOT_ACTING_TXT ": "You can turn the bot on and off using the right icon on the remote control.",
-        "SAVE": "Save",
+        "SAVE": "RUN",
         "SAVE_TXT": "When all settings are complete, you must save them before running the bot. If you do not save, the bot may not run, or the settings may not be applied, potentially causing errors. Therefore, it is essential to save your settings.",
         "BESIDE": "Others",
         "BESIDE_TXT": "For any other inquiries, please use the official KnitBot Telegram group."
@@ -154,7 +154,8 @@
         "API_KEY_TXT": "Enter your API Key",
         "API_SECRET_KEY_TXT": "Enter your API Password",
         "API_PASSPHRASE_TXT": "Enter your API Passphrase",
-        "API_SETTING_NOTICE": "By using this free service, you acknowledge and agree that KnitBot is not responsible for any financial losses, damages, or claims arising from the use of this service, including but not limited to inaccuracies in indicators, technical failures, server outages, disruptions, or any external factors beyond our control. All tools and data are provided \"as is,\" and you are fully responsible for any decisions made while using the service. KnitBot disclaims any and all liability for losses or damages, regardless of the cause, that may result from using this service. For more details, please refer to our User Agreement."
+        "API_SETTING_NOTICE": "By using this free service, you acknowledge and agree that KnitBot is not responsible for any financial losses, damages, or claims arising from the use of this service, including but not limited to inaccuracies in indicators, technical failures, server outages, disruptions, or any external factors beyond our control. All tools and data are provided \"as is,\" and you are fully responsible for any decisions made while using the service. KnitBot disclaims any and all liability for losses or damages, regardless of the cause, that may result from using this service. For more details, please refer to our User Agreement.",
+        "API_NOTICE_TXT": "Don't forget your API! KnitBot does not store your API data!"
     },
     "TELEGRAM": {
         "TELEGRAM_SETTING": "Telegram Settings",
