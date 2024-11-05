@@ -266,36 +266,36 @@ export class HomeComponent implements AfterViewInit {
   private initializeIndicatorOptions() {
     // 지표 1, 2
     this.indicatorOptions = [
-      { value: 'None',       label: 'None',       comparisonOptions: ['None'], inputs: [], showConstant: false  },
-      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: ['None', this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
+      { value: 'None',       label: this.AUTO.NONE,       comparisonOptions: [this.AUTO.NONE], inputs: [], showConstant: false  },
+      { value: 'BollingerBands',       label: 'Bollinger Bands',       comparisonOptions: [this.AUTO.NONE, this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}], showConstant: false  },
-      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'EMA',                  label: 'EMA',                   comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: ['None', this.AUTO.SURPASSED_RATIO, this.AUTO.DROPPED_BELOW_RATIO], 
+      { value: 'FibonacciRetracement', label: 'Fibonacci Retracement', comparisonOptions: [this.AUTO.NONE, this.AUTO.SURPASSED_RATIO, this.AUTO.DROPPED_BELOW_RATIO], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}, {name: this.AUTO.RETRACEMENT, defaultValue: '0.618'}], showConstant: false  },
-      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'HMA',                  label: 'HMA',                   comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '50'}], showConstant: false  },
-      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: ['None', this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
+      { value: 'KeltnerChannels',      label: 'Keltner Channels',      comparisonOptions: [this.AUTO.NONE, this.AUTO.SURPASSED_UPPER_LINE, this.AUTO.DROPPED_BELOW_UPPER_LINE, this.AUTO.SURPASSED_LOWER_LINE, this.AUTO.DROPPED_BELOW_LOWER_LINE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '20'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '2'}, {name: this.AUTO.ATR_LENGTH, defaultValue: '10'}], showConstant: false },
-      { value: 'MA',                   label: 'MA',                    comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'MA',                   label: 'MA',                    comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false  },
-      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: ['None', this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
+      { value: 'MACD',                 label: 'MACD',                  comparisonOptions: [this.AUTO.NONE, this.AUTO.SURPASSED_SIGNAL, this.AUTO.DROPPED_BELOW_SIGNAL], 
         inputs: [{name: this.AUTO.SHORT_TERM, defaultValue: '12'}, {name: this.AUTO.LONG_TERM, defaultValue: '26'}, {name: this.AUTO.SIGNAL, defaultValue: '9'}], showConstant: false },
-      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: ['None', this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
+      { value: 'MFI',                  label: 'MFI',                   comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true },
-      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'ParabolicSAR',         label: 'Parabolic SAR',         comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.INITIAL_ACCELERATION, defaultValue: '0.02'}, {name: this.AUTO.INCREMENT, defaultValue: '0.02'}, {name: this.AUTO.MAXIMUM_ACCEL_ELEMENT, defaultValue: '0.2'}], showConstant: false },
-      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: ['None', this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
+      { value: 'RSI',                  label: 'RSI',                   comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CONSTANT, this.AUTO.LOW_CONSTANT], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '14'}], showConstant: true  },
-      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'SMA',                  label: 'SMA',                   comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '30'}], showConstant: false },
-      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: ['None', this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
+      { value: 'SMMA',                 label: 'SMMA',                  comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGH_CURRENT_PRICE, this.AUTO.LOW_CURRENT_PRICE], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}], showConstant: false },
-      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: ['None', this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
+      { value: 'Stochastic',           label: 'Stochastic',            comparisonOptions: [this.AUTO.NONE, this.AUTO.HIGHER_K, this.AUTO.LOWER_K, this.AUTO.CROSS_K_DOWN, this.AUTO.CROSS_K_UP], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.SMOOTHING+'(%K)', defaultValue: '3'}], showConstant: true  },
-      { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: ['None'], 
+      { value: 'StochasticRSI',        label: 'Stochastic RSI',        comparisonOptions: [this.AUTO.NONE], 
         inputs: [{name: this.AUTO.PERIOD+'(%K)', defaultValue: '5'}, {name: this.AUTO.PERIOD+'(%D)', defaultValue: '3'}, {name: this.AUTO.RSI_PERIOD, defaultValue: '14'}, {name: this.AUTO.STOCHASTIC_PERIOD, defaultValue: '14'}], showConstant: false },
-      { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: ['None', this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
+      { value: 'Supertrend',           label: 'Supertrend',            comparisonOptions: [this.AUTO.NONE, this.AUTO.LONG_SIGNAL, this.AUTO.SHORT_SIGNAL], 
         inputs: [{name: this.AUTO.PERIOD, defaultValue: '7'}, {name: this.AUTO.STANDARD_DEVIATION, defaultValue: '3'}], showConstant: false  }
     ];
 
@@ -921,6 +921,9 @@ export class HomeComponent implements AfterViewInit {
         if(i > 0) v.isOpen = false;
       });
     } else {
+      this.longSettings = [];
+      this.shortSettings = [];
+      
       this.addLongSetting();
       this.addShortSetting();
     }
@@ -987,7 +990,13 @@ export class HomeComponent implements AfterViewInit {
   }
 
   isPopupCheck() {
-    if(this.noticeIn || this.showDetail || this.showApiSet || this.toUsePopup) this.isBlur = true;
-    else this.isBlur = false;
+    if(this.noticeIn || this.showDetail || this.showApiSet || this.toUsePopup) {
+      this.sharedService.isCheckPopup(true);
+      this.isBlur = true;
+    }
+    else {
+      this.sharedService.isCheckPopup(false);
+      this.isBlur = false;
+    }
   }
 }

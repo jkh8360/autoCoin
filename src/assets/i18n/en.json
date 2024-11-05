@@ -23,7 +23,7 @@
         "HOME_NOTICE": "KnitBot is <span>free</span> and <span>doesn't require</span> referral signup.<br>This site is currently funded by Ads and sponsorships. Please consider supporting the creators.<br>So please disable adblock."
     },
     "AUTO": {
-        "SETTING_INDICATOR": "Setting Indicator",
+        "SETTING_INDICATOR": "Indicator Settings",
         "SET_AUTO_SALE": "BOT SETTINGS",
         "SELECT_INDICATOR1": "Indicator1",
         "SELECT_INDICATOR2": "Indicator2",
@@ -139,7 +139,7 @@
         "DEFAULT_SETTING": "Preferences",
         "DEFAULT_SETTING_TXT": "You can select the trade type. <br>Currently, only Futures trading is supported.<br><br>In the Trade Symbol Selection, you can choose the symbol that the bot will trade.<br><br>In the Candle Settings, you set the time frame that will be used as the basis for evaluating automated trading indicators or bot action conditions. <span>Be cautious when setting the candle time frame, as certain indicators or conditions may vary depending on the selected time frame.</span><br><br>The Quantity refers to the amount of the selected trading symbol that will be used in automated trading. <span>Note that the quantity refers to the amount of the selected coin, not USDT, so make sure to set the quantity based on the coin's amount!</span>",
         "BOT_ACTING": "Bot Start and Stop",
-        "BOT_ACTING_TXT ": "You can turn the bot on and off using the right icon on the remote control.",
+        "BOT_ACTING_TXT": "You can turn the bot on and off using the right icon on the remote control.",
         "SAVE": "RUN",
         "SAVE_TXT": "When all settings are complete, you must save them before running the bot. If you do not save, the bot may not run, or the settings may not be applied, potentially causing errors. Therefore, it is essential to save your settings.",
         "BESIDE": "Others",
@@ -203,7 +203,9 @@
         "REQUIRE_PASSWORD_CHECK": "Please confirm your Password (8-32 characters, with uppercase, numbers, and special characters(@, $, !, %, *, ?, &, ^)).",
         "ERROR_PASSWORD": "Password does not match.",
         "CAPTCHA_INPUT": "Please enter Captcha.",
-        "CAPTCHA_HOLDER": "Please check mail and enter Captcha."
+        "CAPTCHA_HOLDER": "Please check mail and enter Captcha.",
+        "CERTIFY_EMAIL": "Please verify your Email.",
+        "CERTIFY_EMAIL_3M": "Email verification will be available after 3 minutes."
     },
     "TOAST": {
         "NEED_LOGIN": "This service requires login.",

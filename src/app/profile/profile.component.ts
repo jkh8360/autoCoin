@@ -91,11 +91,21 @@ export class ProfileComponent implements OnInit {
   MEMBER: any;
   TOAST: any;
 
+  isBlur: boolean = false;
+
   async ngOnInit() {
     this.logoutSubscription = this.utilService.loggedOut$.subscribe(loggedOut => {
       this.isLoggedOut = loggedOut;
       if (this.isLoggedOut) {
         this.loginYn = loggedOut;
+      }
+    });
+
+    this.sharedService.popupStatusUpdated$.subscribe(async (updated) => {
+      if(updated) {
+        this.isBlur = true;
+      } else {
+        this.isBlur = false;
       }
     });
 
@@ -106,11 +116,6 @@ export class ProfileComponent implements OnInit {
     this.saveIdCheck = !!save;
 
     this.loginYn = !!(localStorage.getItem('accessToken') && localStorage.getItem('refreshToken'));
-    // if(!localStorage.getItem('accessToken') && !localStorage.getItem('refreshToken')) {
-    //   this.loginYn = false;
-    // } else {
-    //   this.loginYn = true;
-    // }
 
     let language = localStorage.getItem('language') || '';
 
@@ -548,8 +553,10 @@ export class ProfileComponent implements OnInit {
     this.changeProfile || 
     this.unregistUser) {
       this.sharedService.isCheckPopup(true);
+      this.isBlur = true;
     } else {
       this.sharedService.isCheckPopup(false);
+      this.isBlur = false;
     }
   
   }

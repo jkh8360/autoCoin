@@ -678,6 +678,9 @@ font-weight: 600;
 }
 #notice_popup , #notice_view_popup, #api_setting_popup ,#guide_popup, #telegram_setting_popup {
     max-width: 594px;
+    white-space: normal;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 .guide_p h2 {
     font-size: 18px;
@@ -992,10 +995,11 @@ section{
     background: #2B2B2B;
    }
    .mobile_tab li {
-    font-size: 14px;
+    font-size: 12px;
     color: #8B8B8B;
     padding:0 16px;
     flex-shrink: 0;
+    white-space: nowrap;
    }
    .mobile_tab li.cho {
     color: #6572E6;

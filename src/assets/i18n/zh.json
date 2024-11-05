@@ -23,7 +23,7 @@
         "HOME_NOTICE": "KnitBot是免费提供的，无需推荐注册。当前的服务器费用由广告和赞助维持。温暖的赞助可以帮助开发者填饱肚子。如果您关闭广告拦截器，将为开发者带来极大的帮助。"
     },
     "AUTO": {
-        "SETTING_INDICATOR": "Setting Indicator",
+        "SETTING_INDICATOR": "指标设置",
         "SET_AUTO_SALE": "自动交易设置",
         "SELECT_INDICATOR1": "选择指标1",
         "SELECT_INDICATOR2": "选择指标2",
@@ -139,7 +139,7 @@
         "DEFAULT_SETTING": "首选项",
         "DEFAULT_SETTING_TXT": "您可以选择交易类型。<br>当前仅支持期货交易。<br><br> 在选择交易对中，您可以选择机器人将要交易的交易对。<br><br> 在K线设置中，您可以设置用于评估自动交易指标或机器人动作条件的时间周期。<span>由于某些指标或条件可能会因选定的K线时间而有所不同，因此在设置时需要谨慎。</span><br><br> 数量指的是在自动交易时选定交易对的数量。<br><br><span>请注意，数量是指选定币种的数量而非USDT，因此数量必须根据币种的数量进行设置！</span>",
         "BOT_ACTING": "机器人启动与停止",
-        "BOT_ACTING_TXT ": "您可以通过遥控器右侧的图标来启动和关闭机器人。",
+        "BOT_ACTING_TXT": "您可以通过遥控器右侧的图标来启动和关闭机器人。",
         "SAVE": "运行",
         "SAVE_TXT": "在完成所有设置后，您必须在启动机器人之前保存它们。<br>如果不保存，机器人可能不会运行，或设置可能不会被应用，进而导致错误。因此，保存设置是必不可少的。",
         "BESIDE": "其他",
@@ -203,7 +203,9 @@
         "REQUIRE_PASSWORD_CHECK": "请输入确认密码（8-32个字符，包括大写字母、数字和特殊字符(@, $, !, %, *, ?, &, ^)）。",
         "ERROR_PASSWORD": "密码不匹配。",
         "CAPTCHA_INPUT": "请输入验证码。",
-        "CAPTCHA_HOLDER": "请检查验证邮件并输入验证码。"
+        "CAPTCHA_HOLDER": "请检查验证邮件并输入验证码。",
+        "CERTIFY_EMAIL": "请验证邮箱。",
+        "CERTIFY_EMAIL_3M": "邮箱验证将在3分钟后可用。"
     },
     "TOAST": {
         "NEED_LOGIN": "此服务需要登录。",
